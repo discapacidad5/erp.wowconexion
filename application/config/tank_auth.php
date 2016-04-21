@@ -7,8 +7,8 @@
 | These details are used in emails sent by authentication library.
 |--------------------------------------------------------------------------
 */
-$config['website_name'] = 'NetworkSoft';
-$config['webmaster_email'] = 'contact@networksoft.mx';
+$config['website_name'] = 'WOW Conexion';
+$config['webmaster_email'] = 'contacto@wowconexion.com';
 
 /*
 |--------------------------------------------------------------------------
