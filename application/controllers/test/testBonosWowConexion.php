@@ -1,5 +1,5 @@
 <?php
-class testBonosMoneyMobile extends CI_Controller {
+class testBonosWowConexion extends CI_Controller {
 
 	private $idBonoDeInicioRapido=56;
 	private $idBonoDeBinario=57;
@@ -32,7 +32,7 @@ class testBonosMoneyMobile extends CI_Controller {
 		$this->repartidor_comision_bono->eliminarHistorialComisionBono();
 		$this->ingresarBonos();
 		$this->ingresarRedDeAfiliacion();
-		$this->ingresarVentas();
+		$this->ingresarVentasFecha(date('Y-m-d'),true,700);
 	}
 	
 	private function after(){
@@ -49,8 +49,8 @@ class testBonosMoneyMobile extends CI_Controller {
 	
 	public function index(){
 
-   /* 	$this->before();
-		$this->pruebaProduccion();
+    	$this->before();
+	/*	$this->pruebaProduccion();
 		
 		$this->testValidarSiElBonoYaCobroFalso();
 		$this->after();
@@ -710,10 +710,10 @@ class testBonosMoneyMobile extends CI_Controller {
 		$this->ingresarAfiliado($id_red,10000,"giovanny",2,2,0);
 		$this->ingresarAfiliado($id_red,10001,"carlos",10000,10000,0);
 		$this->ingresarAfiliado($id_red,10002,"pedro",10000,10000,1);
-		$this->ingresarAfiliado($id_red,10003,"camilo",10001,10001,0);
-		$this->ingresarAfiliado($id_red,10004,"Nicolas",10001,10001,1);
-		$this->ingresarAfiliado($id_red,10005,"esperanza",10002,10000,0);
-		$this->ingresarAfiliado($id_red,10006,"maria",10002,10000,1);
+		$this->ingresarAfiliado($id_red,10003,"camilo",10000,10000,2);
+		$this->ingresarAfiliado($id_red,10004,"Nicolas",10000,10000,3);
+		$this->ingresarAfiliado($id_red,10005,"esperanza",10000,10000,4);
+		$this->ingresarAfiliado($id_red,10006,"maria",10000,10000,5);
 		$this->ingresarAfiliado($id_red,10007,"pepe",10003,10003,0);
 		$this->ingresarAfiliado($id_red,10008,"dario",10003,10001,1);
 		$this->ingresarAfiliado($id_red,10009,"diego",10006,10000,0);
@@ -739,69 +739,12 @@ class testBonosMoneyMobile extends CI_Controller {
 		$this->ingresarAfiliado($id_red,10029,"ruben",10023,10001,0);
 		$this->ingresarAfiliado($id_red,10030,"marcela",10024,10001,0);
 		$this->ingresarAfiliado($id_red,10031,"nelly",10026,10026,0);
-		$this->ingresarAfiliado($id_red,10032,"jose",10027,10027,0);
-		$this->ingresarAfiliado($id_red,10033,"johana",10027,10027,1);
+		$this->ingresarAfiliado($id_red,10032,"jose",10030,10030,0);
+		$this->ingresarAfiliado($id_red,10033,"johana",10030,10030,1);
+		$this->ingresarAfiliado($id_red,10034,"pablo",10032,10032,0);
+		$this->ingresarAfiliado($id_red,10035,"daniel",10032,10032,1);
 	}
 
-	private function ingresarRedDeAfiliacion2(){
-	
-		$id_red=300;
-		
-		$red=new $this->red;
-		$infinito=0;
-		$datosRed = array(
-				'id_red' => $id_red,
-				'nombre'   => "Binario",
-				'descripcion'    => "Test de Red Binaria",
-				'frontal' => 2,
-				'profundidad'   => $infinito,
-				'valor_punto'    => 1,
-				'estatus'   => 'ACT',
-				'plan' => 'BIN'
-		);
-	
-		$red->nuevaRed($datosRed);
-		$red->ingresarRed();
-	
-		/*							RED DE AFILIACION
-		 *           	                      __________
-		 *           	               	     |    TU    |
-		 *           					     | ID:10000 |
-		 *        	   	                     |_Spr:_2___|
-		 *                  	   __________/           \____________
-		 *           	          |     Z    |        	  |   PEDRO  |
-		 *           	          | ID:10001 |   		  | ID:10002 |
-		 *        	   	          |_Spr:10000|            |_Spr:10000|
-		 *              __________/       _____\____    			\_________
-		 *             |   CAMILO |      | NICOLAS  |    			|   MARIA  |
-		 *             | ID:10003 |   	 | ID:10004 |   			| ID:10005 |
-		 *        	   |_Spr:10001|      |_Spr:10001|    			|_Spr:10002|
-		 *		    ___/_____   				_\_______           ______|____
-		 *         |    Y     | 				| DARIO    |        |  X       |  
-		 *         | ID:10006 | 				| ID:10007 |        | ID:10008 |
-		 *         |_Spr:10003| 				|_Spr:10004|        |_Spr:10005|
-		 *	 _______/__   _____\____                              ____/____     _\________
-		 *	| LAURA    | | DAVID    |                            |  MARIO   |  | ANDREA   |
-		 *	| ID:10009 | | ID:10010 |                            | ID:10011 |  | ID:10012 |
-		 *	|_Spr:10006| |_Spr:10006|                            |_Spr:10008|  |_Spr:10008|
-		*/
-		
-		$this->ingresarAfiliado($id_red,10000,"Tu",2,2,0);
-		$this->ingresarAfiliado($id_red,10001,"Z",10000,10000,0);
-		$this->ingresarAfiliado($id_red,10002,"pedro",10000,10000,1);
-		$this->ingresarAfiliado($id_red,10003,"camilo",10001,10001,0);
-		$this->ingresarAfiliado($id_red,10004,"Nicolas",10001,10001,1);
-		$this->ingresarAfiliado($id_red,10005,"Maria",10002,10002,0);
-		$this->ingresarAfiliado($id_red,10006,"Y",10003,10003,0);
-		$this->ingresarAfiliado($id_red,10007,"dario",10004,10004,0);
-		$this->ingresarAfiliado($id_red,10008,"X",10005,10005,0);
-		$this->ingresarAfiliado($id_red,10009,"laura",10006,10006,0);
-		$this->ingresarAfiliado($id_red,10010,"david",10006,10006,1);
-		$this->ingresarAfiliado($id_red,10011,"mario",10008,10008,0);
-		$this->ingresarAfiliado($id_red,10012,"andrea",10008,10008,1);
-		
-	}
-	
 	private function ingresarAfiliado($id_red,$id,$nombre,$debajo_de,$sponsor,$lado){
 		$afiliador=new $this->modelo_bono();
 		$afiliador->crearNuevoUsuario ($id,$nombre,"2016-03-17",$id,$id_red,$debajo_de,$sponsor,$lado);
@@ -909,342 +852,169 @@ class testBonosMoneyMobile extends CI_Controller {
 		$this->venta->ingresarVenta ();
 	}
 
-	private function ingresarVentas(){
+	private function ingresarVentasFecha($fecha,$categoria,$ids){
 
-		$id_categoria=250;
+		if($categoria){
+				
+				$id_categoria=250;
+				
+				$datosCategoria = array(
+						'id_categoria' => 250,
+						'id_red'   => 300,
+				);
+				
+				$this->mercancia->ingresarCategoria ($datosCategoria);
+				
+				/*  TIPO DE MERCANCIA
+				 *  Producto  = 1
+				 *  Servicios = 2
+				 * 	Combinado = 3
+				 *  Paquete.I = 4
+				 * 	Membresia = 5
+				 *
+				*/
+				
+				$producto=1;
+				$servicio=2;
+				$membresia=5;
+				
+				
+				$id=500;$costo=68000;$puntos=0;
+				$this->ingresarMercancia($id,"Kit de Afiliación(Winner)",$id_categoria,$membresia,$costo,$puntos);
+				
+				$id=501;$costo=80000;$puntos=80;
+				$this->ingresarMercancia($id,"Plan Educativo Anual",$id_categoria,$membresia,$costo,$puntos);
+				
+				$id=502;$costo=130000;$puntos=120;
+				$this->ingresarMercancia($id,"Paquete Mensual (Telefonía + Plan Educativo) Winner",$id_categoria,$producto,$costo,$puntos);
+				
+				$id=503;$costo=30000;$puntos=0;
+				$this->ingresarMercancia($id,"Kit de Afiliación (Basic)",$id_categoria,$producto,$costo,$puntos);
+				
+				$id=504;$costo=80000;$puntos=35;
+				$this->ingresarMercancia($id,"Paquete Mensual (Telefonía + Plan Educativo) Basic",$id_categoria,$servicio,$costo,$puntos);
 		
-		$datosCategoria = array(
-				'id_categoria' => 250,
-				'id_red'   => 300,
-		);
+				$id=505;$costo=60000;$puntos=3;
+				$this->ingresarMercancia($id,"Recarga Telefonía 60000",$id_categoria,$producto,$costo,$puntos);
+				
+				$id=506;$costo=45000;$puntos=34;
+				$this->ingresarMercancia($id,"Plan Educativo Basic",$id_categoria,$servicio,$costo,$puntos);
+				
 		
-		$this->mercancia->ingresarCategoria ($datosCategoria);
 		
-		/*  TIPO DE MERCANCIA
-		 *  Producto  = 1
-		 *  Servicios = 2
-		 * 	Combinado = 3
-		 *  Paquete.I = 4
-		 * 	Membresia = 5
-		 * 
-		 */
-		
-		$producto=1;
-		$servicio=2;
-		$membresia=5;
-
-		
-		$id=500;$costo=410;$puntos=3;
-		$this->ingresarMercancia($id,"Membresia (3 puntos)",$id_categoria,$membresia,$costo,$puntos);
-		
-		$id=501;$costo=1230;$puntos=9;
-		$this->ingresarMercancia($id,"Membresia (9 puntos)",$id_categoria,$membresia,$costo,$puntos);
-		
-		$id=502;$costo=410;$puntos=3;
-		$this->ingresarMercancia($id,"Briut",$id_categoria,$producto,$costo,$puntos);
-		
-		$id=503;$costo=510;$puntos=3;
-		$this->ingresarMercancia($id,"Reset DNA",$id_categoria,$producto,$costo,$puntos);
-		
-		$id=504;$costo=300;$puntos=3;
-		$this->ingresarMercancia($id,"Movistar",$id_categoria,$servicio,$costo,$puntos);
-		
-
+		}
+	
 /*							RED DE AFILIACION
 *           	            			 ____________
 *           	            			| GIOVANNY   |
 *           							| ID:10000   | 
 *        	   	           				|  Spr:_2    |
-*        			  					|Merc:0,1,2,3|
-*               	   					|Total:$2560 |
-*        			  					|Puntos: 18  |
+*        			  					|Merc:       |
+*               	   					|Total:278000|
+*        			  					|Puntos:200  |
 *        _______/__    ___/______  __\________  _____\____    ___\______     ___\_____
 *       |  CARLOS  | |   PEDRO  | |   CAMILO | | NICOLAS  |  | ESPERANZA|   |   MARIA  | 
 *       | ID:10001 | | ID:10002 | | ID:10003 | | ID:10004 |  | ID:10005 |   | ID:10006 |
-*       | Spr:10000| |Spr:10000 | |_Spr:10001| |_Spr:10001|  |_Spr:10000|   |_Spr:10000|
-*       |Merc: 0,3 | |Merc: 1,3 | |Merc:  0  | |Merc:  0  |  |Merc:  0  |   |Merc:  0  |
-*       |Total:    | |Total:	| |Total:    | |Total:    |  |Total:    |   |Total:    |
-*       |Puntos:   | |Puntos: 	| |Puntos:   | |Puntos:   |  |Puntos:   |   |Puntos:   |      
-*             
-*             
-*             
-*        	  
-*        	  
-*        	  
-*        	  
-*		    ___/_____   __\_______                      _____/____     __\_______
-*         | PEPE     | | DARIO    |                    |  DIEGO   |   |  ANDRES  |
-*         | ID:10007 | | ID:10008 |                    | ID:10009 |   | ID:10010 |
-*         |_Spr:10003| |_Spr:10001|                    |_Spr:10000|   |_Spr:10000|
-*         |Merc:  0  | |Merc:  2  |                    |Merc : 1  |   |Merc :   0|
-*         |Total:$410| |Total:$410|                    |Total:1230|   |Total:$410|
-*         |Puntos: 3 | |Puntos: 3 |                    |Puntos: 9 |   |Puntos: 3 |
+*       | Spr:10000| |Spr:10000 | |_Spr:10000| |_Spr:10000|  |_Spr:10000|   |_Spr:10000|
+*       |Merc:     | |Merc:     | |Merc:     | |Merc:     |  |Merc:     |   |Merc:     |
+*       |To:110000 | |To:110000	| |To:60000  | |To:278000 |  |To:45000  |   |To:110000 |
+*       |Puntos: 35| |Puntos: 35| |Puntos: 3 | |Puntos:200|  |Puntos:34 |   |Puntos: 35|      
+*		    ___/_____              __|_______                           _____/____     __\_______
+*         | PEPE     |             | DARIO    |                        |  DIEGO   |   |  ANDRES  |
+*         | ID:10007 |             | ID:10008 |                        | ID:10009 |   | ID:10010 |
+*         |_Spr:10003|             |_Spr:10001|                        |_Spr:10000|   |_Spr:10000|
+*         |Merc:     |             |Merc:     |                        |Merc :    |   |Merc :    |
+*         |To:110000 |             |To:110000 |                        |To:110000 |   |To:278000 |
+*         |Puntos: 35|             |Puntos: 35|                        |Puntos: 35|   |Puntos:200|
 *  _______/__   _____\____                                       _____/____    __\_______
 * | RICARDO  | | MIGUEL   |                                     |  PAOLA   |   | FERNANDO |
 * | ID:10011 | | ID:10012 |                                     | ID:10013 |   | ID:10014 |
 * |_Spr:10007| |_Spr:10007|                                     |_Spr:10010|   |_Spr:10010|
-* |Merc: 0   | |Merc:   0 |                                     |Merc:  0  |   |Merc:   0 |
-* |Total:$410| |Total:$410|                                     |Total:$410|   |Total:$410|
-* |Puntos: 3 | |Puntos: 3 |                                     |Puntos:  3|   |Puntos: 3 |
+* |Merc:     | |Merc:     |                                     |Merc:     |   |Merc:     |
+* |To:60000  | |To:278000 |                                     |To:110000 |   |To: 60000 |
+* |Puntos: 3 | |Puntos:200|                                     |Puntos: 35|   |Puntos: 3 |
 *        _______/__   _____\____                                            ____/____     _\_________
 *       | LAURA    | | DAVID    |                                          |  MARIO   |   | ANDREA   |
 *       | ID:10015 | | ID:10016 |                                          | ID:10017 |   | ID:10018 |
 *       |_Spr:10012| |_Spr:10012|                                          |_Spr:10014|   |_Spr:10014|
-*       |Merc:  2  | |Merc:0,1,4|                                          |Merc: 0,0 |   |Merc: 0   |
-*       |Total:$410| |Total:1940|                                          |Total:$820|   |Total:$410|
-*       |Puntos: 3 | |Puntos:15 |                                          |Puntos: 6 |   |Puntos: 3 |
+*       |Merc:     | |Merc:     |                                          |Merc:     |   |Merc:     |
+*       |To:278000 | |To:278000 |                                          |Tot:110000|   |Tot:110000|
+*       |Puntos:200| |Puntos:200|                                          |Puntos: 35|   |Puntos: 35|
 *              _______/___  _____\____                                 ____/____      _\________
 *             | JOAN     | |ALEJANDRO |                               | MARCEL   |   | DANIEL   |
 *             | ID:10019 | | ID:10020 |                               | ID:10021 |   | ID:10022 |
 *             |_Spr:10016| |_Spr:10001|                               |_Spr:10017|   |_Spr:10017|
-*             |Merc:  0  | |Merc:  0  |                               |Merc:   0 |   |Merc:   0 |
-*             |Total:$410| |Total:$410|                               |Total:$410|   |Total:$410|
-*             |Puntos: 3 | |Puntos: 3 |\                              |Puntos: 3 |   |Puntos: 3 |
+*             |Merc:     | |Merc:     |                               |Merc:     |   |Merc:     |
+*             |To:30000  | |To:110000 |                               |To:278000 |   |To: 278000|
+*             |Puntos: 0 | |Puntos: 35|\                              |Puntos:200|   |Puntos:200|
 * __________/  _____\____   _/________  \__________                          ___________/ ___\______
 *| JULIAN   | | GERMAN   | |  LUIS    | |ALBERTO   |                        | CAROLINA | | HAROLL   |
 *| ID:10023 | | ID:10024 | | ID:10025 | | ID:10026 |                        | ID:10027 | | ID:10028 |
 *|_Spr:10019| |_Spr:10019| |_Spr:10016| |_Spr:10020|                        |_Spr:10022| |_Spr:10022|
-*|Merc:   1 | |Merc:  0  | |Merc:  0  | |Merc:  1  |                        |Merc:   1 | |Merc:  1  |
-*|Total:1230| |Total:$410| |Total:$410| |Total:1230|                        |Total:1230| |Total:1230|
-*|Puntos: 9 | |Puntos: 3 | |Puntos: 3 | |Puntos: 9 |                        |Puntos: 9 | |Puntos: 9 |
-*_____|_____     ____|_____               ____|_____             __________/   ____\______
-*|  RUBEN   |   |   MARCELA|             |  NELLY   |    	     |  JOSE    | | JOHANA   |
-*| ID:10029 |   | ID:10030 |       	     | ID:10031 |            | ID:10032 | | ID:10033 |
-*|Spr:10001 |   |Spr:10001 |             |Spr:10026 |            |_Spr:10027| |_Spr:10027|
-*|Merc:   0 |   |Merc:  0  |             |Merc:  0  |            |Merc:  0  | |Merc:   0 | 
-*|Total:$410|   |Total:$410|             |Total:$410|            |Total:$410| |Total:$410|
-*|Puntos: 3 |   |Puntos: 3 |             |Puntos: 3 |            |Puntos: 3 | |Puntos: 3 |
+*|Merc:     | |Merc:     | |Merc:     | |Merc:     |                        |Merc:     | |Merc:     |
+*|To:110000 | |to:278000 | |To:278000 | |To: 68000 |                        |To: 110000| |To:278000 |
+*|Puntos: 35| |Puntos:200| |Puntos:200| |Puntos: 0 |                        |Puntos:35 | |Puntos:200|
+*_____|_____     ____|_____               ____|_____            
+*|  RUBEN   |   |   MARCELA|             |  NELLY   |    	     
+*| ID:10029 |   | ID:10030 |       	     | ID:10031 |            
+*|Spr:10001 |   |Spr:10001 |             |Spr:10026 |            
+*|Merc:     |   |Merc:     |             |Merc:     |            
+*|To: 110000|   |To: 148000|             |To: 110000|            
+*|Puntos: 35|   |Puntos:80 |             |Puntos: 35|            
+*         __________/   ____\____
+*        |  JOSE    | | JOHANA   |
+*        | ID:10032 | | ID:10033 |
+*		 |_Spr:10030| |_Spr:10030|
+*        |Merc:     | |Merc:     | 
+*        |To: 148000| |To: 68000 |
+*        |Puntos:80 | |Puntos: 0 |
+      _____/_____  \__________
+*     |  PABLO   | | DANIEL   |
+*     | ID:10034 | | ID:10035 |
+*     |_Spr:10032| |_Spr:10032|
+*     |Merc:     | |Merc:     |
+*     |To:110000 | |To: 278000|
+*     |Puntos: 35| |Puntos:200|   
+*     
+*     
 */
-
-		$fecha=date('Y-m-d');
-		
-		$this->ingresarVentaMercanciaUsuario(700,10000,$fecha,array(500,501,502,503));
-		$this->ingresarVentaMercanciaUsuario(701,10001,$fecha,array(500,503));
-		$this->ingresarVentaMercanciaUsuario(702,10002,$fecha,array(501,503));
-		$this->ingresarVentaMercanciaUsuario(703,10003,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(704,10004,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(705,10005,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(706,10006,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(707,10007,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(708,10008,$fecha,array(502));
-		$this->ingresarVentaMercanciaUsuario(709,10009,$fecha,array(501));
-		$this->ingresarVentaMercanciaUsuario(710,10010,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(711,10011,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(712,10012,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(713,10013,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(714,10014,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(715,10015,$fecha,array(502));
-		$this->ingresarVentaMercanciaUsuario(716,10016,$fecha,array(500,501,504));
-		$this->ingresarVentaMercanciaUsuario(717,10017,$fecha,array(500,500));
-		$this->ingresarVentaMercanciaUsuario(718,10018,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(719,10019,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(720,10020,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(721,10021,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(722,10022,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(723,10023,$fecha,array(501));
-		$this->ingresarVentaMercanciaUsuario(724,10024,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(725,10025,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(726,10026,$fecha,array(501));
-		$this->ingresarVentaMercanciaUsuario(727,10027,$fecha,array(501));
-		$this->ingresarVentaMercanciaUsuario(728,10028,$fecha,array(501));
-		$this->ingresarVentaMercanciaUsuario(729,10029,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(730,10030,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(731,10031,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(732,10032,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(733,10033,$fecha,array(500));
-		
-	}
 	
-	private function ingresarVentas2(){
-	/*
-		$id_categoria=250;
-	
-		$datosCategoria = array(
-				'id_categoria' => 250,
-				'id_red'   => 300,
-		);
-	
-		$this->mercancia->ingresarCategoria ($datosCategoria);
-
-		/*  TIPO DE MERCANCIA
-		 *  Producto  = 1
-		 *  Servicios = 2
-		 * 	Combinado = 3
-		 *  Paquete.I = 4
-		 * 	Membresia = 5
-		 *
-		*/
-	/*
-		$producto=1;
-		$servicio=2;
-		$membresia=5;
-	
-	
-		$id=500;$costo=410;$puntos=3;
-		$this->ingresarMercancia($id,"Membresia (3 puntos)",$id_categoria,$membresia,$costo,$puntos);
-	
-		$id=501;$costo=1230;$puntos=9;
-		$this->ingresarMercancia($id,"Membresia (9 puntos)",$id_categoria,$membresia,$costo,$puntos);
-	
-		$id=502;$costo=410;$puntos=3;
-		$this->ingresarMercancia($id,"Briut",$id_categoria,$producto,$costo,$puntos);
-	
-		$id=503;$costo=510;$puntos=3;
-		$this->ingresarMercancia($id,"Reset DNA",$id_categoria,$producto,$costo,$puntos);
-	
-		$id=504;$costo=300;$puntos=3;
-		$this->ingresarMercancia($id,"Movistar",$id_categoria,$servicio,$costo,$puntos);
-	*/
-		/*										Ventas
-		 *           	                      __________
-		 *           	               	     |    TU    |
-		 *           					     | ID:10000 |
-		 *        	   	                     | Spr: 2   |
-		 *        	   	                     |Puntos: 9 |
-		 *                  	   __________/           \____________
-		 *           	          |     Z    |        	  |   PEDRO  |
-		 *           	          | ID:10001 |   		  | ID:10002 |
-		 *        	   	          |_Spr:10000|            |_Spr:10000|
-		 *        	   	          |Puntos: 3 |            |Puntos: 9 |
-		 *              __________/       _____\____    			\_________
-		 *             |   CAMILO |      | NICOLAS  |    			|   MARIA  |
-		 *             | ID:10003 |   	 | ID:10004 |   			| ID:10005 |
-		 *        	   |_Spr:10001|      |_Spr:10001|    			|_Spr:10002|
-		 *        	   |Puntos: 3 |      |Puntos: 3 |    			|Puntos: 9 |
-		 *		    ___/_____   				_\_______           ______|____
-		 *         |    Y     | 				| DARIO    |        |  X       |
-		 *         | ID:10006 | 				| ID:10007 |        | ID:10008 |
-		 *         |_Spr:10003| 				|_Spr:10004|        |_Spr:10005|
-		 *         |Puntos: 9 | 				|Puntos: 9 |        |Puntos: 9 |
-		 *	 _______/__   _____\____                              ____/____     _\________
-		 *	| LAURA    | | DAVID    |                            |  MARIO   |  | ANDREA   |
-		 *	| ID:10009 | | ID:10010 |                            | ID:10011 |  | ID:10012 |
-		 *	|_Spr:10006| |_Spr:10006|                            |_Spr:10008|  |_Spr:10008|
-		 *	|Puntos: 9 | |Puntos: 9 |                            |Puntos: 9 |  |Puntos: 9 |
-		 */
-		
-		$fecha=date('Y-m-d');
-	
-		$this->ingresarVentaMercanciaUsuario(800,10000,$fecha,array(501));
-		$this->ingresarVentaMercanciaUsuario(801,10001,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(802,10002,$fecha,array(501));
-		$this->ingresarVentaMercanciaUsuario(803,10003,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(804,10004,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(805,10005,$fecha,array(500,500,500));
-		$this->ingresarVentaMercanciaUsuario(806,10006,$fecha,array(500,502,503));
-		$this->ingresarVentaMercanciaUsuario(807,10007,$fecha,array(500,500,500));
-		$this->ingresarVentaMercanciaUsuario(808,10008,$fecha,array(503,500,504));
-		$this->ingresarVentaMercanciaUsuario(809,10009,$fecha,array(501));
-		$this->ingresarVentaMercanciaUsuario(810,10010,$fecha,array(501));
-		$this->ingresarVentaMercanciaUsuario(811,10011,$fecha,array(501));
-		$this->ingresarVentaMercanciaUsuario(812,10012,$fecha,array(501));
-
-	
-	}
-	
-	private function ingresarVentasFecha($fecha){
-
-	
-/*							RED DE AFILIACION
-*           	                      ____________
-*           	               	     | GIOVANNY   |
-*           					     | ID:10000   | 
-*        	   	                     |  Spr:_2    |
-*        							 |Merc:0,1,2,3|
-*               					 |Total:$2560 |
-*        							 |Puntos: 18  |
-*                  	       __________/           \___________
-*           	          |  CARLOS  |        	  |   PEDRO  |
-*           	          | ID:10001 |   		  | ID:10002 |
-*        	   	          | Spr:10000|			  |Spr:10000 |
-*        				  |Merc: 0,3 |            |Merc: 1,3 |
-*        				  |Total:$920|            |Total:1740|
-*        				  |Puntos: 6 |            |Puntos:12 |      
-*              __________/       _____\____    ___/_______    \_________
-*             |   CAMILO |      | NICOLAS  |  | ESPERANZA|   |   MARIA  |
-*             | ID:10003 |   	| ID:10004 |  | ID:10005 |   | ID:10006 |
-*        	  |_Spr:10001|      |_Spr:10001|  |_Spr:10000|   |_Spr:10000|
-*        	  |Merc:  0  |      |Merc:  0  |  |Merc:  0  |   |Merc:  0  |
-*        	  |Total:$410|      |Total:$410|  |Total:$410|   |Total:$410|
-*        	  |Puntos: 3 |      |Puntos: 3 |  |Puntos: 3 |   |Puntos: 3 |
-*		    ___/_____   __\_______                      _____/____     __\_______
-*         | PEPE     | | DARIO    |                    |  DIEGO   |   |  ANDRES  |
-*         | ID:10007 | | ID:10008 |                    | ID:10009 |   | ID:10010 |
-*         |_Spr:10003| |_Spr:10001|                    |_Spr:10000|   |_Spr:10000|
-*         |Merc:  0  | |Merc:  2  |                    |Merc : 1  |   |Merc :   0|
-*         |Total:$410| |Total:$410|                    |Total:1230|   |Total:$410|
-*         |Puntos: 3 | |Puntos: 3 |                    |Puntos: 9 |   |Puntos: 3 |
-*  _______/__   _____\____                                       _____/____    __\_______
-* | RICARDO  | | MIGUEL   |                                     |  PAOLA   |   | FERNANDO |
-* | ID:10011 | | ID:10012 |                                     | ID:10013 |   | ID:10014 |
-* |_Spr:10007| |_Spr:10007|                                     |_Spr:10010|   |_Spr:10010|
-* |Merc: 0   | |Merc:   0 |                                     |Merc:  0  |   |Merc:   0 |
-* |Total:$410| |Total:$410|                                     |Total:$410|   |Total:$410|
-* |Puntos: 3 | |Puntos: 3 |                                     |Puntos:  3|   |Puntos: 3 |
-*        _______/__   _____\____                                            ____/____     _\_________
-*       | LAURA    | | DAVID    |                                          |  MARIO   |   | ANDREA   |
-*       | ID:10015 | | ID:10016 |                                          | ID:10017 |   | ID:10018 |
-*       |_Spr:10012| |_Spr:10012|                                          |_Spr:10014|   |_Spr:10014|
-*       |Merc:  2  | |Merc:0,1,4|                                          |Merc: 0,0 |   |Merc: 0   |
-*       |Total:$410| |Total:1940|                                          |Total:$820|   |Total:$410|
-*       |Puntos: 3 | |Puntos:15 |                                          |Puntos: 6 |   |Puntos: 3 |
-*              _______/___  _____\____                                 ____/____      _\________
-*             | JOAN     | |ALEJANDRO |                               | MARCEL   |   | DANIEL   |
-*             | ID:10019 | | ID:10020 |                               | ID:10021 |   | ID:10022 |
-*             |_Spr:10016| |_Spr:10001|                               |_Spr:10017|   |_Spr:10017|
-*             |Merc:  0  | |Merc:  0  |                               |Merc:   0 |   |Merc:   0 |
-*             |Total:$410| |Total:$410|                               |Total:$410|   |Total:$410|
-*             |Puntos: 3 | |Puntos: 3 |\                              |Puntos: 3 |   |Puntos: 3 |
-* __________/  _____\____   _/________  \__________                          ___________/ ___\______
-*| JULIAN   | | GERMAN   | |  LUIS    | |ALBERTO   |                        | CAROLINA | | HAROLL   |
-*| ID:10023 | | ID:10024 | | ID:10025 | | ID:10026 |                        | ID:10027 | | ID:10028 |
-*|_Spr:10019| |_Spr:10019| |_Spr:10016| |_Spr:10020|                        |_Spr:10022| |_Spr:10022|
-*|Merc:   1 | |Merc:  0  | |Merc:  0  | |Merc:  1  |                        |Merc:   1 | |Merc:  1  |
-*|Total:1230| |Total:$410| |Total:$410| |Total:1230|                        |Total:1230| |Total:1230|
-*|Puntos: 9 | |Puntos:   | |Puntos:   | |Puntos:   |                        |Puntos:   | |Puntos:   |
-*_____|_____     ____|_____               ____|_____             __________/   ____\______
-*|  RUBEN   |   |   MARCELA|             |  NELLY   |    	     |  JOSE    | | JOHANA   |
-*| ID:10029 |   | ID:10030 |       	     | ID:10031 |            | ID:10032 | | ID:10033 |
-*|Spr:10001 |   |Spr:10001 |             |Spr:10026 |            |_Spr:10027| |_Spr:10027|
-*|Merc:   0 |   |Merc:  0  |             |Merc:  0  |            |Merc:  0  | |Merc:   0 | 
-*|Total:$410|   |Total:$410|             |Total:$410|            |Total:$410| |Total:$410|
-*|Puntos: 3 |   |Puntos: 3 |             |Puntos: 3 |            |Puntos: 3 | |Puntos: 3 |
-*/
-		
-		$this->ingresarVentaMercanciaUsuario(800,10000,$fecha,array(500,501,502,503));
-		$this->ingresarVentaMercanciaUsuario(801,10001,$fecha,array(500,503));
-		$this->ingresarVentaMercanciaUsuario(802,10002,$fecha,array(501,503));
-		$this->ingresarVentaMercanciaUsuario(803,10003,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(804,10004,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(805,10005,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(806,10006,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(807,10007,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(808,10008,$fecha,array(502));
-		$this->ingresarVentaMercanciaUsuario(809,10009,$fecha,array(501));
-		$this->ingresarVentaMercanciaUsuario(810,10010,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(811,10011,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(812,10012,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(813,10013,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(814,10014,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(815,10015,$fecha,array(502));
-		$this->ingresarVentaMercanciaUsuario(816,10016,$fecha,array(500,501,504));
-		$this->ingresarVentaMercanciaUsuario(817,10017,$fecha,array(500,500));
-		$this->ingresarVentaMercanciaUsuario(818,10018,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(819,10019,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(820,10020,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(821,10021,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(822,10022,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(823,10023,$fecha,array(501));
-		$this->ingresarVentaMercanciaUsuario(824,10024,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(825,10025,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(826,10026,$fecha,array(501));
-		$this->ingresarVentaMercanciaUsuario(827,10027,$fecha,array(501));
-		$this->ingresarVentaMercanciaUsuario(828,10028,$fecha,array(501));
-		$this->ingresarVentaMercanciaUsuario(829,10029,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(830,10030,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(831,10031,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(832,10032,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario(833,10033,$fecha,array(500));
+		$this->ingresarVentaMercanciaUsuario($ids,10000,$fecha,array(500,501,502));
+		$this->ingresarVentaMercanciaUsuario($ids+1,10001,$fecha,array(503,504));
+		$this->ingresarVentaMercanciaUsuario($ids+2,10002,$fecha,array(503,504));
+		$this->ingresarVentaMercanciaUsuario($ids+3,10003,$fecha,array(505));
+		$this->ingresarVentaMercanciaUsuario($ids+4,10004,$fecha,array(500,501,502));
+		$this->ingresarVentaMercanciaUsuario($ids+5,10005,$fecha,array(506));
+		$this->ingresarVentaMercanciaUsuario($ids+6,10006,$fecha,array(503,504));
+		$this->ingresarVentaMercanciaUsuario($ids+7,10007,$fecha,array(503,504));
+		$this->ingresarVentaMercanciaUsuario($ids+8,10008,$fecha,array(503,504));
+		$this->ingresarVentaMercanciaUsuario($ids+9,10009,$fecha,array(503,504));
+		$this->ingresarVentaMercanciaUsuario($ids+10,10010,$fecha,array(500,501,502));
+		$this->ingresarVentaMercanciaUsuario($ids+11,10011,$fecha,array(505));
+		$this->ingresarVentaMercanciaUsuario($ids+12,10012,$fecha,array(500,501,502));
+		$this->ingresarVentaMercanciaUsuario($ids+13,10013,$fecha,array(503,504));
+		$this->ingresarVentaMercanciaUsuario($ids+14,10014,$fecha,array(505));
+		$this->ingresarVentaMercanciaUsuario($ids+15,10015,$fecha,array(500,501,502));
+		$this->ingresarVentaMercanciaUsuario($ids+16,10016,$fecha,array(500,501,502));
+		$this->ingresarVentaMercanciaUsuario($ids+17,10017,$fecha,array(503,504));
+		$this->ingresarVentaMercanciaUsuario($ids+18,10018,$fecha,array(503,504));
+		$this->ingresarVentaMercanciaUsuario($ids+19,10019,$fecha,array(503));
+		$this->ingresarVentaMercanciaUsuario($ids+20,10020,$fecha,array(503,504));
+		$this->ingresarVentaMercanciaUsuario($ids+21,10021,$fecha,array(500,501,502));
+		$this->ingresarVentaMercanciaUsuario($ids+22,10022,$fecha,array(500,501,502));
+		$this->ingresarVentaMercanciaUsuario($ids+23,10023,$fecha,array(503,504));
+		$this->ingresarVentaMercanciaUsuario($ids+24,10024,$fecha,array(500,501,502));
+		$this->ingresarVentaMercanciaUsuario($ids+25,10025,$fecha,array(500,501,502));
+		$this->ingresarVentaMercanciaUsuario($ids+26,10026,$fecha,array(500));
+		$this->ingresarVentaMercanciaUsuario($ids+27,10027,$fecha,array(503,504));
+		$this->ingresarVentaMercanciaUsuario($ids+28,10028,$fecha,array(500,501,502));
+		$this->ingresarVentaMercanciaUsuario($ids+29,10029,$fecha,array(503,504));
+		$this->ingresarVentaMercanciaUsuario($ids+30,10030,$fecha,array(500,501));
+		$this->ingresarVentaMercanciaUsuario($ids+31,10031,$fecha,array(503,504));
+		$this->ingresarVentaMercanciaUsuario($ids+32,10032,$fecha,array(500,501));
+		$this->ingresarVentaMercanciaUsuario($ids+33,10033,$fecha,array(500));
+		$this->ingresarVentaMercanciaUsuario($ids+34,10034,$fecha,array(503,504));
+		$this->ingresarVentaMercanciaUsuario($ids+35,10035,$fecha,array(500,501,502));
 
 	}
 }
