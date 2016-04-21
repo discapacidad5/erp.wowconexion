@@ -914,7 +914,7 @@ where a.id_paquete = e.id_paquete and d.sku= a.id_paquete and d.estatus="ACT" an
 	
 	function getCostosImpuestos($id_pais_usuario,$id_mercancia){
 		$costos = $this->db->query("SELECT m.id,m.costo,m.costo_publico,m.iva,ci.descripcion as tipoImpuesto,
-									m.costo*(ci.porcentaje/100)as costoImpuesto,
+									round(m.costo*(ci.porcentaje/100),0) as costoImpuesto,
 									m.pais,CONCAT(ci.descripcion) as nombreImpuesto FROM mercancia m ,cat_impuesto ci ,cross_merc_impuesto cmi
 									where(m.id=cmi.id_mercancia)
 									and (ci.id_impuesto=cmi.id_impuesto)

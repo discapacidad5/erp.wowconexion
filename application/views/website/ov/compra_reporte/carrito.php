@@ -162,7 +162,7 @@
     <!--/.nav-collapse --> 
 </div>
 </div>
-<div class="container main-container" style="background-color: #fff;min-height: auto ! important;padding-top: 10rem;padding-bottom: 10rem;"> 
+<div class="container main-container" style="background-color: #fff;min-height: auto ! important;padding-top: 10rem;padding-bottom: 20rem;"> 
 <div class="row">
 	<div class="breadcrumbDiv col-lg-12">
       <ul class="breadcrumb">
@@ -219,7 +219,7 @@
 					
 				</div>
 
-				<div class="jarviswidget jarviswidget-color-darken" id="wid-id-2" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false" data-widget-fullscreenbutton="false">
+				<div class="jarviswidget jarviswidget-color-darken" id="wid-id-3" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false" data-widget-fullscreenbutton="false">
 					<header>
 						<span class="widget-icon"> <i class="fa fa-arrows-v"></i> </span>
 						<h2 class="font-md"><i>Tipos de Mercancia</i></h2>				
@@ -351,6 +351,10 @@
 <!--<script src="/template/js/plugin/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>  -->
 <script src="/template/js/plugin/fuelux/wizard/wizard.min.js"></script>
 <script type="text/javascript">
+
+			$(".paymentMethodImg").hide();
+			$("#wid-id-3").hide();
+
 			function detalles(id,tipo)
 			{
 				var datos={'id':id,'tipo':tipo};
