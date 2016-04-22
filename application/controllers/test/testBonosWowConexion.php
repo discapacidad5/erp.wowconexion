@@ -1,8 +1,9 @@
 <?php
 class testBonosWowConexion extends CI_Controller {
 
-	private $idBonoDeInicioRapido=56;
-	private $idBonoDeBinario=57;
+	private $idBonoDeEquipo=56;
+	private $idBonoDePatrocinio=57;
+	private $idBonoWinner=57;
 
 	public function __construct() {
 		parent::__construct();
@@ -17,7 +18,7 @@ class testBonosWowConexion extends CI_Controller {
 		$this->load->model('/bo/bonos/valores_bono');
 		$this->load->model('/bo/bonos/venta');
 		$this->load->model('/bo/bonos/modelo_bono');
-		$this->load->model('/bo/bonos/clientes/mobileMoney/bono_mobile_money');
+	//	$this->load->model('/bo/bonos/clientes/mobileMoney/bono_wow_conexion');
 
 	}
 
@@ -91,7 +92,7 @@ class testBonosWowConexion extends CI_Controller {
 		
 	}
 
-	public function testCalcularComisionesAfiliadosBonoDeInicioRapido(){
+	public function testCalcularComisionesAfiliadosBonoDeEquipo(){
 		$this->repartidor_comision_bono->eliminarHistorialComisionBono();
 		$this->afiliado->eliminarRemanentes();
 		$repartidorComisionBono=new$this->repartidor_comision_bono();
@@ -238,7 +239,7 @@ class testBonosWowConexion extends CI_Controller {
 
 	}
 
-	public function testCalcularComisionesAfiliadosBonoBinario(){
+	public function testCalcularComisionesAfiliadosBonoDePatrocinio(){
 		$this->modelo_bono->limpiarTodosLosBonos();
 		$this->afiliado->eliminarUsuarios();
 		$this->afiliado->eliminarRemanentes();
@@ -314,6 +315,82 @@ class testBonosWowConexion extends CI_Controller {
 		
 	}
 
+	public function testCalcularComisionesAfiliadosBonoWinner(){
+		$this->modelo_bono->limpiarTodosLosBonos();
+		$this->afiliado->eliminarUsuarios();
+		$this->afiliado->eliminarRemanentes();
+		$this->red->eliminarRed();
+		$this->mercancia->eliminarMercancias();
+		$this->mercancia->eliminarCategorias();
+		$this->venta->eliminarVentas();
+		$this->repartidor_comision_bono->eliminarHistorialComisionBono();
+		$this->ingresarBonos();
+		$this->ingresarRedDeAfiliacion2();
+		$this->ingresarVentas2();
+	
+		$this->repartidor_comision_bono->eliminarHistorialComisionBono();
+		$this->afiliado->eliminarRemanentes();
+		$repartidorComisionBono=new$this->repartidor_comision_bono();
+	
+		$fecha=date('Y-m-d');
+		$id_bono=$this->idBonoDeBinario;
+	
+		$calculadorBono=new $this->calculador_bono();
+		$calculadorBono->calcularComisionesPorBono($id_bono,$fecha);
+	
+		//BONO De Inicio Rapido
+	
+		$id_usuario=10000;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run("2,162.5",number_format($resultado,1), 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.number_format($resultado,1));
+	
+		$id_usuario=10001;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run(92.4,number_format($resultado,1), 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+	
+		$id_usuario=10002;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+	
+		$id_usuario=10003;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+	
+		$id_usuario=10004;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+	
+		$id_usuario=10005;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+	
+		$id_usuario=10006;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run(432.5,number_format($resultado,1), 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+	
+		$id_usuario=10007;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+	
+		$id_usuario=10008;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run(432.5,number_format($resultado,1), 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+	
+		$id_usuario=10009;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+	
+		$id_usuario=10010;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+	
+		$id_usuario=10012;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+	
+	
+	}
+	
 	public function testGetTotalDeDineroARepartir(){
 		$this->modelo_bono->limpiarTodosLosBonos();
 		$this->afiliado->eliminarUsuarios();
@@ -555,7 +632,7 @@ class testBonosWowConexion extends CI_Controller {
 		
 		
 		//----------------------------BONO DE Inicio Rapido ------------------------------------------------
-		
+/*		
 
 		$rangos=array();
 
@@ -684,7 +761,7 @@ class testBonosWowConexion extends CI_Controller {
 		array_push($datosValoresBono, $datosValoresBonoAfiliado);
 		$nuevoBono=new $this->modelo_bono();
 		$nuevoBono->nuevoBonoVariosRangos ($rangos,$datosBono,$datosValoresBono);
-		
+		*/
 	}
 
 	private function ingresarRedDeAfiliacion(){
@@ -692,14 +769,13 @@ class testBonosWowConexion extends CI_Controller {
 		$id_red=300;
 		
 		$red=$this->red;
-		$infinito=0;
 		$datosRed = array(
 				'id_red' => $id_red,
-				'nombre'   => "Binario",
-				'descripcion'    => "Test de Red Binaria",
-				'frontal' => 2,
-				'profundidad'   => $infinito,
-				'valor_punto'    => 1,
+				'nombre'   => "WoW CONEXION",
+				'descripcion'    => "Construye un equipo, para darle alas a tus emprendimientos.",
+				'frontal' => 6,
+				'profundidad'   => 2,
+				'valor_punto'    => 1000,
 				'estatus'   => 'ACT',
 				'plan' => 'BIN'
 		);
@@ -979,42 +1055,42 @@ class testBonosWowConexion extends CI_Controller {
 *     
 */
 	
-		$this->ingresarVentaMercanciaUsuario($ids,10000,$fecha,array(500,501,502));
-		$this->ingresarVentaMercanciaUsuario($ids+1,10001,$fecha,array(503,504));
-		$this->ingresarVentaMercanciaUsuario($ids+2,10002,$fecha,array(503,504));
+		$this->ingresarVentaMercanciaUsuario($ids,10000,$fecha,array(500,501,502));//Winner
+		$this->ingresarVentaMercanciaUsuario($ids+1,10001,$fecha,array(503,504));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+2,10002,$fecha,array(503,504));//Basic
 		$this->ingresarVentaMercanciaUsuario($ids+3,10003,$fecha,array(505));
-		$this->ingresarVentaMercanciaUsuario($ids+4,10004,$fecha,array(500,501,502));
+		$this->ingresarVentaMercanciaUsuario($ids+4,10004,$fecha,array(500,501,502));//Winner
 		$this->ingresarVentaMercanciaUsuario($ids+5,10005,$fecha,array(506));
-		$this->ingresarVentaMercanciaUsuario($ids+6,10006,$fecha,array(503,504));
-		$this->ingresarVentaMercanciaUsuario($ids+7,10007,$fecha,array(503,504));
-		$this->ingresarVentaMercanciaUsuario($ids+8,10008,$fecha,array(503,504));
-		$this->ingresarVentaMercanciaUsuario($ids+9,10009,$fecha,array(503,504));
-		$this->ingresarVentaMercanciaUsuario($ids+10,10010,$fecha,array(500,501,502));
+		$this->ingresarVentaMercanciaUsuario($ids+6,10006,$fecha,array(503,504));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+7,10007,$fecha,array(503,504));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+8,10008,$fecha,array(503,504));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+9,10009,$fecha,array(503,504));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+10,10010,$fecha,array(500,501,502));//Winner
 		$this->ingresarVentaMercanciaUsuario($ids+11,10011,$fecha,array(505));
-		$this->ingresarVentaMercanciaUsuario($ids+12,10012,$fecha,array(500,501,502));
-		$this->ingresarVentaMercanciaUsuario($ids+13,10013,$fecha,array(503,504));
+		$this->ingresarVentaMercanciaUsuario($ids+12,10012,$fecha,array(500,501,502));//Winner
+		$this->ingresarVentaMercanciaUsuario($ids+13,10013,$fecha,array(503,504));//Basic
 		$this->ingresarVentaMercanciaUsuario($ids+14,10014,$fecha,array(505));
-		$this->ingresarVentaMercanciaUsuario($ids+15,10015,$fecha,array(500,501,502));
-		$this->ingresarVentaMercanciaUsuario($ids+16,10016,$fecha,array(500,501,502));
-		$this->ingresarVentaMercanciaUsuario($ids+17,10017,$fecha,array(503,504));
-		$this->ingresarVentaMercanciaUsuario($ids+18,10018,$fecha,array(503,504));
+		$this->ingresarVentaMercanciaUsuario($ids+15,10015,$fecha,array(500,501,502));//Winner
+		$this->ingresarVentaMercanciaUsuario($ids+16,10016,$fecha,array(500,501,502));//Winner
+		$this->ingresarVentaMercanciaUsuario($ids+17,10017,$fecha,array(503,504));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+18,10018,$fecha,array(503,504));//Basic
 		$this->ingresarVentaMercanciaUsuario($ids+19,10019,$fecha,array(503));
-		$this->ingresarVentaMercanciaUsuario($ids+20,10020,$fecha,array(503,504));
-		$this->ingresarVentaMercanciaUsuario($ids+21,10021,$fecha,array(500,501,502));
-		$this->ingresarVentaMercanciaUsuario($ids+22,10022,$fecha,array(500,501,502));
-		$this->ingresarVentaMercanciaUsuario($ids+23,10023,$fecha,array(503,504));
-		$this->ingresarVentaMercanciaUsuario($ids+24,10024,$fecha,array(500,501,502));
-		$this->ingresarVentaMercanciaUsuario($ids+25,10025,$fecha,array(500,501,502));
+		$this->ingresarVentaMercanciaUsuario($ids+20,10020,$fecha,array(503,504));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+21,10021,$fecha,array(500,501,502));//Winner
+		$this->ingresarVentaMercanciaUsuario($ids+22,10022,$fecha,array(500,501,502));//Winner
+		$this->ingresarVentaMercanciaUsuario($ids+23,10023,$fecha,array(503,504));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+24,10024,$fecha,array(500,501,502));//Winner
+		$this->ingresarVentaMercanciaUsuario($ids+25,10025,$fecha,array(500,501,502));//Winner
 		$this->ingresarVentaMercanciaUsuario($ids+26,10026,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario($ids+27,10027,$fecha,array(503,504));
-		$this->ingresarVentaMercanciaUsuario($ids+28,10028,$fecha,array(500,501,502));
-		$this->ingresarVentaMercanciaUsuario($ids+29,10029,$fecha,array(503,504));
-		$this->ingresarVentaMercanciaUsuario($ids+30,10030,$fecha,array(500,501));
-		$this->ingresarVentaMercanciaUsuario($ids+31,10031,$fecha,array(503,504));
-		$this->ingresarVentaMercanciaUsuario($ids+32,10032,$fecha,array(500,501));
+		$this->ingresarVentaMercanciaUsuario($ids+27,10027,$fecha,array(503,504));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+28,10028,$fecha,array(500,501,502));//Winner
+		$this->ingresarVentaMercanciaUsuario($ids+29,10029,$fecha,array(503,504));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+30,10030,$fecha,array(500,501));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+31,10031,$fecha,array(503,504));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+32,10032,$fecha,array(500,501));//Basic
 		$this->ingresarVentaMercanciaUsuario($ids+33,10033,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario($ids+34,10034,$fecha,array(503,504));
-		$this->ingresarVentaMercanciaUsuario($ids+35,10035,$fecha,array(500,501,502));
+		$this->ingresarVentaMercanciaUsuario($ids+34,10034,$fecha,array(503,504));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+35,10035,$fecha,array(500,501,502));//Winner
 
 	}
 }

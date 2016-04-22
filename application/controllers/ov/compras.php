@@ -1120,8 +1120,7 @@ function index()
 
 		
 		$frontalidad=$red->frontal;
-		$profundidad=$red->profundidad;
-		
+		$profundidad=($red->profundidad-1);
 		
 		for ($i=1;$i<=$frontalidad;$i++){
 
@@ -1130,14 +1129,13 @@ function index()
 			$usuario=new $this->afiliado;
 			$usuario->setIdAfiliadosRed(array());
 			$id_hijo=$usuario->getAfiliadoDirectoPorPosicion($id_afiliado,$red->id,$posicionEnRed);
-			$usuario->getAfiliadosDebajoDe($id_hijo,$red->id,"RED",0,$profundidad);
+			$usuario->getAfiliadosDebajoDe($id_hijo,$red->id,"RED",$profundidad,$profundidad);
 			$total_afiliados=count($usuario->getIdAfiliadosRed());
-			
 			
 			//Puntos Totales
 			$usuario=new $this->afiliado;
 			$puntosHijo=$usuario->getPuntosTotalesPersonalesIntervalosDeTiempo($id_hijo,$red->id,"0","0","2016-01-01","2026-01-01");
-			$puntosRedHijo=$usuario->getVentasTodaLaRedEquilibrada($id_hijo,$red->id,0,0,"2016-01-01","2026-01-01",$profundidad,"0","0","PUNTOS");
+			$puntosRedHijo=$usuario->getVentasTodaLaRedEquilibrada($id_hijo,$red->id,0,$profundidad,"2016-01-01","2026-01-01",$profundidad,"0","0","PUNTOS");
 			$puntosTotales=$puntosHijo[0]->total+$puntosRedHijo;
 			
 			$calculador=new $this->calculador_bono;
@@ -1148,13 +1146,13 @@ function index()
 			//Puntos Mes
 			$usuario=new $this->afiliado;
 			$puntosHijoMes=$usuario->getPuntosTotalesPersonalesIntervalosDeTiempo($id_hijo,$red->id,"0","0",$inicioMes,$finMes);
-			$puntosRedHijoMes=$usuario->getVentasTodaLaRedEquilibrada($id_hijo,$red->id,0,0,$inicioMes,$finMes,$profundidad,"0","0","PUNTOS");
+			$puntosRedHijoMes=$usuario->getVentasTodaLaRedEquilibrada($id_hijo,$red->id,0,$profundidad,$inicioMes,$finMes,$profundidad,"0","0","PUNTOS");
 			$puntosTotalesMes=$puntosHijoMes[0]->total+$puntosRedHijoMes;
 
 			//ventas Totales
 			$usuario=new $this->afiliado;
 			$ventasHijo=$usuario->getValorTotalDelasComprasPersonalesIntervalosDeTiempo($id_hijo,$red->id,"0","0","2016-01-01","2026-01-01");
-			$ventasRedHijo=$usuario->getVentasTodaLaRedEquilibrada($id_hijo,$red->id,0,0,"2016-01-01","2026-01-01",$profundidad,"0","0","COSTO");
+			$ventasRedHijo=$usuario->getVentasTodaLaRedEquilibrada($id_hijo,$red->id,0,$profundidad,"2016-01-01","2026-01-01",$profundidad,"0","0","COSTO");
 			$ventasTotales=$ventasHijo[0]->total+$ventasRedHijo;
 			
 			$calculador=new $this->calculador_bono;
@@ -1166,7 +1164,7 @@ function index()
 			$usuario=new $this->afiliado;
 			$ventasHijoMes=$usuario->getValorTotalDelasComprasPersonalesIntervalosDeTiempo($id_hijo,$red->id,"0","0",$inicioMes,$finMes);
 			
-			$ventasRedHijoMes=$usuario->getVentasTodaLaRedEquilibrada($id_hijo,$red->id,0,0,$inicioMes,$finMes,$profundidad,"0","0","COSTO");
+			$ventasRedHijoMes=$usuario->getVentasTodaLaRedEquilibrada($id_hijo,$red->id,0,$profundidad,$inicioMes,$finMes,$profundidad,"0","0","COSTO");
 			$ventasTotalesMes=$ventasHijoMes[0]->total+$ventasRedHijoMes;
 				
 			$pata = array(
