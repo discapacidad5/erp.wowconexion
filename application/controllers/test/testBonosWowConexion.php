@@ -51,6 +51,8 @@ class testBonosWowConexion extends CI_Controller {
 	public function index(){
 
     	$this->before();
+    	$this->testCalcularComisionesAfiliadosBonoDeEquipo();
+
 	/*	$this->pruebaProduccion();
 		
 		$this->testValidarSiElBonoYaCobroFalso();
@@ -65,7 +67,7 @@ class testBonosWowConexion extends CI_Controller {
 		
 		$this->before();
 		$this->testCalcularComisionesAfiliadosBonoDeInicioRapido();
-		$this->testValidarSiElBonoYaCobroVerdadero($this->idBonoDeInicioRapido);
+		$this->testValidarSiElBonoYaCobroVerdadero($this->idBonoDeEquipo);
 		$this->after(); */
 
 	}
@@ -82,7 +84,7 @@ class testBonosWowConexion extends CI_Controller {
 		
 		$calculadorBono=new $this->calculador_bono();
 
-		$id_bono=$this->idBonoDeInicioRapido;$bono=new $this->bono();$bono->setUpBono($id_bono);
+		$id_bono=$this->idBonoDeEquipo;$bono=new $this->bono();$bono->setUpBono($id_bono);
 		$resultado=$calculadorBono->isPagado($bono,$fechaActual);
 		echo $this->unit->run(false,$resultado, 'Test validar si el bono no sea pagado','Resultado es :'.$resultado);
 
@@ -98,7 +100,7 @@ class testBonosWowConexion extends CI_Controller {
 		$repartidorComisionBono=new$this->repartidor_comision_bono();
 		
 		$fecha=date('Y-m-d');
-		$id_bono=$this->idBonoDeInicioRapido;
+		$id_bono=$this->idBonoDeEquipo;
 		
 		$calculadorBono=new $this->calculador_bono();
 		$calculadorBono->calcularComisionesPorBono($id_bono,$fecha);
@@ -107,211 +109,388 @@ class testBonosWowConexion extends CI_Controller {
 
 		$id_usuario=10000;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(600,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		$resultadoEsperado=79710;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10001;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(600,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		$resultadoEsperado=37635;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10002;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 
 		$id_usuario=10003;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(100,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 
 		$id_usuario=10004;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10005;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10006;
+		$resultadoEsperado=24960;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10007;
+		$resultadoEsperado=33300;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(200,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10008;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10009;
+		$resultadoEsperado=30800;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10010;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(200,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 
 		$id_usuario=10011;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10012;
+		$resultadoEsperado=41750;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(200,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10013;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10014;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(200,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 
 		$id_usuario=10015;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10016;
+		$resultadoEsperado=33100;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(200,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 
 		$id_usuario=10017;
+		$resultadoEsperado=4700;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(200,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10018;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10019;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(200,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10020;
+		$resultadoEsperado=700;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(100,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 
 		$id_usuario=10021;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10022;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(200,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 
 		$id_usuario=10023;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10024;
+		$resultadoEsperado=16500;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10025;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10026;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(100,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10027;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(200,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 
 		$id_usuario=10028;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10029;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10030;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10031;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10032;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 
+		$id_usuario=10033;
+		$resultadoEsperado=0;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+		
+		$id_usuario=10034;
+		$resultadoEsperado=0;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+		
+		$id_usuario=10035;
+		$resultadoEsperado=0;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+		
+		$id_usuario=10036;
+		$resultadoEsperado=0;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+		
 	}
 
 	public function testCalcularComisionesAfiliadosBonoDePatrocinio(){
-		$this->modelo_bono->limpiarTodosLosBonos();
-		$this->afiliado->eliminarUsuarios();
-		$this->afiliado->eliminarRemanentes();
-		$this->red->eliminarRed();
-		$this->mercancia->eliminarMercancias();
-		$this->mercancia->eliminarCategorias();
-		$this->venta->eliminarVentas();
-		$this->repartidor_comision_bono->eliminarHistorialComisionBono();
-		$this->ingresarBonos();
-		$this->ingresarRedDeAfiliacion2();
-		$this->ingresarVentas2();
-		
 		$this->repartidor_comision_bono->eliminarHistorialComisionBono();
 		$this->afiliado->eliminarRemanentes();
 		$repartidorComisionBono=new$this->repartidor_comision_bono();
 		
 		$fecha=date('Y-m-d');
-		$id_bono=$this->idBonoDeBinario;
+		$id_bono=$this->idBonoDePatrocinio;
 		
 		$calculadorBono=new $this->calculador_bono();
 		$calculadorBono->calcularComisionesPorBono($id_bono,$fecha);
-		
-		//BONO De Inicio Rapido
-		
+
+		//BONO De Patrocinio
+
 		$id_usuario=10000;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run("2,162.5",number_format($resultado,1), 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.number_format($resultado,1));
+		$resultadoEsperado=79710;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10001;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(92.4,number_format($resultado,1), 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		$resultadoEsperado=37635;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10002;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
-		
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+
 		$id_usuario=10003;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
-		
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+
 		$id_usuario=10004;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10005;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10006;
+		$resultadoEsperado=24960;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(432.5,number_format($resultado,1), 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10007;
+		$resultadoEsperado=33300;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
-
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+		
 		$id_usuario=10008;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(432.5,number_format($resultado,1), 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10009;
+		$resultadoEsperado=30800;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10010;
+		$resultadoEsperado=0;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+
+		$id_usuario=10011;
+		$resultadoEsperado=0;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 		$id_usuario=10012;
+		$resultadoEsperado=41750;
 		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
-		echo $this->unit->run(0,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado);
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
+		$id_usuario=10013;
+		$resultadoEsperado=0;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+		
+		$id_usuario=10014;
+		$resultadoEsperado=0;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+
+		$id_usuario=10015;
+		$resultadoEsperado=0;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+		
+		$id_usuario=10016;
+		$resultadoEsperado=33100;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+
+		$id_usuario=10017;
+		$resultadoEsperado=4700;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+		
+		$id_usuario=10018;
+		$resultadoEsperado=0;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+		
+		$id_usuario=10019;
+		$resultadoEsperado=0;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+		
+		$id_usuario=10020;
+		$resultadoEsperado=700;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+
+		$id_usuario=10021;
+		$resultadoEsperado=0;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+		
+		$id_usuario=10022;
+		$resultadoEsperado=0;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+
+		$id_usuario=10023;
+		$resultadoEsperado=0;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+		
+		$id_usuario=10024;
+		$resultadoEsperado=16500;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+		
+		$id_usuario=10025;
+		$resultadoEsperado=0;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+		
+		$id_usuario=10026;
+		$resultadoEsperado=0;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+		
+		$id_usuario=10027;
+		$resultadoEsperado=0;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+
+		$id_usuario=10028;
+		$resultadoEsperado=0;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+		
+		$id_usuario=10029;
+		$resultadoEsperado=0;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+		
+		$id_usuario=10030;
+		$resultadoEsperado=0;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+		
+		$id_usuario=10031;
+		$resultadoEsperado=0;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+		
+		$id_usuario=10032;
+		$resultadoEsperado=0;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+
+		$id_usuario=10033;
+		$resultadoEsperado=0;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+		
+		$id_usuario=10034;
+		$resultadoEsperado=0;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+		
+		$id_usuario=10035;
+		$resultadoEsperado=0;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
+		
+		$id_usuario=10036;
+		$resultadoEsperado=0;
+		$resultado=$repartidorComisionBono->getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario)[0]->total;
+		echo $this->unit->run($resultadoEsperado,$resultado, 'Test validar si entrega comisiones bono en red al afiliado '.$id_usuario,'Resultado es :'.$resultado." deberia ser : ".$resultadoEsperado);
 		
 	}
 
@@ -631,8 +810,8 @@ class testBonosWowConexion extends CI_Controller {
 		 */
 		
 		
-		//----------------------------BONO DE Inicio Rapido ------------------------------------------------
-/*		
+		//----------------------------BONO DE Inicio de Equipo ------------------------------------------------
+	
 
 		$rangos=array();
 
@@ -642,15 +821,15 @@ class testBonosWowConexion extends CI_Controller {
 		
 		$datosRango = array(
 				'id_rango' => 57,
-				'nombre_rango'   => "Inicio Rapido",
-				'descripcion_rango'    => "Inicio Rapido",
+				'nombre_rango'   => "Bono de Equipo",
+				'descripcion_rango'    => "Bono de Equipo",
 				'id_tipo_rango' => $puntosPersonales,
-				'valor'   => 3,
+				'valor'   => 1,
 				'condicion_red'    => "RED",
 				'nivel_red'   => 0,
 				'id_condicion' => 1,
 				'id_red'   => 300,
-				'condicion_red_afilacion'    => "DEB",
+				'condicion_red_afilacion'    => "EQU",
 				'condicion1'    => $cualquiera,
 				'condicion2'	=> $cualquiera,
 				'calificado'    => "DOS",
@@ -664,9 +843,9 @@ class testBonosWowConexion extends CI_Controller {
 		$fechaActual=0;
 		
 		$datosBono = array(
-				'id_bono' => $this->idBonoDeInicioRapido,
-				'nombre_bono'   => "Bono Inicio rapido",
-				'descripcion_bono'    => "Bono inicio rapido",
+				'id_bono' => $this->idBonoDeEquipo,
+				'nombre_bono'   => "Bono De Equipo",
+				'descripcion_bono'    => "Bono De Equipo",
 				'plan'	=> "NO",
 				'inicio' => '2016-03-01',
 				'fin'   => '2026-03-25',
@@ -679,30 +858,112 @@ class testBonosWowConexion extends CI_Controller {
 		
 		$datosValoresBono=array();
 		
-		$datosValoresBonoAfiliado = array(
-				'id_valor' => 7,
-				'id_rango'   => $this->idBonoDeInicioRapido,
+		$datosValoresBono0 = array(
+				'id_valor' => 10,
+				'id_rango'   => $this->idBonoDeEquipo,
 				'nivel'    => 0,
-				'condicion_red'    => "DIRECTOS",
-				'verticalidad'    => "ASC",
+				'condicion_red'    => "RED",
+				'verticalidad'    => "PASC",
 				'valor'	=> 0
 		);
 		
-		$datosValoresBonoAfiliado = array(
-				'id_valor' => 8,
-				'id_rango'   => $this->idBonoDeInicioRapido,
+		$datosValoresBono1 = array(
+				'id_valor' => 11,
+				'id_rango'   => $this->idBonoDeEquipo,
 				'nivel'    => 1,
-				'condicion_red'    => "DIRECTOS",
-				'verticalidad'    => "ASC",
-				'valor'	=> 100
+				'condicion_red'    => "RED",
+				'verticalidad'    => "PASC",
+				'valor'	=> 0
+		);
+		
+		$datosValoresBono2 = array(
+				'id_valor' => 12,
+				'id_rango'   => $this->idBonoDeEquipo,
+				'nivel'    => 2,
+				'condicion_red'    => "RED",
+				'verticalidad'    => "PASC",
+				'valor'	=> 2
+		);
+		
+		$datosValoresBono3 = array(
+				'id_valor' => 13,
+				'id_rango'   => $this->idBonoDeEquipo,
+				'nivel'    => 3,
+				'condicion_red'    => "RED",
+				'verticalidad'    => "PASC",
+				'valor'	=> 5
 		);
 	
-		array_push($datosValoresBono, $datosValoresBonoAfiliado);
+		$datosValoresBono4 = array(
+				'id_valor' => 14,
+				'id_rango'   => $this->idBonoDeEquipo,
+				'nivel'    => 4,
+				'condicion_red'    => "RED",
+				'verticalidad'    => "PASC",
+				'valor'	=> 4
+		);
+		
+		$datosValoresBono5 = array(
+				'id_valor' => 15,
+				'id_rango'   => $this->idBonoDeEquipo,
+				'nivel'    => 5,
+				'condicion_red'    => "RED",
+				'verticalidad'    => "PASC",
+				'valor'	=> 2
+		);
+		
+		$datosValoresBono6 = array(
+				'id_valor' => 16,
+				'id_rango'   => $this->idBonoDeEquipo,
+				'nivel'    => 6,
+				'condicion_red'    => "RED",
+				'verticalidad'    => "PASC",
+				'valor'	=> 1
+		);
+		
+		$datosValoresBono7 = array(
+				'id_valor' => 17,
+				'id_rango'   => $this->idBonoDeEquipo,
+				'nivel'    => 7,
+				'condicion_red'    => "RED",
+				'verticalidad'    => "PASC",
+				'valor'	=> 1
+		);
+		
+		$datosValoresBono8 = array(
+				'id_valor' => 18,
+				'id_rango'   => $this->idBonoDeEquipo,
+				'nivel'    => 8,
+				'condicion_red'    => "RED",
+				'verticalidad'    => "PASC",
+				'valor'	=> 0.5
+		);
+		
+		$datosValoresBono9 = array(
+				'id_valor' => 19,
+				'id_rango'   => $this->idBonoDeEquipo,
+				'nivel'    => 9,
+				'condicion_red'    => "RED",
+				'verticalidad'    => "PASC",
+				'valor'	=> 0.5
+		);
+		
+		$datosValoresBono10 = array(
+				'id_valor' => 20,
+				'id_rango'   => $this->idBonoDeEquipo,
+				'nivel'    => 10,
+				'condicion_red'    => "RED",
+				'verticalidad'    => "PASC",
+				'valor'	=> 0.5
+		);
+		
+		array_push($datosValoresBono, $datosValoresBono0,$datosValoresBono1,$datosValoresBono2,$datosValoresBono3,$datosValoresBono4,
+				   $datosValoresBono5,$datosValoresBono6,$datosValoresBono7,$datosValoresBono8,$datosValoresBono9,$datosValoresBono10);
 		$nuevoBono=new $this->modelo_bono();
 		$nuevoBono->nuevoBonoVariosRangos ($rangos,$datosBono,$datosValoresBono);
 
 		//----------------------------BONO Binario ------------------------------------------------
-		
+/*		
 		
 		$rangos=array();
 		
@@ -774,7 +1035,7 @@ class testBonosWowConexion extends CI_Controller {
 				'nombre'   => "WoW CONEXION",
 				'descripcion'    => "Construye un equipo, para darle alas a tus emprendimientos.",
 				'frontal' => 6,
-				'profundidad'   => 2,
+				'profundidad'   => 10,
 				'valor_punto'    => 1000,
 				'estatus'   => 'ACT',
 				'plan' => 'BIN'
@@ -790,30 +1051,30 @@ class testBonosWowConexion extends CI_Controller {
 		$this->ingresarAfiliado($id_red,10004,"Nicolas",10000,10000,3);
 		$this->ingresarAfiliado($id_red,10005,"esperanza",10000,10000,4);
 		$this->ingresarAfiliado($id_red,10006,"maria",10000,10000,5);
-		$this->ingresarAfiliado($id_red,10007,"pepe",10003,10003,0);
-		$this->ingresarAfiliado($id_red,10008,"dario",10003,10001,1);
-		$this->ingresarAfiliado($id_red,10009,"diego",10006,10000,0);
-		$this->ingresarAfiliado($id_red,10010,"andres",10006,10000,1);
+		$this->ingresarAfiliado($id_red,10007,"pepe",10001,10001,0);
+		$this->ingresarAfiliado($id_red,10008,"dario",10003,10003,1);
+		$this->ingresarAfiliado($id_red,10009,"diego",10006,10006,0);
+		$this->ingresarAfiliado($id_red,10010,"andres",10006,10006,1);
 		$this->ingresarAfiliado($id_red,10011,"ricardo",10007,10007,0);
 		$this->ingresarAfiliado($id_red,10012,"miguel",10007,10007,1);
-		$this->ingresarAfiliado($id_red,10013,"paola",10010,10010,0);
-		$this->ingresarAfiliado($id_red,10014,"fernando",10010,10010,1);
+		$this->ingresarAfiliado($id_red,10013,"paola",10009,10009,0);
+		$this->ingresarAfiliado($id_red,10014,"fernando",10009,10009,1);
 		$this->ingresarAfiliado($id_red,10015,"laura",10012,10012,0);
 		$this->ingresarAfiliado($id_red,10016,"david",10012,10012,1);
 		$this->ingresarAfiliado($id_red,10017,"mario",10014,10014,0);
 		$this->ingresarAfiliado($id_red,10018,"andrea",10014,10014,1);
 		$this->ingresarAfiliado($id_red,10019,"joan",10016,10016,0);
-		$this->ingresarAfiliado($id_red,10020,"alejandro",10016,10001,1);
+		$this->ingresarAfiliado($id_red,10020,"alejandro",10016,10016,1);
 		$this->ingresarAfiliado($id_red,10021,"marcel",10017,10017,0);
 		$this->ingresarAfiliado($id_red,10022,"daniel",10017,10017,1);
 		$this->ingresarAfiliado($id_red,10023,"julian",10019,10019,0);
 		$this->ingresarAfiliado($id_red,10024,"german",10019,10019,1);
-		$this->ingresarAfiliado($id_red,10025,"luis",10020,10016,0);
+		$this->ingresarAfiliado($id_red,10025,"luis",10020,10020,0);
 		$this->ingresarAfiliado($id_red,10026,"alberto",10020,10020,1);
 		$this->ingresarAfiliado($id_red,10027,"carolina",10022,10022,0);
 		$this->ingresarAfiliado($id_red,10028,"haroll",10022,10022,1);
-		$this->ingresarAfiliado($id_red,10029,"ruben",10023,10001,0);
-		$this->ingresarAfiliado($id_red,10030,"marcela",10024,10001,0);
+		$this->ingresarAfiliado($id_red,10029,"ruben",10023,10023,0);
+		$this->ingresarAfiliado($id_red,10030,"marcela",10024,10024,0);
 		$this->ingresarAfiliado($id_red,10031,"nelly",10026,10026,0);
 		$this->ingresarAfiliado($id_red,10032,"jose",10030,10030,0);
 		$this->ingresarAfiliado($id_red,10033,"johana",10030,10030,1);
@@ -955,19 +1216,19 @@ class testBonosWowConexion extends CI_Controller {
 				$membresia=5;
 				
 				
-				$id=500;$costo=68000;$puntos=0;
+				$id=1;$costo=68000;$puntos=0;
 				$this->ingresarMercancia($id,"Kit de Afiliación(Winner)",$id_categoria,$membresia,$costo,$puntos);
 				
-				$id=501;$costo=80000;$puntos=80;
+				$id=4;$costo=80000;$puntos=80;
 				$this->ingresarMercancia($id,"Plan Educativo Anual",$id_categoria,$membresia,$costo,$puntos);
 				
-				$id=502;$costo=130000;$puntos=120;
+				$id=7;$costo=130000;$puntos=120;
 				$this->ingresarMercancia($id,"Paquete Mensual (Telefonía + Plan Educativo) Winner",$id_categoria,$producto,$costo,$puntos);
 				
-				$id=503;$costo=30000;$puntos=0;
+				$id=6;$costo=30000;$puntos=0;
 				$this->ingresarMercancia($id,"Kit de Afiliación (Basic)",$id_categoria,$producto,$costo,$puntos);
 				
-				$id=504;$costo=80000;$puntos=35;
+				$id=8;$costo=80000;$puntos=35;
 				$this->ingresarMercancia($id,"Paquete Mensual (Telefonía + Plan Educativo) Basic",$id_categoria,$servicio,$costo,$puntos);
 		
 				$id=505;$costo=60000;$puntos=3;
@@ -985,112 +1246,111 @@ class testBonosWowConexion extends CI_Controller {
 *           	            			| GIOVANNY   |
 *           							| ID:10000   | 
 *        	   	           				|  Spr:_2    |
-*        			  					|Merc:       |
+*        			  					|Merc:  W    |
 *               	   					|Total:278000|
 *        			  					|Puntos:200  |
 *        _______/__    ___/______  __\________  _____\____    ___\______     ___\_____
 *       |  CARLOS  | |   PEDRO  | |   CAMILO | | NICOLAS  |  | ESPERANZA|   |   MARIA  | 
 *       | ID:10001 | | ID:10002 | | ID:10003 | | ID:10004 |  | ID:10005 |   | ID:10006 |
 *       | Spr:10000| |Spr:10000 | |_Spr:10000| |_Spr:10000|  |_Spr:10000|   |_Spr:10000|
-*       |Merc:     | |Merc:     | |Merc:     | |Merc:     |  |Merc:     |   |Merc:     |
+*       |Merc: B   | |Merc: B   | |Merc:     | |Merc:  W  |  |Merc:     |   |Merc:  B  |
 *       |To:110000 | |To:110000	| |To:60000  | |To:278000 |  |To:45000  |   |To:110000 |
 *       |Puntos: 35| |Puntos: 35| |Puntos: 3 | |Puntos:200|  |Puntos:34 |   |Puntos: 35|      
 *		    ___/_____              __|_______                           _____/____     __\_______
 *         | PEPE     |             | DARIO    |                        |  DIEGO   |   |  ANDRES  |
 *         | ID:10007 |             | ID:10008 |                        | ID:10009 |   | ID:10010 |
 *         |_Spr:10003|             |_Spr:10001|                        |_Spr:10000|   |_Spr:10000|
-*         |Merc:     |             |Merc:     |                        |Merc :    |   |Merc :    |
+*         |Merc:  B  |             |Merc:  B  |                        |Merc : B  |   |Merc : W  |
 *         |To:110000 |             |To:110000 |                        |To:110000 |   |To:278000 |
 *         |Puntos: 35|             |Puntos: 35|                        |Puntos: 35|   |Puntos:200|
 *  _______/__   _____\____                                       _____/____    __\_______
 * | RICARDO  | | MIGUEL   |                                     |  PAOLA   |   | FERNANDO |
 * | ID:10011 | | ID:10012 |                                     | ID:10013 |   | ID:10014 |
 * |_Spr:10007| |_Spr:10007|                                     |_Spr:10010|   |_Spr:10010|
-* |Merc:     | |Merc:     |                                     |Merc:     |   |Merc:     |
+* |Merc:     | |Merc: W   |                                     |Merc:  B  |   |Merc:     |
 * |To:60000  | |To:278000 |                                     |To:110000 |   |To: 60000 |
 * |Puntos: 3 | |Puntos:200|                                     |Puntos: 35|   |Puntos: 3 |
 *        _______/__   _____\____                                            ____/____     _\_________
 *       | LAURA    | | DAVID    |                                          |  MARIO   |   | ANDREA   |
 *       | ID:10015 | | ID:10016 |                                          | ID:10017 |   | ID:10018 |
 *       |_Spr:10012| |_Spr:10012|                                          |_Spr:10014|   |_Spr:10014|
-*       |Merc:     | |Merc:     |                                          |Merc:     |   |Merc:     |
+*       |Merc:  W  | |Merc:  W  |                                          |Merc:  B  |   |Merc: B   |
 *       |To:278000 | |To:278000 |                                          |Tot:110000|   |Tot:110000|
 *       |Puntos:200| |Puntos:200|                                          |Puntos: 35|   |Puntos: 35|
 *              _______/___  _____\____                                 ____/____      _\________
 *             | JOAN     | |ALEJANDRO |                               | MARCEL   |   | DANIEL   |
 *             | ID:10019 | | ID:10020 |                               | ID:10021 |   | ID:10022 |
 *             |_Spr:10016| |_Spr:10001|                               |_Spr:10017|   |_Spr:10017|
-*             |Merc:     | |Merc:     |                               |Merc:     |   |Merc:     |
+*             |Merc:     | |Merc: B   |                               |Merc:  W  |   |Merc:  W  |
 *             |To:30000  | |To:110000 |                               |To:278000 |   |To: 278000|
 *             |Puntos: 0 | |Puntos: 35|\                              |Puntos:200|   |Puntos:200|
 * __________/  _____\____   _/________  \__________                          ___________/ ___\______
 *| JULIAN   | | GERMAN   | |  LUIS    | |ALBERTO   |                        | CAROLINA | | HAROLL   |
 *| ID:10023 | | ID:10024 | | ID:10025 | | ID:10026 |                        | ID:10027 | | ID:10028 |
 *|_Spr:10019| |_Spr:10019| |_Spr:10016| |_Spr:10020|                        |_Spr:10022| |_Spr:10022|
-*|Merc:     | |Merc:     | |Merc:     | |Merc:     |                        |Merc:     | |Merc:     |
+*|Merc:  B  | |Merc:  W  | |Merc:  W  | |Merc:     |                        |Merc:  B  | |Merc: W   |
 *|To:110000 | |to:278000 | |To:278000 | |To: 68000 |                        |To: 110000| |To:278000 |
 *|Puntos: 35| |Puntos:200| |Puntos:200| |Puntos: 0 |                        |Puntos:35 | |Puntos:200|
 *_____|_____     ____|_____               ____|_____            
 *|  RUBEN   |   |   MARCELA|             |  NELLY   |    	     
 *| ID:10029 |   | ID:10030 |       	     | ID:10031 |            
 *|Spr:10001 |   |Spr:10001 |             |Spr:10026 |            
-*|Merc:     |   |Merc:     |             |Merc:     |            
+*|Merc:  B  |   |Merc:     |             |Merc:  B  |            
 *|To: 110000|   |To: 148000|             |To: 110000|            
 *|Puntos: 35|   |Puntos:80 |             |Puntos: 35|            
 *         __________/   ____\____
 *        |  JOSE    | | JOHANA   |
 *        | ID:10032 | | ID:10033 |
 *		 |_Spr:10030| |_Spr:10030|
-*        |Merc:     | |Merc:     | 
+*        |Merc:  B  | |Merc:     | 
 *        |To: 148000| |To: 68000 |
 *        |Puntos:80 | |Puntos: 0 |
       _____/_____  \__________
 *     |  PABLO   | | DANIEL   |
 *     | ID:10034 | | ID:10035 |
 *     |_Spr:10032| |_Spr:10032|
-*     |Merc:     | |Merc:     |
+*     |Merc:  B  | |Merc: W   |
 *     |To:110000 | |To: 278000|
 *     |Puntos: 35| |Puntos:200|   
 *     
 *     
 */
 	
-		$this->ingresarVentaMercanciaUsuario($ids,10000,$fecha,array(500,501,502));//Winner
-		$this->ingresarVentaMercanciaUsuario($ids+1,10001,$fecha,array(503,504));//Basic
-		$this->ingresarVentaMercanciaUsuario($ids+2,10002,$fecha,array(503,504));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids,10000,$fecha,array(1,7,4));//Winner
+		$this->ingresarVentaMercanciaUsuario($ids+1,10001,$fecha,array(6,8));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+2,10002,$fecha,array(6,8));//Basic
 		$this->ingresarVentaMercanciaUsuario($ids+3,10003,$fecha,array(505));
-		$this->ingresarVentaMercanciaUsuario($ids+4,10004,$fecha,array(500,501,502));//Winner
+		$this->ingresarVentaMercanciaUsuario($ids+4,10004,$fecha,array(1,7,4));//Winner
 		$this->ingresarVentaMercanciaUsuario($ids+5,10005,$fecha,array(506));
-		$this->ingresarVentaMercanciaUsuario($ids+6,10006,$fecha,array(503,504));//Basic
-		$this->ingresarVentaMercanciaUsuario($ids+7,10007,$fecha,array(503,504));//Basic
-		$this->ingresarVentaMercanciaUsuario($ids+8,10008,$fecha,array(503,504));//Basic
-		$this->ingresarVentaMercanciaUsuario($ids+9,10009,$fecha,array(503,504));//Basic
-		$this->ingresarVentaMercanciaUsuario($ids+10,10010,$fecha,array(500,501,502));//Winner
+		$this->ingresarVentaMercanciaUsuario($ids+6,10006,$fecha,array(6,8));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+7,10007,$fecha,array(6,8));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+8,10008,$fecha,array(6,8));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+9,10009,$fecha,array(6,8));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+10,10010,$fecha,array(1,7,4));//Winner
 		$this->ingresarVentaMercanciaUsuario($ids+11,10011,$fecha,array(505));
-		$this->ingresarVentaMercanciaUsuario($ids+12,10012,$fecha,array(500,501,502));//Winner
-		$this->ingresarVentaMercanciaUsuario($ids+13,10013,$fecha,array(503,504));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+12,10012,$fecha,array(1,7,4));//Winner
+		$this->ingresarVentaMercanciaUsuario($ids+13,10013,$fecha,array(6,8));//Basic
 		$this->ingresarVentaMercanciaUsuario($ids+14,10014,$fecha,array(505));
-		$this->ingresarVentaMercanciaUsuario($ids+15,10015,$fecha,array(500,501,502));//Winner
-		$this->ingresarVentaMercanciaUsuario($ids+16,10016,$fecha,array(500,501,502));//Winner
-		$this->ingresarVentaMercanciaUsuario($ids+17,10017,$fecha,array(503,504));//Basic
-		$this->ingresarVentaMercanciaUsuario($ids+18,10018,$fecha,array(503,504));//Basic
-		$this->ingresarVentaMercanciaUsuario($ids+19,10019,$fecha,array(503));
-		$this->ingresarVentaMercanciaUsuario($ids+20,10020,$fecha,array(503,504));//Basic
-		$this->ingresarVentaMercanciaUsuario($ids+21,10021,$fecha,array(500,501,502));//Winner
-		$this->ingresarVentaMercanciaUsuario($ids+22,10022,$fecha,array(500,501,502));//Winner
-		$this->ingresarVentaMercanciaUsuario($ids+23,10023,$fecha,array(503,504));//Basic
-		$this->ingresarVentaMercanciaUsuario($ids+24,10024,$fecha,array(500,501,502));//Winner
-		$this->ingresarVentaMercanciaUsuario($ids+25,10025,$fecha,array(500,501,502));//Winner
-		$this->ingresarVentaMercanciaUsuario($ids+26,10026,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario($ids+27,10027,$fecha,array(503,504));//Basic
-		$this->ingresarVentaMercanciaUsuario($ids+28,10028,$fecha,array(500,501,502));//Winner
-		$this->ingresarVentaMercanciaUsuario($ids+29,10029,$fecha,array(503,504));//Basic
-		$this->ingresarVentaMercanciaUsuario($ids+30,10030,$fecha,array(500,501));//Basic
-		$this->ingresarVentaMercanciaUsuario($ids+31,10031,$fecha,array(503,504));//Basic
-		$this->ingresarVentaMercanciaUsuario($ids+32,10032,$fecha,array(500,501));//Basic
-		$this->ingresarVentaMercanciaUsuario($ids+33,10033,$fecha,array(500));
-		$this->ingresarVentaMercanciaUsuario($ids+34,10034,$fecha,array(503,504));//Basic
-		$this->ingresarVentaMercanciaUsuario($ids+35,10035,$fecha,array(500,501,502));//Winner
+		$this->ingresarVentaMercanciaUsuario($ids+15,10015,$fecha,array(1,7,4));//Winner
+		$this->ingresarVentaMercanciaUsuario($ids+16,10016,$fecha,array(1,7,4));//Winner
+		$this->ingresarVentaMercanciaUsuario($ids+17,10017,$fecha,array(6,8));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+18,10018,$fecha,array(6,8));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+20,10020,$fecha,array(6,8));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+21,10021,$fecha,array(1,7,4));//Winner
+		$this->ingresarVentaMercanciaUsuario($ids+22,10022,$fecha,array(1,7,4));//Winner
+		$this->ingresarVentaMercanciaUsuario($ids+23,10023,$fecha,array(6,8));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+24,10024,$fecha,array(1,7,4));//Winner
+		$this->ingresarVentaMercanciaUsuario($ids+25,10025,$fecha,array(1,7,4));//Winner
+		$this->ingresarVentaMercanciaUsuario($ids+26,10026,$fecha,array(1));
+		$this->ingresarVentaMercanciaUsuario($ids+27,10027,$fecha,array(6,8));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+28,10028,$fecha,array(1,7,4));//Winner
+		$this->ingresarVentaMercanciaUsuario($ids+29,10029,$fecha,array(6,8));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+30,10030,$fecha,array(4));
+		$this->ingresarVentaMercanciaUsuario($ids+31,10031,$fecha,array(6,8));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+32,10032,$fecha,array(4));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+33,10033,$fecha,array(6));
+		$this->ingresarVentaMercanciaUsuario($ids+34,10034,$fecha,array(6,8));//Basic
+		$this->ingresarVentaMercanciaUsuario($ids+35,10035,$fecha,array(1,7,4));//Winner
 
 	}
 }
