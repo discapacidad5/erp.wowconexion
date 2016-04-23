@@ -16,6 +16,7 @@ class calculador_bono extends CI_Model
 	private $estado="DAR";
 	
 	private $id_bono_de_equipo=56;
+	private $id_bono_de_winner=58;
 	
 	private $id_membresia_winner=1;
 	private $id_consumo_mensual_winner=7;
@@ -418,6 +419,40 @@ class calculador_bono extends CI_Model
 		return 0;
 	}
 	
+	private function getValoresBonoWinner($nivel){
+	
+		switch ($nivel){
+			case 0: {
+				return 0;
+				break;
+			}
+			case 1: {
+				return 50000;
+				break;
+			}
+			case 2: {
+				return 40000;
+				break;
+			}
+			case 3: {
+				return 20000;
+				break;
+			}
+			case 4: {
+				return 15000;
+				break;
+			}
+			case 5: {
+				return 10000;
+				break;
+			}
+			case 6: {
+				return 5000;
+				break;
+			}
+		}
+		return 0;
+	}
 	private function repartirComisionesBonoEnLaRed($id_bono,$id_bono_historial,$id_usuario,$red,$nivel,$valor,$condicionRed,$verticalidad) {
 		$repartidorComisionBono=new $this->repartidor_comision_bono();
 		$usuario=new $this->afiliado();
@@ -426,6 +461,17 @@ class calculador_bono extends CI_Model
 		
 		foreach ($afiliados as $idAfiliado){
 			if($this->usuarioPuedeRecibirBono($id_bono, $idAfiliado, $this->getFechaCalculoBono())){
+				
+				if($id_bono==$this->id_bono_de_winner){
+					if($this->isWinner($idAfiliado)){
+						$valor=$this->getValoresBonoWinner(intval($nivel));
+					}elseif ($this->isBasic($idAfiliado)){
+				
+					}else{
+						return false;
+					}
+				}
+				
 				$repartidorComisionBono->repartirComisionBono($repartidorComisionBono->getIdTransaccionPagoBono(),$idAfiliado,$id_bono,$id_bono_historial,$valor);
 	
 			}
