@@ -367,9 +367,11 @@ function index()
 		
 		$paypal  = $this->modelo_pagosonline->val_paypal();
 		$payulatam  = $this->modelo_pagosonline->val_payulatam();
+		$tucompra  = $this->modelo_pagosonline->val_tucompra();
 		
 		$this->template->set('paypal',$paypal);
 		$this->template->set('payulatam',$payulatam);
+		$this->template->set('tucompra',$tucompra);
 		
 		$this->template->set_theme('desktop');
 		$this->template->set_layout('website/main');

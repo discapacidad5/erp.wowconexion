@@ -226,11 +226,11 @@
 																		<td><h4><b>
 																		$ 
 																		<?php 
-																		$saldo_neto=number_format(($total-($cobro+$retenciones_total+$cobroPendientes)+($total_transact)),2);
+																		$saldo_neto=($total-($cobro+$retenciones_total+$cobroPendientes)+($total_transact));
 																		if($saldo_neto<0)
 																			echo 0;
 																		else
-																			echo $saldo_neto
+																			echo number_format($saldo_neto,2)
 																		?></b></h4></td>
 																	</tr>
 																</table>
@@ -249,7 +249,7 @@
 																		if($saldo_neto<0)
 																			echo 0;
 																		else
-																			echo $saldo_neto ?>" readonly />
+																			echo number_format($saldo_neto,2) ?>" readonly />
 																		</label>
 																	</section>
 																	<section class="col col-4">
@@ -262,7 +262,7 @@
 																	<section class="col col-4">
 																		<label class="label"><b>Saldo Final</b></label>
 																		<label class="input state-disabled state-error">
-																			<input value="" type="number" disabled="disabled" name="neto" id="neto" class="from-control" readonly />
+																			<input value="" type="number" disabled="disabled" name="neto"  id="neto" class="from-control" readonly />
 																		</label>
 																	</section>
 																</fieldset>	
@@ -407,10 +407,10 @@
 			
 function CalcularSaldo(evt){
 				
-				var saldo = $("#saldo").val();
+				var saldo = <?=$saldo_neto?>;
 				var pago = $("#cobro").val() /*+ (String.fromCharCode(evt.charCode)*/;
 				var neto = saldo-pago;
-				$("#neto").val(neto);
+				$("#neto").val(neto.toFixed(2));
 				if(neto > 0){
 					$('#enviar').attr("disabled", false);
 					}else{
