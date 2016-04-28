@@ -378,6 +378,170 @@ function index()
 
 	}
 	
+	function RegistrarVentaTucompra(){ //WOWCONEXION
+	 
+		$id = $_POST['campoExtra1'];
+		$id_pago = $_POST['campoExtra2'];
+		$identificado_transacion = $_POST['firmaTuCompra'];
+		$fecha=date("Y-m-d");
+		$referencia = $_POST['codigoFactura'];
+		$metodo_pago = $_POST['metodoPago'];
+		$estado = $_POST['transaccionAprobada'];
+		$respuesta = $_POST['numeroTransaccion'];
+		$moneda = "COP";
+		$medio_pago = $_POST['metodoPago'];
+	
+		if(!$id){
+			return false;
+			exit();
+		}
+	
+		if($estado=="1"){
+	
+	
+			$id_venta = $this->modelo_compras->registrar_venta_pago_online($id,'TUCOMPRA',$fecha);
+	
+			$this->modelo_compras->registrar_pago_online
+			($id_venta,$id,$identificado_transacion,$fecha,$referencia,
+					$metodo_pago,$estado,$respuesta,$moneda,$medio_pago);
+	
+	
+			$contenido_carrito_proceso=$this->modelo_compras->getContenidoCarritoPagoOnlineProceso($id_pago);
+	
+			$contenidoCarrito=json_decode($contenido_carrito_proceso[0]->contenido,true);
+			$carrito=json_decode($contenido_carrito_proceso[0]->carrito,true);
+	
+			$this->registrarFacturaDatosDefaultAfiliado($id,$id_venta);
+			$this->registrarFacturaMercanciaPagoOnline ( $contenidoCarrito,$carrito ,$id_venta);
+			$this->pagarComisionVenta($id_venta,$id);
+				
+			return "OK";
+		}
+	
+	}
+	
+	function RespuestaTucompra(){ //WOWCONEXION
+	
+		if (!$this->tank_auth->is_logged_in())
+		{																		// logged in
+			redirect('/auth');
+		}
+	
+		$a = array(
+				$_POST['campoExtra1'],
+				$_POST['campoExtra2'],
+				$_POST['firmaTuCompra'],
+				date("Y-m-d"),
+				$_POST['codigoFactura'],
+				$_POST['metodoPago'],
+				$_POST['transaccionAprobada'],
+				$_POST['numeroTransaccion'],
+				"COP",
+				$_POST['metodoPago']
+		);
+	
+		if(!$a){
+			return false;
+			exit();
+		}
+	
+		if($a[6]=="1"){
+				
+			//var_dump($a);exit();
+			$this->cart->destroy();
+			$id=$this->tank_auth->get_user_id();
+			$usuario=$this->general->get_username($id);
+			$style=$this->general->get_style($id);
+	
+			$this->template->set("style",$style);
+			$this->template->set("usuario",$usuario);
+	
+			$this->template->set_theme('desktop');
+			$this->template->set_layout('website/main');
+			$this->template->set_partial('header', 'website/ov/header');
+			$this->template->set_partial('footer', 'website/ov/footer');
+			$this->template->build('website/ov/compra_reporte/transaccionExitosa');
+				
+			//return "OK";
+				
+			return true;
+		}
+	
+		redirect('/');
+	}
+	
+	function pagarVentaTucompra(){ //WOWCONEXION
+	
+		if (!$this->tank_auth->is_logged_in())
+		{																		// logged in
+			redirect('/auth');
+		}
+	
+		if(!$this->cart->contents()){
+			echo "<script>window.location='/ov/dashboard';</script>";
+			echo "La compra no puedo ser registrada";
+			return 0;
+		}
+	
+		$actual_link = "http://$_SERVER[HTTP_HOST]";
+	
+		$id=$this->tank_auth->get_user_id();
+		$usuario=$this->general->get_username($id);
+		$email = $this->general->get_email($id);
+	
+	
+		$contenidoCarrito=$this->get_content_carrito ();
+		$carritoCompras=$this->cart->contents();
+	
+		$id_pago_proceso = $this->modelo_compras->registrar_pago_online_proceso($id,json_encode($contenidoCarrito),json_encode($carritoCompras));
+	
+		$descripcion="";
+		foreach ($contenidoCarrito["compras"] as $mercancia){
+			$descripcion.=" ".$mercancia["nombre"];
+		}
+	
+		$totalCarrito=$this->get_valor_total_contenido_carrito($contenidoCarrito);
+	
+	
+		$tucompra  = $this->modelo_pagosonline->val_tucompra();
+	
+		$time = time();
+		$codigoFactura = $id_pago_proceso;
+		$codigoAutorizacion = md5("NetSoft".$time.$id_pago_proceso);
+	
+		//$firma = md5($tucompra[0]->apykey."~".$tucompra[0]->id_comercio."~NetSoft".$time."~".$totalCarrito."~".$tucompra[0]->moneda);
+	
+		$firma = md5($tucompra[0]->llave.";".$codigoFactura.";".$totalCarrito."".$tucompra[0]->moneda.";".$codigoAutorizacion);
+		$id_transacion = $firma;
+	
+		$link="https://demo2.tucompra.net/tc/app/inputs/compra.jsp";
+	
+		if($tucompra[0]->test!=1)
+			$link="https://gateway.tucompra.com.co/tc/app/inputs/compra.jsp";
+	
+			echo'
+			<h2 class="semi-bold">¿ Esta seguro de realizar el pago ?</h2>
+			<form method="post" action="'.$link.'">'
+						//		  .'<input name="merchantId"    type="hidden"  value="'.$tucompra[0]->id_comercio.'">'
+			.'<input name="usuario"     type="hidden"  value="'.$tucompra[0]->cuenta.'" >'
+					.'<input name="descripcionFactura"   type="hidden"  value="'.$descripcion.'"  >'
+							.'<input name="factura" type="hidden"  value="NetSoft'.$time.$id_pago_proceso.'" >'
+									.'<input name="valor"         type="hidden"  value="'.$totalCarrito.'"   >'
+											.'<input name="nombreComprador"  type="hidden"  value="'.$usuario[0]->nombre." ".$usuario[0]->apellido.'"  >'
+													.'<input name="documentoComprador" type="hidden"  value="'.$id.'" >'
+															.'<input name="tipoMoneda"      type="hidden"  value="'.$tucompra[0]->moneda.'" >'
+																	.'<input name="signature"     type="hidden"  value="'.$id_transacion.'"  >'
+																			//		  .'<input name="test"          type="hidden"  value="'.$tucompra[0]->test.'" >'
+			.'<input name="campoExtra1" type="hidden" value="'.$id.'" >'
+					.'<input name="campoExtra2" type="hidden" value="'.$id_pago_proceso.'" >'
+							.'<input name="correoComprador" type="hidden"  value="'.$email[0]->email.'" >'
+									.'<input name="responseUrl"    type="hidden"  value="'.$actual_link.'/ov/compras/RespuestaTucompra" >'
+											.'<input name="confirmationUrl"  type="hidden"  value="'.$actual_link.'/ov/compras/RegistrarVentaTucompra" >'
+													.'<input name="Submit" type="submit"  value="Pagar" class="btn btn-success">
+			</form>';
+	
+	}
+	
 	function RegistrarVentaConsignacion(){
 	
 		if (!$this->tank_auth->is_logged_in())
