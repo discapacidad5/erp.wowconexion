@@ -49,11 +49,12 @@ class testBonosWowConexion extends CI_Controller {
 	}
 	
 	public function index(){
-		$this->after();
+		$this->ingresarWinnerEnBaseDeDatos("2016-03-05");
+	/*	$this->after();
 		$this->pruebaProduccion();
-	//	$this->before();
+		$this->before();
   	  	
-   /* 	$this->testCalcularComisionesAfiliadosBonoDeEquipo();
+    	$this->testCalcularComisionesAfiliadosBonoDeEquipo();
     	$this->testCalcularComisionesAfiliadosBonoDePatrocinio();
     	$this->testCalcularComisionesAfiliadosBonoWinner();
 
@@ -1626,5 +1627,13 @@ class testBonosWowConexion extends CI_Controller {
 		$this->ingresarVentaMercanciaUsuario($ids+34,10034,$fecha,array(6,8));//Basic
 		$this->ingresarVentaMercanciaUsuario($ids+35,10035,$fecha,array(1,7,4));//Winner
 
+	}
+	
+	private function ingresarWinnerEnBaseDeDatos($fecha){
+		$ids=1000;
+		for ($i=16;$i<83;$i++){
+			$this->ingresarVentaMercanciaUsuario($i,$ids,$fecha,array(1,7,4));
+			$ids++;
+		}
 	}
 }
