@@ -619,6 +619,15 @@ function codpos_red()
 																	&nbsp;Agregar <i class="fa fa-phone"></i>&nbsp;
 																</button>
 															</section>
+															<section class="col col-2">SIMCARD
+																	<label class="select">
+																		<select id="cp" name="cp">
+																			<option value="Normal">Normal</option>
+																			<option value="Micro">Micro</option>
+																			<option value="Nano">Nano</option>
+																		</select>
+																	</label>
+																</section>
 															</div>
 														</fieldset>
 														
@@ -637,7 +646,7 @@ function codpos_red()
 																</section>
 																<section class="col col-4" id="key_co">
 																	<label id="key_1" class="input"> <i class=" icon-prepend fa fa-barcode"></i>
-																		<input onkeyup="check_keyword_co()" placeholder="CURP o RFC" type="text" name="keyword_co" id="keyword_co">
+																		<input onkeyup="check_keyword_co()" placeholder="Numero de Identificacion" type="text" name="keyword_co" id="keyword_co">
 																	</label>
 																</section>
 															</div>
@@ -660,7 +669,7 @@ function codpos_red()
 																</section>
 																<section id="municipio" class="col col-2">
 																	<label class="input">
-																		Estado
+																		Departamento
 																		<input type="text" name="estado" >
 																	</label>
 																</section>
@@ -674,7 +683,7 @@ function codpos_red()
 
 																<section id="colonia" class="col col-2">
 																	<label class="input">
-																		Colonia
+																		Barrio
 																		<input type="text" name="colonia" >
 																	</label>
 																</section>
@@ -685,14 +694,6 @@ function codpos_red()
 																		<input required type="text" name="calle">
 																	</label>
 																</section>
-																
-																<section class="col col-2">
-																	<label class="input">
-																		Código postal
-																		<input required type="text" id="cp" name="cp">
-																	</label>
-																</section>
-																
 															</div>
 														</fieldset>
 														<fieldset>

@@ -94,14 +94,14 @@
 		        	echo '<li class="dropdown megamenu-fullwidth"> <a data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(1)"> Productos </a></li>
 						  <li class="dropdown megamenu-80width "> <a data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(2)"> Servicios </a></li>
 						  <li class="dropdown megamenu-fullwidth"> <a data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(3)"> Combinados </a></li>';
-		        }
+		        } 
       	} else {?>
-        <li class="active"> <a onclick="show_todos()"> Todos </a> </li>
+ <!--<li class="active"> <a onclick="show_todos()"> Todos </a> </li>
         <li class="dropdown megamenu-fullwidth"> <a data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(1)"> Productos </a></li>
         <li class="dropdown megamenu-80width "> <a data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(2)"> Servicios </a></li>
         <li class="dropdown megamenu-fullwidth"> <a data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(3)"> Combinados </a></li>
         <li class="dropdown megamenu-fullwidth"> <a data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(5)"> Membresia </a></li>
-        <li class="dropdown megamenu-fullwidth"> <a data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(4)"> Paquetes de Inscripción </a></li>
+        <li class="dropdown megamenu-fullwidth"> <a data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(4)"> Paquetes de Inscripción </a></li>-->
      	<?php }?>
       </ul>
       <!--- this part will be hidden for mobile version -->

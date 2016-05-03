@@ -15,8 +15,8 @@ class calculador_bono extends CI_Model
 	 */
 	private $estado="DAR";
 	
-	private $id_bono_de_equipo=56;
-	private $id_bono_de_winner=58;
+	private $id_bono_de_equipo=1;
+	private $id_bono_de_winner=3;
 	
 	private $id_membresia_winner=1;
 	private $id_consumo_mensual_winner=7;

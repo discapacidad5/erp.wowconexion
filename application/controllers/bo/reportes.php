@@ -182,6 +182,7 @@ class reportes extends CI_Controller
 					<th>Email</th>
 					<th>Fijo</th>
 					<th>Movil</th>
+					<th>SIMCARD</th>
 					<th>Direccion</th>
 				</thead>
 				<tbody>";
@@ -198,6 +199,7 @@ class reportes extends CI_Controller
 					<td>".$afiliados[$i]->email."</td>
 					<td>".$afiliados[$i]->fijo."</td>
 					<td>".$afiliados[$i]->movil."</td>
+					<td>".$afiliados[$i]->codigo_postal."</td>
 					<td>".$afiliados[$i]->direccion."</td>
 				</tr>";
 			}

@@ -1,9 +1,9 @@
 <?php
 class testBonosWowConexion extends CI_Controller {
 
-	private $idBonoDeEquipo=56;
-	private $idBonoDePatrocinio=57;
-	private $idBonoWinner=58;
+	private $idBonoDeEquipo=1;
+	private $idBonoDePatrocinio=2;
+	private $idBonoWinner=3;
 
 	public function __construct() {
 		parent::__construct();
@@ -18,7 +18,7 @@ class testBonosWowConexion extends CI_Controller {
 		$this->load->model('/bo/bonos/valores_bono');
 		$this->load->model('/bo/bonos/venta');
 		$this->load->model('/bo/bonos/modelo_bono');
-	//	$this->load->model('/bo/bonos/clientes/mobileMoney/bono_wow_conexion');
+
 
 	}
 
@@ -49,13 +49,15 @@ class testBonosWowConexion extends CI_Controller {
 	}
 	
 	public function index(){
-
-    	$this->before();
-    	$this->testCalcularComisionesAfiliadosBonoDeEquipo();
+		$this->after();
+		$this->pruebaProduccion();
+	//	$this->before();
+  	  	
+   /* 	$this->testCalcularComisionesAfiliadosBonoDeEquipo();
     	$this->testCalcularComisionesAfiliadosBonoDePatrocinio();
     	$this->testCalcularComisionesAfiliadosBonoWinner();
 
-	/*	$this->pruebaProduccion();
+	
 		
 		$this->testValidarSiElBonoYaCobroFalso();
 		$this->after();
@@ -70,11 +72,13 @@ class testBonosWowConexion extends CI_Controller {
 		$this->before();
 		$this->testCalcularComisionesAfiliadosBonoDeInicioRapido();
 		$this->testValidarSiElBonoYaCobroVerdadero($this->idBonoDeEquipo);
-		$this->after(); */
+		$this->after();*/
 
 	}
 	
 	public function pruebaProduccion(){
+		$this->ingresarRedDeAfiliacion();
+		$this->ingresarVentasFecha(date('Y-m-d'),true,700);
 		$this->ingresarBonos();
 
 	}
@@ -1122,8 +1126,8 @@ class testBonosWowConexion extends CI_Controller {
 		
 		$datosBono = array(
 				'id_bono' => $this->idBonoDePatrocinio,
-				'nombre_bono'   => "Bono De Equipo",
-				'descripcion_bono'    => "Bono De Equipo",
+				'nombre_bono'   => "Bono de Patrocinio",
+				'descripcion_bono'    => "Bono de Patrocinio",
 				'plan'	=> "NO",
 				'inicio' => '2016-03-01',
 				'fin'   => '2026-03-25',
@@ -1489,7 +1493,7 @@ class testBonosWowConexion extends CI_Controller {
 				$id=1;$costo=68000;$puntos=0;
 				$this->ingresarMercancia($id,"Kit de Afiliación(Winner)",$id_categoria,$membresia,$costo,$puntos);
 				
-				$id=4;$costo=80000;$puntos=80;
+				$id=4;$costo=80000;$puntos=0;
 				$this->ingresarMercancia($id,"Plan Educativo Anual",$id_categoria,$membresia,$costo,$puntos);
 				
 				$id=7;$costo=130000;$puntos=120;
@@ -1529,7 +1533,7 @@ class testBonosWowConexion extends CI_Controller {
 *		    ___/_____              __|_______                           _____/____     __\_______
 *         | PEPE     |             | DARIO    |                        |  DIEGO   |   |  ANDRES  |
 *         | ID:10007 |             | ID:10008 |                        | ID:10009 |   | ID:10010 |
-*         |_Spr:10003|             |_Spr:10001|                        |_Spr:10000|   |_Spr:10000|
+*         |_Spr:10003|             |_Spr:10001|                        |_Spr:10006|   |_Spr:10000|
 *         |Merc:  B  |             |Merc:  B  |                        |Merc : B  |   |Merc : W  |
 *         |To:110000 |             |To:110000 |                        |To:110000 |   |To:278000 |
 *         |Puntos: 35|             |Puntos: 35|                        |Puntos: 35|   |Puntos:200|
@@ -1553,35 +1557,35 @@ class testBonosWowConexion extends CI_Controller {
 *             |_Spr:10016| |_Spr:10001|                               |_Spr:10017|   |_Spr:10017|
 *             |Merc:     | |Merc: B   |                               |Merc:  W  |   |Merc:  W  |
 *             |To:30000  | |To:110000 |                               |To:278000 |   |To: 278000|
-*             |Puntos: 0 | |Puntos: 35|\                              |Puntos:200|   |Puntos:200|
+*             |Puntos: 0 | |Puntos: 35|\                              |Puntos:120|   |Puntos:120|
 * __________/  _____\____   _/________  \__________                          ___________/ ___\______
 *| JULIAN   | | GERMAN   | |  LUIS    | |ALBERTO   |                        | CAROLINA | | HAROLL   |
 *| ID:10023 | | ID:10024 | | ID:10025 | | ID:10026 |                        | ID:10027 | | ID:10028 |
 *|_Spr:10019| |_Spr:10019| |_Spr:10016| |_Spr:10020|                        |_Spr:10022| |_Spr:10022|
 *|Merc:  B  | |Merc:  W  | |Merc:  W  | |Merc:     |                        |Merc:  B  | |Merc: W   |
 *|To:110000 | |to:278000 | |To:278000 | |To: 68000 |                        |To: 110000| |To:278000 |
-*|Puntos: 35| |Puntos:200| |Puntos:200| |Puntos: 0 |                        |Puntos:35 | |Puntos:200|
+*|Puntos: 35| |Puntos:200| |Puntos:200| |Puntos: 0 |                        |Puntos:35 | |Puntos:120|
 *_____|_____     ____|_____               ____|_____            
 *|  RUBEN   |   |   MARCELA|             |  NELLY   |    	     
 *| ID:10029 |   | ID:10030 |       	     | ID:10031 |            
 *|Spr:10001 |   |Spr:10001 |             |Spr:10026 |            
 *|Merc:  B  |   |Merc:     |             |Merc:  B  |            
-*|To: 110000|   |To: 148000|             |To: 110000|            
+*|To: 110000|   |To: 80000 |             |To: 110000|            
 *|Puntos: 35|   |Puntos:80 |             |Puntos: 35|            
 *         __________/   ____\____
 *        |  JOSE    | | JOHANA   |
 *        | ID:10032 | | ID:10033 |
 *		 |_Spr:10030| |_Spr:10030|
 *        |Merc:     | |Merc:     | 
-*        |To: 148000| |To: 68000 |
-*        |Puntos:80 | |Puntos: 0 |
+*        |To: 80000 | |To: 68000 |
+*        |Puntos:0  | |Puntos: 0 |
       _____/_____  \__________
 *     |  PABLO   | | DANIEL   |
 *     | ID:10034 | | ID:10035 |
 *     |_Spr:10032| |_Spr:10032|
 *     |Merc:  B  | |Merc: W   |
 *     |To:110000 | |To: 278000|
-*     |Puntos: 35| |Puntos:200|   
+*     |Puntos: 35| |Puntos:120|   
 *     
 *     
 */

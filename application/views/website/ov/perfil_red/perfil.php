@@ -119,6 +119,15 @@
 											&nbsp;Agregar <i class="fa fa-phone"></i>&nbsp;
 										</button>
 									</section>
+									<section class="col col-2">SIMCARD
+										<label class="select">
+											<select id="cp" name="cp">
+												<option value="Normal">Normal</option>
+												<option value="Micro">Micro</option>
+												<option value="Nano">Nano</option>
+											</select>
+										</label>
+									</section>
 									</div>
 								</fieldset>
 								<fieldset>
@@ -126,7 +135,7 @@
 									<div id="dir" class="row">
 										<section id="estado" class="col col-2">
 											<label class="input">
-												Estado
+												Departamento
 												<input type="text" name="estado" value="<?=$dir[0]->estado?>">
 											</label>
 										</section>
@@ -138,7 +147,7 @@
 										</section>
 										<section id="colonia" class="col col-2">
 											<label class="input">
-												Colonia
+												Barrio
 												<input type="text" name="colonia" value="<?=$dir[0]->colonia?>">
 											</label>
 										</section>
@@ -146,12 +155,6 @@
 											<label class="input">
 												Dirección de domicilio
 												<input required type="text" name="calle" value="<?=$dir[0]->calle?>">
-											</label>
-										</section>
-										<section class="col col-2">
-											<label class="input">
-												Código postal
-												<input required type="text" id="cp" name="cp" value="<?=$dir[0]->cp?>">
 											</label>
 										</section>
 									</div>
