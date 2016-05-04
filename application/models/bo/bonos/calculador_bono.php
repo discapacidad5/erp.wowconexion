@@ -306,12 +306,12 @@ class calculador_bono extends CI_Model
 		}
 	}
 	
-	private function isWinner($idAfiliado){
+	function isWinner($idAfiliado){
 		
 		$q=$this->db->query("SELECT cvm.id_mercancia as mercancia,v.fecha as fecha FROM venta v ,cross_venta_mercancia cvm 
 								where v.id_venta=cvm.id_venta
 								and cvm.id_mercancia=".$this->id_membresia_winner."
-								and v.id_user=".$idAfiliado."");
+								and v.id_user=".$idAfiliado." and v.id_estatus='ACT'");
 		
 		$datos= $q->result();
 		if(!$datos)
@@ -320,7 +320,7 @@ class calculador_bono extends CI_Model
 		$q=$this->db->query("SELECT cvm.id_mercancia as mercancia,v.fecha as fecha FROM venta v ,cross_venta_mercancia cvm
 								where v.id_venta=cvm.id_venta
 								and cvm.id_mercancia=".$this->id_curso_winner."
-								and v.id_user=".$idAfiliado."");
+								and v.id_user=".$idAfiliado." and v.id_estatus='ACT'");
 		
 		$datos= $q->result();
 		if(!$datos)
@@ -332,7 +332,7 @@ class calculador_bono extends CI_Model
 		$q=$this->db->query("SELECT cvm.id_mercancia as mercancia,v.fecha as fecha FROM venta v ,cross_venta_mercancia cvm
 								where v.id_venta=cvm.id_venta
 								and cvm.id_mercancia=".$this->id_consumo_mensual_winner."
-								and v.id_user=".$idAfiliado." and (v.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."')");
+								and v.id_user=".$idAfiliado." and v.id_estatus='ACT' and (v.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."')");
 		
 		$datos= $q->result();
 		if(!$datos)
@@ -341,12 +341,12 @@ class calculador_bono extends CI_Model
 		return true;
 	}
 	
-	private function isBasic($idAfiliado){
+	function isBasic($idAfiliado){
 	
 		$q=$this->db->query("SELECT cvm.id_mercancia as mercancia,v.fecha as fecha FROM venta v ,cross_venta_mercancia cvm
 								where v.id_venta=cvm.id_venta
 								and cvm.id_mercancia=".$this->id_membresia_basic."
-								and v.id_user=".$idAfiliado."");
+								and v.id_user=".$idAfiliado." and v.id_estatus='ACT' ");
 	
 		$datos= $q->result();
 		if(!$datos)
@@ -359,7 +359,7 @@ class calculador_bono extends CI_Model
 		$q=$this->db->query("SELECT cvm.id_mercancia as mercancia,v.fecha as fecha FROM venta v ,cross_venta_mercancia cvm
 								where v.id_venta=cvm.id_venta
 								and cvm.id_mercancia=".$this->id_consumo_mensual_basic."
-								and v.id_user=".$idAfiliado." and (v.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."')");
+								and v.id_user=".$idAfiliado." and v.id_estatus='ACT' and (v.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."')");
 	
 		$datos= $q->result();
 		if(!$datos)

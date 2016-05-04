@@ -17,6 +17,7 @@ class dashboard extends CI_Controller
 		$this->load->model('modelo_premios');
 		$this->load->model('model_tipo_red');
 		$this->load->model('bo/model_admin');
+		$this->load->model('bo/bonos/calculador_bono');
 	}
 
 	private $afiliados = array();
@@ -135,7 +136,7 @@ class dashboard extends CI_Controller
 	    $notifies = $this->model_admin->get_notify_activos();
 
 
-	     $name_sponsor= ($id_sponsor) ? $this->general->get_username($id_sponsor[0]->id_usuario) : '';
+	    $name_sponsor= ($id_sponsor) ? $this->general->get_username($id_sponsor[0]->id_usuario) : '';
 
 		$image=$this->modelo_dashboard->get_images($id);
 		$fondo="/template/img/portada.jpg";
@@ -152,6 +153,16 @@ class dashboard extends CI_Controller
 				$fondo=$img->url;
 			}
 		}
+		
+		$estado="Inactivo";
+		
+		if($this->calculador_bono->isWinner($id)){
+			$estado="Winner";
+		}elseif ($this->calculador_bono->isBasic($id)){
+			$estado="Basic";
+		}
+		
+		$this->template->set("estado",$estado);
 		
 		$style=$this->modelo_dashboard->get_style($id);
 
