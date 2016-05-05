@@ -1556,7 +1556,7 @@ where a.id_paquete = e.id_paquete and d.sku= a.id_paquete and d.estatus="ACT" an
 
 	}
 	
-	function get_nivel_actual($id){
+/*	function get_nivel_actual($id){
 		$q = $this->db->query("SELECT n.nombre,n.idnivel,u.user_id  FROM user_profiles u 
 				              ,niveles_afiliado n where u.nivel_en_red=n.idnivel and u.user_id=".$id);
 		return $q->result();
@@ -1565,7 +1565,7 @@ where a.id_paquete = e.id_paquete and d.sku= a.id_paquete and d.estatus="ACT" an
 		$q = $this->db->query("SELECT n.porcentage_venta FROM user_profiles u
 				              ,niveles_afiliado n where u.nivel_en_red=n.idnivel and u.user_id=".$id);
 		return $q->result();
-	}
+	}*/
 	function  tipo_mercancia($id){
 		$q = $this->db->query("SELECT id FROM mercancia where id_tipo_mercancia='4' and sku=".$id);
 		return $q->result();

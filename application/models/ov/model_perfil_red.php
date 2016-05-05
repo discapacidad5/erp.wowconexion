@@ -440,6 +440,22 @@ class model_perfil_red extends CI_Model
 		return  $q->result();
 	}
 	
+	function get_directos_by_id_ultimos_cinco($id)
+	{
+		$q=$this->db->query("select U.id, U.username, U.email,UP.nombre, UP.apellido, CTU.descripcion ,CEA.descripcion estatus , AF.directo ,
+	
+			(select distinct tr.nombre from tipo_red tr where tr.id in (select af.id_red from afiliar af where af.id_red=  AF.id_red)) as redes
+	
+				from users U, user_profiles UP, cat_tipo_usuario CTU, cat_estatus_afiliado CEA ,afiliar AF
+	
+				where U.id = UP.user_id and UP.user_id = AF.id_afiliado and AF.directo = ".$id."
+	
+				and CTU.id_tipo_usuario = UP.id_tipo_usuario and CEA.id_estatus = UP.id_estatus and UP.id_tipo_usuario = 2
+	
+				order by   U.id , AF.lado asc,(U.id) limit 5");
+		return  $q->result();
+	}
+	
 	function get_tabla()
 	{
 		$q=$this->db->query("select U.id, U.username, U.email,UP.nombre, UP.apellido, CTU.descripcion ,CEA.descripcion estatus , 
@@ -610,7 +626,7 @@ order by (U.id);");
 		$this->db->query("delete from cross_tel_user where id_user=".$id);
 		$this->db->query("delete from cross_dir_user where id_user=".$id);
 
-		if($_POST["fijo"])
+		if(isset($_POST["fijo"]))
 		{
 			foreach ($_POST["fijo"] as $fijo)
 			{
@@ -623,7 +639,7 @@ order by (U.id);");
 	            $this->db->insert("cross_tel_user",$dato_tel);
 			}
 		}
-		if($_POST["movil"])
+		if(isset($_POST["movil"]))
 		{
 			foreach ($_POST["movil"] as $movil)
 			{
@@ -877,7 +893,7 @@ order by (U.id);");
 		$this->db->query("delete from billetera where id_user not in (select id from users)");
 		$this->db->query("delete from cross_rango_user where id_user not in (select id from users)");
 		$this->db->query("delete from cross_img_user where id_user not in (select id from users)");
-		$this->db->query("delete from cat_img where id_img not in (select id_img from cross_img_user)");
+		$this->db->query("delete from cat_img where id_img not in (select id_img from cross_img_user union select id_cat_imagen from cross_merc_img)");
 		//$this->db->query("delete from red where id_usuario = ".$id);
 		return true;
 	}
