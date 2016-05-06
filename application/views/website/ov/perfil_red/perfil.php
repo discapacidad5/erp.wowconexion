@@ -91,7 +91,7 @@
 										{?>
 										<section id='tel_default_<?php echo $telFijo?>' class="col col-3">
 											<label class="input"> <i class="icon-prepend fa fa-phone"></i>
-												<input value="<?=$num->numero?>" id="fijo" type="tel" name="fijo[]" placeholder="(99) 99-99-99-99" >
+												<input value="<?=$num->numero?>" id="fijo" type="tel" name="fijo[]" placeholder="(+57) 999-999-9999" >
 												<b class="tooltip tooltip-top-left"> Teléfono fijo</b>
 												<?php if($telFijo>0){?>
 												<a style="cursor: pointer;color: red;" onclick="delete_telefono('default_<?php echo $telFijo?>')">Eliminar <i class="fa fa-minus"></i></a>
@@ -101,7 +101,7 @@
 									<?php $telFijo++;}else{?>
 										<section id='tel_default_<?php echo $telMovil?>' class="col col-3">
 											<label class="input"> <i class="icon-prepend fa fa-mobile"></i>
-												<input value="<?=$num->numero?>" id="movil" type="tel" name="movil[]" placeholder="(999) 99-99-99-99-99">
+												<input value="<?=$num->numero?>" id="movil" type="tel" name="movil[]" placeholder="(+57) 999-999-9999">
 												<b class="tooltip tooltip-top-left"> Teléfono móvil</b>
 												<?php if($telMovil>0){?>
 												<a style="cursor: pointer;color: red;" onclick="delete_telefono('default_<?php echo $telMovil?>')">Eliminar <i class="fa fa-minus"></i></a>
@@ -113,21 +113,44 @@
 									</div>
 									<section class="col col-3">
 										<button type="button" onclick="agregar('1')" class="btn btn-primary">
-											&nbsp;Agregar <i class="fa fa-mobile"></i>&nbsp;
+											&nbsp;Numero Recarga <i class="fa fa-mobile"></i>&nbsp;
 										</button>
 										<button type="button" onclick="agregar('2')" class="btn btn-primary">
 											&nbsp;Agregar <i class="fa fa-phone"></i>&nbsp;
 										</button>
 									</section>
-									<section class="col col-2">SIMCARD
+									<section class="col col-2">SIMCARD<?php echo $dir[0]->cp;?>
 										<label class="select">
 											<select id="cp" name="cp">
-												<option value="Normal">Normal</option>
-												<option value="Micro">Micro</option>
-												<option value="Nano">Nano</option>
+												<?php if($dir[0]->cp=="Normal"){
+													echo '<option value="Normal" selected>Normal</option>';
+													echo '<option value="Micro">Micro</option>';
+													echo '<option value="Nano" >Nano</option>';
+													
+												}else if($dir[0]->cp=="Micro"){
+													echo '<option value="Normal">Normal</option>';
+													echo '<option value="Micro" selected>Micro</option>';
+													echo '<option value="Nano" >Nano</option>';
+													
+												}else if($dir[0]->cp=="Nano"){
+													echo '<option value="Normal">Normal</option>';
+													echo '<option value="Micro" >Micro</option>';
+													echo '<option value="Nano" selected>Nano</option>';
+												}else{
+													echo '<option value="Normal" selected>Normal</option>';
+													echo '<option value="Micro">Micro</option>';
+													echo '<option value="Nano" >Nano</option>';
+												}
+												?>
 											</select>
 										</label>
 									</section>
+									<section id="colonia" class="col col-4">
+											<label class="input">
+												Datos de SIM Card (ID - PUK) Ejemplo (8957123200902510827 - 94041551)
+												<input type="text" name="colonia" value="<?=$dir[0]->colonia?>">
+											</label>
+										</section>
 									</div>
 								</fieldset>
 								<fieldset>
@@ -143,12 +166,6 @@
 											<label class="input">
 												Municipio
 												<input type="text" name="municipio" value="<?=$dir[0]->municipio?>">
-											</label>
-										</section>
-										<section id="colonia" class="col col-2">
-											<label class="input">
-												Barrio
-												<input type="text" name="colonia" value="<?=$dir[0]->colonia?>">
 											</label>
 										</section>
 										<section class="col col-2">
@@ -228,9 +245,23 @@
 												<input type="text" name="c_swift" value="<?=$cuenta[0]->swift?>">
 											</label>
 										</section>	
-										<section id="municipio" class="col col-3">ABA/IBAN/OTRO
-											<label class="input"><i class="icon-prepend fa fa-sort-numeric-desc"></i>												
-												<input type="text" name="c_otro" value="<?=$cuenta[0]->otro?>">
+										<section id="municipio" class="col col-3">Tipo de Cuenta
+											<label class="select">
+												<select name="c_otro">
+													<?php if($cuenta[0]->otro=="Corriente"){
+														echo '<option value="Corriente" selected>Cuenta Corriente</option>';
+														echo '<option value="Ahorros">Cuenta Ahorros</option>';
+														
+													}else if($cuenta[0]->otro=="Ahorros"){
+														echo '<option value="Corriente">Cuenta Corriente</option>';
+														echo '<option value="Ahorros" selected>Cuenta Ahorros</option>';
+														
+													}else{
+														echo '<option value="Corriente" selected>Cuenta Corriente</option>';
+														echo '<option value="Ahorros">Cuenta Ahorros</option>';
+													}
+													?>
+												</select>
 											</label>
 										</section>
 										<section id="municipio" class="col col-3">CLABE
@@ -507,11 +538,11 @@ function agregar(tipo)
 {
 	if(tipo==1)
 	{
-		$("#tel").append("<section id='tel_"+id+"' class='col col-3'><label class='input'> <i class='icon-prepend fa fa-mobile'></i><input type='tel' name='movil[]' placeholder='(999) 99-99-99-99-99'></label><a style='cursor: pointer;color: red;' onclick='delete_telefono("+id+")'>Eliminar <i class='fa fa-minus'></i></a></section>");
+		$("#tel").append("<section id='tel_"+id+"' class='col col-3'><label class='input'> <i class='icon-prepend fa fa-mobile'></i><input type='tel' name='movil[]' placeholder='(+57) 999-999-9999'></label><a style='cursor: pointer;color: red;' onclick='delete_telefono("+id+")'>Eliminar <i class='fa fa-minus'></i></a></section>");
 	}
 	else
 	{
-		$("#tel").append("<section id='tel_"+id+"' class='col col-3'><label class='input'> <i class='icon-prepend fa fa-phone'></i><input type='tel' name='fijo[]' placeholder='(999) 99-99-99-99-99'></label><a style='cursor: pointer;color: red;' onclick='delete_telefono("+id+")'>Eliminar <i class='fa fa-minus'></i></a></section>");
+		$("#tel").append("<section id='tel_"+id+"' class='col col-3'><label class='input'> <i class='icon-prepend fa fa-phone'></i><input type='tel' name='fijo[]' placeholder='(+57) 999-999-9999'></label><a style='cursor: pointer;color: red;' onclick='delete_telefono("+id+")'>Eliminar <i class='fa fa-minus'></i></a></section>");
 	}
 
 	id++;

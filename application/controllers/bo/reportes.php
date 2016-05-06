@@ -199,7 +199,7 @@ class reportes extends CI_Controller
 					<td>".$afiliados[$i]->email."</td>
 					<td>".$afiliados[$i]->fijo."</td>
 					<td>".$afiliados[$i]->movil."</td>
-					<td>".$afiliados[$i]->codigo_postal."</td>
+					<td>".$afiliados[$i]->codigo_postal."(".$afiliados[$i]->colonia.")</td>
 					<td>".$afiliados[$i]->direccion."</td>
 				</tr>";
 			}

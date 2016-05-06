@@ -195,21 +195,21 @@
 						
 						<!-- widget content -->
 						<div class="widget-body">
-							<? if(isset($redes)){?>
-							<? foreach ($redes as $red) {?>
-								<h3><?= $red->nombre;?></h3>
+							<? //if(isset($redes)){?>
+							<?// foreach ($redes as $red) {?>
+								<h3><?php // $red->nombre;?></h3>
 								<div class="dropdown">
 										<?php foreach ($grupos as $grupo) {
-												if ($red->nombre == $grupo->red ){
+												//if ($red->nombre == $grupo->red ){
 										?>
 											<a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary btn-block" data-target="#" onclick="show_todos_categoria('<?= $grupo->id_grupo;?>');" class="btn btn-block"><?php echo $grupo->descripcion; ?></a>
-										<?php } }?>
+										<?php } //}?>
 
 								</div>
 								<br>
 								
-							<? } ?>
-							<? } ?>
+							<? //} ?>
+							<? //} ?>
 
 						</div>
 						<!-- end widget content -->

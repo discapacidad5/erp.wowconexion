@@ -205,6 +205,12 @@
 																<img src="/template/img/payment/paypal.png" alt="paypal" height="60" width="80">
 															</a>
 															<?php }?>
+															
+															<?php if($tucompra[0]->estatus=='ACT'&&$esAfiliadoNormal==true) {?>
+															<a onclick="tucompra()" style="margin-left: 1rem;" class="btn btn-success txt-color-blueLight">
+																<img src="/template/img/payment/tucompra.png" alt="tucompra" style="background: #fff" height="60" width="160">
+															</a>
+															<?php }?>
 														</div>
 													</div>
 													
@@ -306,6 +312,31 @@
 					
 	}
 
+	function tucompra(){
+		//alert('Medio de Pago en Desarrollo');
+		iniciarSpinner();
+		$.ajax({
+			type:"post",
+			url:"pagarVentaTucompra",
+			success: function(msg){
+				FinalizarSpinner();
+				bootbox.dialog({
+					message: msg,
+					title: "Pago Tu Compra",
+					className: "",
+					buttons: {
+						success: {
+						label: "Cancelar",
+						className: "btn-danger",
+						callback: function() {
+							}
+						}
+					}
+				})
+			}
+		});	
+	}
+	
 	function payuLatam(){
 		iniciarSpinner();
 		$.ajax({

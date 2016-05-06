@@ -112,39 +112,52 @@ function index()
 		
 		$id = $this->tank_auth->get_user_id();
 		
-		if($this->isWinner($id)){
-
-			$grupos = $this->model_mercancia->CategoriasMercanciaWinner();
-			/*
-			 * Mostrar
-			 * Membresias
-			 * Winner
-			 * Productos
-			 */
-		}else if($this->isBasic($id)){
-			$grupos = $this->model_mercancia->CategoriasMercanciaBasic();
-
-			/*
-			 * Mostrar
-			 * Membresias
-			 * Basic
-			 * Productos
-			 */
-		}else {
-			$grupos = $this->model_mercancia->CategoriasMercanciaMembresias();
-			/*
-			 * Mostrar
-			 * Membresias
-			 */
+		$esAfiliadoNormal=false;
+		
+		$redes = $this->model_tipo_red->RedesUsuario($id);
+		foreach ($redes as $red){
+			if($red->id==1){
+				$esAfiliadoNormal=true;
+			}
 		}
 
+		if($esAfiliadoNormal==true){
+			if($this->isWinner($id)){
+					
+				$grupos = $this->model_mercancia->CategoriasMercanciaWinner();
+				/*
+				 * Mostrar
+				 * Membresias
+				 * Winner
+				 * Productos
+				*/
+			}else if($this->isBasic($id)){
+				$grupos = $this->model_mercancia->CategoriasMercanciaBasic();
+					
+				/*
+				 * Mostrar
+				 * Membresias
+				 * Basic
+				 * Productos
+				*/
+			}else {
+				$grupos = $this->model_mercancia->CategoriasMercanciaMembresias();
+				/*
+				 * Mostrar
+				 * Membresias
+				*/
+			}
+		}else {
+			$grupos = $this->model_mercancia->CategoriasMercanciaIdRed(2);
+		}
+		
 		$usuario = $this->general->get_username($id);
-		$redes = $this->model_tipo_red->RedesUsuario($id);
+	//	$redes = $this->model_tipo_red->RedesUsuario($id);
 		
 		$this->template->set("usuario",$usuario);
 		$this->template->set("grupos",$grupos);
 		
-		$this->template->set("redes", $redes);
+	//	$this->template->set("redes", $redes);
 		$this->template->set_theme('desktop');
 		$this->template->set_layout('website/main');
 		
@@ -367,11 +380,21 @@ function index()
 		
 		$paypal  = $this->modelo_pagosonline->val_paypal();
 		$payulatam  = $this->modelo_pagosonline->val_payulatam();
+		
+		$esAfiliadoNormal=false;
+		$redes = $this->model_tipo_red->RedesUsuario($id);
+		foreach ($redes as $red){
+			if($red->id==1){
+				$esAfiliadoNormal=true;
+			}
+		}
+		
 		$tucompra  = $this->modelo_pagosonline->val_tucompra();
 		
 		$this->template->set('paypal',$paypal);
 		$this->template->set('payulatam',$payulatam);
 		$this->template->set('tucompra',$tucompra);
+		$this->template->set('esAfiliadoNormal',$esAfiliadoNormal);
 		
 		$this->template->set_theme('desktop');
 		$this->template->set_layout('website/main');
@@ -1366,8 +1389,17 @@ function index()
 		
 		$this->template->set_theme('desktop');
         $this->template->set_layout('website/main');
-        $this->template->set_partial('header', 'website/ov/header');
         $this->template->set_partial('footer', 'website/ov/footer');
+		
+		
+		$redes = $this->model_tipo_red->RedesUsuario($id);
+		foreach ($redes as $red){
+			if($red->id==1){
+				$this->template->set_partial('header', 'website/ov/header');
+				$this->template->build('website/ov/compra_reporte/reportes');
+				return true;
+			}
+		}
 		$this->template->build('website/ov/compra_reporte/reportes');
 	}
 	

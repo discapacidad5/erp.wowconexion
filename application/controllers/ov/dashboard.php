@@ -18,6 +18,7 @@ class dashboard extends CI_Controller
 		$this->load->model('model_tipo_red');
 		$this->load->model('bo/model_admin');
 		$this->load->model('bo/bonos/calculador_bono');
+		$this->load->model('model_tipo_red');
 	}
 
 	private $afiliados = array();
@@ -165,7 +166,7 @@ class dashboard extends CI_Controller
 		$this->template->set("estado",$estado);
 		
 		$style=$this->modelo_dashboard->get_style($id);
-
+		
 		$this->template->set("id",$id);
 		$this->template->set("usuario",$usuario);
 	    $this->template->set("telefono",$telefono);
@@ -185,9 +186,20 @@ class dashboard extends CI_Controller
 		
 		$this->template->set_theme('desktop');
         $this->template->set_layout('website/main');
-        $this->template->set_partial('header', 'website/ov/header');
         $this->template->set_partial('footer', 'website/ov/footer');
-		$this->template->build('website/ov/view_dashboard');
+        
+
+        $redes = $this->model_tipo_red->RedesUsuario($id);
+        foreach ($redes as $red){
+        	if($red->id==1){
+        		$this->template->set_partial('header', 'website/ov/header');
+        		$this->template->build('website/ov/view_dashboard');
+        		return true;
+        	}
+        }
+        $this->template->build('website/ov/view_dashboard2');
+        
+		
 	}
 	/**
 	 * 

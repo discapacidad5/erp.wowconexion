@@ -628,6 +628,12 @@ function codpos_red()
 																		</select>
 																	</label>
 																</section>
+															<section id="colonia" class="col col-4">
+																<label class="input">
+																	Datos de SIM Card (ID - PUK) Ejemplo (8957123200902510827 - 94041551)
+																	<input name="colonia" value="" type="text">
+																</label>
+															</section>
 															</div>
 														</fieldset>
 														
@@ -678,13 +684,6 @@ function codpos_red()
 																	<label class="input">
 																		Municipio
 																		<input type="text" name="municipio" >
-																	</label>
-																</section>
-
-																<section id="colonia" class="col col-2">
-																	<label class="input">
-																		Barrio
-																		<input type="text" name="colonia" >
 																	</label>
 																</section>
 

@@ -19,17 +19,17 @@ class model_mercancia extends CI_Model {
 	}
 	
 	function CategoriasMercanciaWinner() {
-		$categorias = $this->db->query ( "SELECT ctg.id_grupo, ctg.descripcion, tr.nombre as red  FROM cat_grupo_producto ctg, tipo_red tr where ctg.id_red = tr.id and ctg.estatus = 'ACT' and tr.estatus = 'ACT' and ctg.id_grupo !=3 and ctg.id_grupo !=1" );
+		$categorias = $this->db->query ( "SELECT ctg.id_grupo, ctg.descripcion, tr.nombre as red  FROM cat_grupo_producto ctg, tipo_red tr where ctg.id_red = tr.id and ctg.estatus = 'ACT' and tr.estatus = 'ACT' and ctg.id_grupo !=3 and ctg.id_grupo !=1 and tr.id=1" );
 		return $categorias->result ();
 	}
 	
 	function CategoriasMercanciaBasic() {
-		$categorias = $this->db->query ( "SELECT ctg.id_grupo, ctg.descripcion, tr.nombre as red  FROM cat_grupo_producto ctg, tipo_red tr where ctg.id_red = tr.id and ctg.estatus = 'ACT' and tr.estatus = 'ACT' and ctg.id_grupo !=2" );
+		$categorias = $this->db->query ( "SELECT ctg.id_grupo, ctg.descripcion, tr.nombre as red  FROM cat_grupo_producto ctg, tipo_red tr where ctg.id_red = tr.id and ctg.estatus = 'ACT' and tr.estatus = 'ACT' and ctg.id_grupo !=2 and tr.id=1" );
 		return $categorias->result ();
 	}
 	
 	function CategoriasMercanciaMembresias() {
-		$categorias = $this->db->query ( "SELECT ctg.id_grupo, ctg.descripcion, tr.nombre as red  FROM cat_grupo_producto ctg, tipo_red tr where ctg.id_red = tr.id and ctg.estatus = 'ACT' and tr.estatus = 'ACT' and ctg.id_grupo =1" );
+		$categorias = $this->db->query ( "SELECT ctg.id_grupo, ctg.descripcion, tr.nombre as red  FROM cat_grupo_producto ctg, tipo_red tr where ctg.id_red = tr.id and ctg.estatus = 'ACT' and tr.estatus = 'ACT' and ctg.id_grupo =1 and tr.id=1" );
 		return $categorias->result ();
 	}
 	

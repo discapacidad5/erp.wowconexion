@@ -25,10 +25,9 @@ class modelo_reportes extends CI_Model
 									(select distinct (numero) 
 											from cross_tel_user 
 											where id_user = a.id and id_tipo_tel = 2) movil,
-								    cdu.cp as codigo_postal,
+								    cdu.cp as codigo_postal,cdu.colonia,
 								    concat(cdu.calle,
 								            " ",
-								            cdu.colonia,
 								             " ",
 								            cdu.municipio,
 								             " ",

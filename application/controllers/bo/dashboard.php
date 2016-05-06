@@ -15,6 +15,7 @@ class dashboard extends CI_Controller
 		$this->load->model('bo/general');
 		$this->load->model('ov/modelo_billetera');
 		
+		
 	}
 
 	function index()

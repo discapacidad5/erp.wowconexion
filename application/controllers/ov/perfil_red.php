@@ -41,8 +41,17 @@ class perfil_red extends CI_Controller
 		$this->template->set("style",$style);
 		$this->template->set_theme('desktop');
         $this->template->set_layout('website/main');
-        $this->template->set_partial('header', 'website/ov/header');
         $this->template->set_partial('footer', 'website/ov/footer');
+		
+		
+		$redes = $this->model_tipo_red->RedesUsuario($id);
+		foreach ($redes as $red){
+			if($red->id==1){
+				$this->template->set_partial('header', 'website/ov/header');
+				$this->template->build('website/ov/perfil_red/perfilUsuario');
+				return true;
+			}
+		}
 		$this->template->build('website/ov/perfil_red/perfilUsuario');
 	}
 
@@ -88,8 +97,17 @@ class perfil_red extends CI_Controller
 
 		$this->template->set_theme('desktop');
         $this->template->set_layout('website/main');
-        $this->template->set_partial('header', 'website/ov/header');
         $this->template->set_partial('footer', 'website/ov/footer');
+		
+		
+		$redes = $this->model_tipo_red->RedesUsuario($id);
+		foreach ($redes as $red){
+			if($red->id==1){
+				$this->template->set_partial('header', 'website/ov/header');
+				$this->template->build('website/ov/perfil_red/perfil');
+				return true;
+			}
+		}
 		$this->template->build('website/ov/perfil_red/perfil');
 	}
 

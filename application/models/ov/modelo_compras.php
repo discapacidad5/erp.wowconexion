@@ -26,7 +26,7 @@ class modelo_compras extends CI_Model
 	function reporte_afiliados_activos($id_afiliado,$fecha)
 	{
 		$usuario=new $this->afiliado;
-		$q=$this->db->query('select id,profundidad from tipo_red');
+		$q=$this->db->query('select id,profundidad from tipo_red where id=1');
 		$redes= $q->result();
 		
 		$afiliadosEnLaRed=array();
@@ -58,7 +58,7 @@ class modelo_compras extends CI_Model
 	function reporte_afiliados_inactivos($id_afiliado,$fecha)
 	{
 		$usuario=new $this->afiliado;
-		$q=$this->db->query('select id,profundidad from tipo_red');
+		$q=$this->db->query('select id,profundidad from tipo_red where id=1');
 		$redes= $q->result();
 		 
 		$afiliadosEnLaRed=array();
