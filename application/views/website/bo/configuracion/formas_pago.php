@@ -1,4 +1,4 @@
-<!-- MAIN CONTENT -->
+			<!-- MAIN CONTENT -->
 			<div id="content" >
 				<div class="row">
 					<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
@@ -104,3 +104,4 @@
 	text-decoration: none !important;
 }
 </style>
+			

@@ -15,16 +15,6 @@ class calculador_bono extends CI_Model
 	 */
 	private $estado="DAR";
 	
-	private $id_bono_de_equipo=1;
-	private $id_bono_de_winner=3;
-	
-	private $id_membresia_winner=1;
-	private $id_consumo_mensual_winner=7;
-	private $id_curso_winner=4;
-	
-	private $id_membresia_basic=6;
-	private $id_consumo_mensual_basic=8;
-	
 	function __construct()
 	{
 		parent::__construct();
@@ -252,8 +242,7 @@ class calculador_bono extends CI_Model
 		if($nivel==0){
 			if($this->usuarioPuedeRecibirBono($id_bono, $id_usuario, $fecha)){
 				$repartidorComisionBono=new $this->repartidor_comision_bono();
-				$valor_recibir=$this->valorCondicion*1000;
-				$valorTotal=(($valor_recibir*$valor)/100);
+				$valorTotal=(($this->valorCondicion*$valor)/100);
 				$repartidorComisionBono->repartirComisionBono($repartidorComisionBono->getIdTransaccionPagoBono(),$id_usuario,$id_bono,$id_bono_historial,$valorTotal);
 			}
 		}else {
@@ -280,179 +269,20 @@ class calculador_bono extends CI_Model
 		
 		if($verticalidad=="PASC")
 			$verticalidad="ASC";
-
+		
 		$usuario->getAfiliadosPorNivel($id_usuario,$red,$nivel,$condicionRed,1,$verticalidad);
 		$afiliados=$usuario->getIdAfiliadosRed();
 
 		foreach ($afiliados as $idAfiliado){
 
 			if($this->usuarioPuedeRecibirBono($id_bono, $idAfiliado, $this->getFechaCalculoBono())){
-
-				if($id_bono==$this->id_bono_de_equipo){
-					if($this->isWinner($idAfiliado)){
-						$valor=$this->getValoresBonoDeEquipoWinner(intval($nivel));
-					}elseif ($this->isBasic($idAfiliado)){
-						
-					}else{
-						return false;
-					}
-				}
-
-				$valor_recibir=$this->valorCondicion*1000;
-				$valorTotal=(($valor_recibir*$valor)/100);
+				$valorTotal=(($this->valorCondicion*$valor)/100);
 				$repartidorComisionBono->repartirComisionBono($repartidorComisionBono->getIdTransaccionPagoBono(),$idAfiliado,$id_bono,$id_bono_historial,$valorTotal);
 	
 			}
 		}
 	}
 	
-	function isWinner($idAfiliado){
-		
-		$q=$this->db->query("SELECT cvm.id_mercancia as mercancia,v.fecha as fecha FROM venta v ,cross_venta_mercancia cvm 
-								where v.id_venta=cvm.id_venta
-								and cvm.id_mercancia=".$this->id_membresia_winner."
-								and v.id_user=".$idAfiliado." and v.id_estatus='ACT'");
-		
-		$datos= $q->result();
-		if(!$datos)
-			return false;
-		
-		$q=$this->db->query("SELECT cvm.id_mercancia as mercancia,v.fecha as fecha FROM venta v ,cross_venta_mercancia cvm
-								where v.id_venta=cvm.id_venta
-								and cvm.id_mercancia=".$this->id_curso_winner."
-								and v.id_user=".$idAfiliado." and v.id_estatus='ACT'");
-		
-		$datos= $q->result();
-		if(!$datos)
-			return false;
-		
-		$fechaInicio=$this->getInicioMes($this->getFechaCalculoBono());
-		$fechaFin=$this->getFinMes($this->getFechaCalculoBono());
-		
-		$q=$this->db->query("SELECT cvm.id_mercancia as mercancia,v.fecha as fecha FROM venta v ,cross_venta_mercancia cvm
-								where v.id_venta=cvm.id_venta
-								and cvm.id_mercancia=".$this->id_consumo_mensual_winner."
-								and v.id_user=".$idAfiliado." and v.id_estatus='ACT' and (v.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."')");
-		
-		$datos= $q->result();
-		if(!$datos)
-			return false;
-		
-		return true;
-	}
-	
-	function isBasic($idAfiliado){
-	
-		$q=$this->db->query("SELECT cvm.id_mercancia as mercancia,v.fecha as fecha FROM venta v ,cross_venta_mercancia cvm
-								where v.id_venta=cvm.id_venta
-								and cvm.id_mercancia=".$this->id_membresia_basic."
-								and v.id_user=".$idAfiliado." and v.id_estatus='ACT' ");
-	
-		$datos= $q->result();
-		if(!$datos)
-			return false;
-	
-	
-		$fechaInicio=$this->getInicioMes($this->getFechaCalculoBono());
-		$fechaFin=$this->getFinMes($this->getFechaCalculoBono());
-	
-		$q=$this->db->query("SELECT cvm.id_mercancia as mercancia,v.fecha as fecha FROM venta v ,cross_venta_mercancia cvm
-								where v.id_venta=cvm.id_venta
-								and cvm.id_mercancia=".$this->id_consumo_mensual_basic."
-								and v.id_user=".$idAfiliado." and v.id_estatus='ACT' and (v.fecha BETWEEN '".$fechaInicio."' AND '".$fechaFin."')");
-	
-		$datos= $q->result();
-		if(!$datos)
-			return false;
-	
-		return true;
-	}
-	
-	private function getValoresBonoDeEquipoWinner($nivel){
-		
-		switch ($nivel){
-			case 0: {
-				return 0;
-				break;
-			}
-			case 1: {
-				return 0;
-				break;
-			}
-			case 2: {
-				return 3;
-				break;
-			}
-			case 3: {
-				return 6;
-				break;
-			}
-			case 4: {
-				return 5;
-				break;
-			}
-			case 5: {
-				return 3;
-				break;
-			}
-			case 6: {
-				return 2;
-				break;
-			}
-			case 7: {
-				return 2;
-				break;
-			}
-			case 8: {
-				return 1;
-				break;
-			}
-			case 9: {
-				return 1;
-				break;
-			}
-			case 10: {
-				return 1;
-				break;
-			}
-		}
-		return 0;
-	}
-	
-	private function getValoresBonoWinner($nivel){
-	
-		switch ($nivel){
-			case 0: {
-				return 0;
-				break;
-			}
-			case 1: {
-				return 50000;
-				break;
-			}
-			case 2: {
-				return 40000;
-				break;
-			}
-			case 3: {
-				return 20000;
-				break;
-			}
-			case 4: {
-				return 15000;
-				break;
-			}
-			case 5: {
-				return 10000;
-				break;
-			}
-			case 6: {
-				return 5000;
-				break;
-			}
-		}
-		return 0;
-	}
 	private function repartirComisionesBonoEnLaRed($id_bono,$id_bono_historial,$id_usuario,$red,$nivel,$valor,$condicionRed,$verticalidad) {
 		$repartidorComisionBono=new $this->repartidor_comision_bono();
 		$usuario=new $this->afiliado();
@@ -461,17 +291,6 @@ class calculador_bono extends CI_Model
 		
 		foreach ($afiliados as $idAfiliado){
 			if($this->usuarioPuedeRecibirBono($id_bono, $idAfiliado, $this->getFechaCalculoBono())){
-				
-				if($id_bono==$this->id_bono_de_winner){
-					if($this->isWinner($idAfiliado)){
-						$valor=$this->getValoresBonoWinner(intval($nivel));
-					}elseif ($this->isBasic($idAfiliado)){
-				
-					}else{
-						return false;
-					}
-				}
-				
 				$repartidorComisionBono->repartirComisionBono($repartidorComisionBono->getIdTransaccionPagoBono(),$idAfiliado,$id_bono,$id_bono_historial,$valor);
 	
 			}

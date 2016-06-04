@@ -8,7 +8,7 @@
 				<br /><br /><br />
 				</div>
 				<!-- end row -->
-     			 <div class="row">
+      <div class="row">
 					<div class="col-sm-12">
 							<div class="well well-sm">
 								<div class="row">
@@ -34,18 +34,16 @@
 													<div class="row">
 
 														<div class="col-sm-3 profile-pic">
-															<img src="<?=$user?>" alt="demo user">
+															<img class="<?php if($actividad) echo "online";?>" src="<?=$user?>" alt="demo user">
 															<div class="padding-10">
-															<!--	<h4 class="font-md"><strong>1,543</strong>
+															<a style="padding: 6px 2rem 6px 6px;" href="/ov/perfil_red/foto"><i class="fa fa-camera fa-2x fa-fw fa-lg"></i></a>
+																<br><br>
+																<h4 class="font-md"><strong><?=$id?></strong>
 																<br>
-																<small>Followers</small></h4>
-																<br>
-																<h4 class="font-md"><strong>419</strong>
-																<br>
-																<small>Connections</small></h4> -->
+																<small>ID</small></h4>
 															</div>
 														</div>
-														<div class="col-sm-6">
+														<div class="col-sm-4">
 															<h1><?=$usuario[0]->nombre?> <span class="semi-bold"><?=$usuario[0]->apellido?></span>
 															<br>
 															<small> <?php //echo $nivel_actual_red?></small></h1>
@@ -76,23 +74,70 @@
 																		<i class="fa fa-calendar"></i>&nbsp;&nbsp;<span class="txt-color-darken">Ultima sesión: <a href="javascript:void(0);" rel="tooltip" title="" data-placement="top" data-original-title="Create an Appointment"><?=$ultima?></a></span>
 																	</p>
 																</li>
-                                <li>
-                                <?php if($id_sponsor&&$name_sponsor){
-                                if(($id_sponsor[0]->id_usuario!=1)){
-                                ?>
-                               <b>Patrocinador:</b>
-                              <?=$name_sponsor[0]->nombre?> <?=$name_sponsor[0]->apellido?> con id <?=$id_sponsor[0]->id_usuario?><br/>
-
-                              <?php }else{?>
-                              Eres un nodo raíz, fuiste patrocinado por la empresa<br />
-                              <?php }}?>
-                                </li>
+									                                <li>
+									                                <?php if($id_sponsor&&$name_sponsor){
+									                                if(($id_sponsor[0]->id_usuario!=1)){
+									                                ?>
+									                               <b>Patrocinador:</b>
+									                              <?=$name_sponsor[0]->nombre?> <?=$name_sponsor[0]->apellido?> con id <?=$id_sponsor[0]->id_usuario?><br/>
+									
+									                              <?php }else{?>
+									                              Eres un nodo raíz, fuiste patrocinado por la empresa<br />
+									                              <?php }}?>
+									                                </li>
+                                									<div class="row">
+																	<br>
+																	<div class="col-xs-2 col-sm-1">
+																			<strong class="<?php if($actividad) echo "label label-success";else echo "label label-default";?>" style="font-size: 2rem;"> <?php if($actividad) echo "<i class='fa fa-smile-o'></i> Activo";else echo "<i class='fa fa-frown-o'></i> Inactivo";?></strong>
+																	</div>
+																	<div class="col-sm-12">
+																		<br>
+																		<?php if($titulo!=NULL) 
+																			echo '<ul id="sparks" class="">
+																				<li class="sparks-info">
+																				<h5>RANGO<span class="txt-color-yellow"><i class="fa fa-trophy fa-2x"></i>'.$titulo.'</span></h5>
+																				<div class="sparkline txt-color-yellow hidden-mobile hidden-md hidden-sm"></div>
+																				</li>
+																			</ul>'
+																			 ?>
+																	</div>
+																	<div class="col-sm-12">
+				
+																		<br>
+				
+																	</div>
+				
+																</div>
 															</ul>
 															<br>
-															<strong class="<?php echo "label label-success";?>" style="font-size: 2rem;"> <?php echo $estado;?></strong>
 														</div>
-															
-														<div class="col-sm-3">
+														<div class="col-sm-4">
+														<h1><small>Puntos Comisionables Personales</small>  <i class='fa fa-user'></i></h1>
+															<ul class="list-inline friends-list">
+																<li><span class="font-md"><i>Semana :</i></span> <?=intval($puntos_semana)?>
+																</li>
+																<li><span class="font-md"><i>Mes :</i></span> <?=intval($puntos_semana)?>
+																</li>
+																<li><span class="font-md"><i>Total :</i></span> <?=intval($puntos_total)?>
+																</li>
+															</ul>
+														<h1><small>Puntos Comisionables Red </small>  <i class='fa fa-sitemap'></i></h1>
+															<ul class="list-inline friends-list">
+																<li><span class="font-md"><i>Semana :</i></span> <?=$puntos_red_semana?>
+																</li>
+																<li><span class="font-md"><i>Mes :</i></span> <?=$puntos_red_mes?>
+																</li>
+																<li><span class="font-md"><i>Total :</i></span> <?=$puntos_red_total?>
+																</li>
+															</ul>
+														<h1><small>Últimos Auspiciados</small></h1>
+															<ul class="list-inline friends-list">
+																<?php 
+																foreach ($ultimos_auspiciados as $afiliado) {
+																	echo '<li><a onclick="detalles('.$afiliado["id"].')"><img src="'.$afiliado["foto"].'"></a>
+																		  </li>';
+																}?>
+															</ul>
 														</div>
 													</div>
 												</div>
@@ -422,7 +467,7 @@
 												<legend><b>Comunicación</b></legend>
 												<div class="col-sm-1">
 												</div>
-										<!--  <div class="col-sm-2">
+												<div class="col-sm-2">
 													<a href="javascript:void(0);">
 														<div class="well well-sm txt-color-white text-center link_dashboard" style="background:<?=$style[0]->btn_2_color?>;">
 															<div class="row">
@@ -436,16 +481,16 @@
 															<h5>Redes Sociales</h5>
 														</div>
 													</a>
-												</div>-->
-											<!--<div class="col-sm-2">
+												</div>
+												<div class="col-sm-2">
 													<a href="javascript:void(0);">
 														<div class="well well-sm txt-color-white text-center link_dashboard" style="background:<?=$style[0]->btn_1_color?>;">
 															<i class="fa fa-gift fa-3x"></i>
 															<h5>Promociones</h5>
 														</div>
 													</a>
-												</div>-->
-												<div class="col-sm-3">
+												</div>
+												<div class="col-sm-2">
 													<a href="cgeneral/autoresponder">
 														<div class="well well-sm txt-color-white text-center link_dashboard" style="background:<?=$style[0]->btn_2_color?>">
 															<i class="fa fa-globe fa-3x"></i>
@@ -453,7 +498,7 @@
 														</div>
 													</a>
 												</div>	
-												<div class="col-sm-3">
+												<div class="col-sm-2">
 													<a href="cgeneral/invitacion_afiliar">
 														<div class="well well-sm txt-color-white text-center link_dashboard" style="background:<?=$style[0]->btn_1_color?>">
 															<i class="fa fa-envelope fa-2x"></i>&nbsp;&nbsp;<i class="fa fa-sitemap fa-3x"></i>
@@ -488,7 +533,7 @@
 												<?php $permiso=$ci->model_permissions->check($id,'e_mail');
 												if($permiso){
 												?>
-												<div class="col-sm-3">
+												<div class="col-sm-2">
 													<a href="cabecera/email">
 														<div class="well well-sm txt-color-white text-center link_dashboard" style="background:<?=$style[0]->btn_2_color?>">
 															<i class="fa fa-envelope fa-3x"></i>
@@ -698,9 +743,9 @@
 							</div>
 							<?php if($id==2){  
 												?>
-						<!--<div class="row">
+							<div class="row">
 								<div class="col-sm-12 col-md-12 col-lg-12">
-									<!--Inicia la secciion de otros--
+									<!--Inicia la secciion de otros-->
 									<div class="well">
 										<div class="row">
 											<fieldset>
@@ -747,12 +792,18 @@
 														</div>
 													</a>
 												</div>
-											</div>
+												
+											 	
+												
+											
+
+											
 										</div>
-									<!--Termina la secciion de otros--
+										</div>
+									<!--Termina la secciion de otros-->
 								</div>
 							</div>
-						-->	
+							
 							<?php }?>
 						</div>
 
@@ -767,3 +818,29 @@
         </div>
 			</div>
 			<!-- END MAIN CONTENT -->
+<script>
+function detalles(id)
+{
+	$.ajax({
+		type: "POST",
+		url: "/ov/perfil_red/detalle_usuario",
+		data: {id: id},
+	})
+	.done(function( msg )
+	{
+		bootbox.dialog({
+			message: msg,
+			title: "Información Personal",
+			buttons: {
+				success: {
+					label: "Cerrar!",
+					className: "btn-success",
+					callback: function() {
+					//location.href="";
+				}
+			}
+		}
+	});
+	});
+}
+</script>

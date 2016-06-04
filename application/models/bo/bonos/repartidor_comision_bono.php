@@ -75,7 +75,7 @@ class repartidor_comision_bono extends CI_Model
 	}
 	
 	function getTotalValoresTransaccionPorBonoYUsuario($id_bono,$id_usuario){
-		$q=$this->db->query("SELECT round(sum(valor),2) as total,id_usuario FROM comision_bono where id_bono=".$id_bono." and id_usuario=".$id_usuario);
+		$q=$this->db->query("SELECT sum(valor) as total,id_usuario FROM comision_bono where id_bono=".$id_bono." and id_usuario=".$id_usuario);
 		$datosTransaccion=$q->result();
 		return $datosTransaccion;
 	}

@@ -55,7 +55,7 @@
 													</section>
 														<section class="col col-2">
 														<label class="input">Tiempo de caducidad
-															<input required placeholder="En días" type="number" min="0" id="caducidad" name="caducidad">
+															<input required placeholder="En días" type="number"  id="caducidad" name="caducidad">
 														</label>
 													</section>
 													<section class="col col-3">Categoria
@@ -65,7 +65,7 @@
 																	<option value="<?=$grupo->id_grupo?>">
 																	<?= $grupo->descripcion." (".$grupo->red.")" ?>
 																	</option>
-																<?}?>p
+																<?}?>
 																</select>
 															</label>
 													</section>

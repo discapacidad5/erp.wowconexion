@@ -267,21 +267,22 @@
 																	</section>
 																</fieldset>	
 																<fieldset>
-																<header >
-																	<h2><span class="widget-icon"> <i class="fa fa-bank"></i> </span>
+																<header class="row">
+                                                                                                                                    <h2 class="col-md-6"><span class="widget-icon"> <i class="fa fa-bank"></i> </span>
 																	Datos Bancarios</h2>
-											
+                                                                                                                                    <p class="col-md-6"><i class="fa fa-asterisk"></i>&nbsp;&nbsp;Campos Obligatorios</p>
 																</header>
-																<br>
+																</fieldset>	
+																<fieldset>
 																	<section class="col col-6">
-																		<label class="label"><b>Titular Cuenta</b></label>
+																		<label class="label"><b>Titular Cuenta *</b></label>
 																		<label class="input">
 																		<i class="icon-prepend fa fa-user"></i>
 																			<input required name="ctitular" type="text" value="<?=$cuenta[0]->titular?>" class="from-control" id="ctitular"/>
 																		</label>
 																	</section>
 																	<section class="col col-6">
-																		<label class="label"><b>País</b></label>
+																		<label class="label"><b>País *</b></label>
 																		<label class="select">
 																			<select id="cpais" required name="cpais">
 																			<?php foreach ($pais as $key){																				
@@ -299,14 +300,14 @@
 																		</label>
 																	</section>	
 																	<section class="col col-6">
-																		<label class="label "><b>Numero de la cuenta</b></label>
+																		<label class="label "><b>Numero de la cuenta *</b></label>
 																		<label class="input input">
 																		<i class="icon-prepend fa fa-credit-card"></i>
 																			<input type="number" name="ncuenta" value="<?=$cuenta[0]->cuenta?>" class="from-control" id="ncuenta" value="" required/>
 																		</label>
 																	</section>
 																	<section class="col col-6">
-																		<label class="label"><b>Banco</b></label>
+																		<label class="label"><b>Banco *</b></label>
 																		<label class="input">
 																			<i class="icon-prepend fa fa-bank"></i>
 																			<input name="cbanco" type="text" value="<?=$cuenta[0]->banco?>" class="from-control" id="cbanco" required/>
@@ -319,13 +320,26 @@
 																			<input name="cswift" type="text" class="from-control" value="<?=$cuenta[0]->swift?>" id="cswift"/>
 																		</label>
 																	</section>
-																	<section class="col col-6">
-																		<label class="label "><b>Otro</b></label>
-																		<label class="input input">
-																		<i class="icon-prepend fa fa-sort-numeric-desc"></i>
-																			<input type="number" name="cotro" class="from-control" id="cotro" value="<?=$cuenta[0]->otro?>" />
-																		</label>
-																	</section>
+																	<section id="municipio" class="col col-6">
+                                                                                                                                            <label class="label"><b>Tipo de Cuenta *</b></label>
+                                                                                                                                                <label class="select">
+                                                                                                                                                        <select name="cotro">
+                                                                                                                                                                <?php if($cuenta[0]->otro=="Corriente"){
+                                                                                                                                                                        echo '<option value="Corriente" selected>Cuenta Corriente</option>';
+                                                                                                                                                                        echo '<option value="Ahorros">Cuenta Ahorros</option>';
+
+                                                                                                                                                                }else if($cuenta[0]->otro=="Ahorros"){
+                                                                                                                                                                        echo '<option value="Corriente">Cuenta Corriente</option>';
+                                                                                                                                                                        echo '<option value="Ahorros" selected>Cuenta Ahorros</option>';
+
+                                                                                                                                                                }else{
+                                                                                                                                                                        echo '<option value="Corriente" selected>Cuenta Corriente</option>';
+                                                                                                                                                                        echo '<option value="Ahorros">Cuenta Ahorros</option>';
+                                                                                                                                                                }
+                                                                                                                                                                ?>
+                                                                                                                                                        </select>
+                                                                                                                                                </label>
+                                                                                                                                        </section>
 																	<section class="col col-6">
 																		<label class="label"><b>CLABE (Solo en Mexico)</b></label>
 																		<label class="input">
@@ -411,7 +425,7 @@ function CalcularSaldo(evt){
 				var pago = $("#cobro").val() /*+ (String.fromCharCode(evt.charCode)*/;
 				var neto = saldo-pago;
 				$("#neto").val(neto.toFixed(2));
-				if(neto > 0){
+				if(neto >= 0){
 					$('#enviar').attr("disabled", false);
 					}else{
 						$('#enviar').attr("disabled", true);

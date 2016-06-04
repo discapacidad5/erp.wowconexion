@@ -91,7 +91,7 @@
 													<div class="well well-sm  bg-color-darken txt-color-white no-border">
 														<div class="fa-lg">
 															Total :
-															<span class="pull-right">$ <?php echo $this->cart->total(); ?>  </span>
+															<span class="pull-right">$ <?php echo $this->cart->total(); ?> ** </span>
 														</div>
 				
 													</div>
@@ -189,7 +189,7 @@
 				
 												<div class="row">
 				
-													<div class="col-sm-7">
+													<div class="col-sm-8">
 														<div class="payment-methods">
 															<h1 class="font-300">Metodos de Pago</h1>
 															<a onclick="consignacion()" style="margin-left: 1rem;" class="btn btn-success txt-color-blueLight">
@@ -205,8 +205,7 @@
 																<img src="/template/img/payment/paypal.png" alt="paypal" height="60" width="80">
 															</a>
 															<?php }?>
-															
-															<?php if($tucompra[0]->estatus=='ACT'&&$esAfiliadoNormal==true) {?>
+															<?php if($tucompra[0]->estatus=='ACT') {?>
 															<a onclick="tucompra()" style="margin-left: 1rem;" class="btn btn-success txt-color-blueLight">
 																<img src="/template/img/payment/tucompra.png" alt="tucompra" style="background: #fff" height="60" width="160">
 															</a>
@@ -336,7 +335,7 @@
 			}
 		});	
 	}
-	
+
 	function payuLatam(){
 		iniciarSpinner();
 		$.ajax({

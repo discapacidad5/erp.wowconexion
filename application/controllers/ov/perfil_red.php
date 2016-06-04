@@ -41,17 +41,8 @@ class perfil_red extends CI_Controller
 		$this->template->set("style",$style);
 		$this->template->set_theme('desktop');
         $this->template->set_layout('website/main');
+        $this->template->set_partial('header', 'website/ov/header');
         $this->template->set_partial('footer', 'website/ov/footer');
-		
-		
-		$redes = $this->model_tipo_red->RedesUsuario($id);
-		foreach ($redes as $red){
-			if($red->id==1){
-				$this->template->set_partial('header', 'website/ov/header');
-				$this->template->build('website/ov/perfil_red/perfilUsuario');
-				return true;
-			}
-		}
 		$this->template->build('website/ov/perfil_red/perfilUsuario');
 	}
 
@@ -93,21 +84,12 @@ class perfil_red extends CI_Controller
 		$this->template->set("cuenta",$cuenta);
 		$this->template->set("ocupacion",$ocupacion);
 		$this->template->set("tiempo_dedicado",$tiempo_dedicado);
-	//	$this->template->set("name_c",$coaplicante[0]->nombre);
+		$this->template->set("name_c",$coaplicante[0]->nombre);
 
 		$this->template->set_theme('desktop');
         $this->template->set_layout('website/main');
+        $this->template->set_partial('header', 'website/ov/header');
         $this->template->set_partial('footer', 'website/ov/footer');
-		
-		
-		$redes = $this->model_tipo_red->RedesUsuario($id);
-		foreach ($redes as $red){
-			if($red->id==1){
-				$this->template->set_partial('header', 'website/ov/header');
-				$this->template->build('website/ov/perfil_red/perfil');
-				return true;
-			}
-		}
 		$this->template->build('website/ov/perfil_red/perfil');
 	}
 
@@ -727,7 +709,6 @@ class perfil_red extends CI_Controller
 		$this->template->set("tiempo_dedicado",$tiempo_dedicado);
 		$this->template->set("img_perfil",$img_perfil);
 		$this->template->set("red_frontales",$red_forntales);
-		$this->template->set("usuario",$usuario);
 		
 		$this->template->set_theme('desktop');
 		$this->template->set_layout('website/main');

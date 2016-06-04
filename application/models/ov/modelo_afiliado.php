@@ -297,6 +297,20 @@ class modelo_afiliado extends CI_Model{
 		#echo "tels si|";
 	}
 
+        private function insert_dato_afiliar($id, $mi_red, $id_debajo, $lado, $directo) { #dato_afiliar
+		$dato_afiliar =array(
+			"id_red"      => $mi_red,
+			"id_afiliado" => $id,
+			"debajo_de"   => $id_debajo,
+			"directo"     => $directo,
+			"lado"        => $lado
+			);
+		
+		//var_dump($dato_afiliar); exit;
+ 		$this->db->insert("afiliar",$dato_afiliar); 		
+ 		#return $dato_afiliar;#true;
+ 		#echo "afiliar si|";
+	}
 	
 	private function dato_afiliar($id, $mi_red, $id_debajo, $lado, $directo) { #insert_dato_afiliar
 		$dato_afiliar =array(
@@ -306,7 +320,7 @@ class modelo_afiliado extends CI_Model{
 			/*"directo"     => */$directo,
 			/*"lado"        => */$lado
 			);
-		
+                ($mi_red == 1) ? $this->insert_dato_afiliar($id, 2, 2, $lado, 2) : '';
 		//var_dump($dato_afiliar); exit;
  		#$this->db->insert("afiliar",$dato_afiliar); 		
  		return $dato_afiliar;#true;

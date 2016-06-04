@@ -23,10 +23,21 @@ class modelo_compras extends CI_Model
 		return $q->result();
 	}
 	
+	function is_afiliado_activo($id_afiliado,$fecha)
+	{
+				
+			if(($this->general->isActived($id_afiliado)==0)&&
+					(($this->general->isActivedAfiliacionesPuntosPersonales($id_afiliado,$fecha))==true)){
+				return true;
+			}
+	
+		return false;
+	}
+	
 	function reporte_afiliados_activos($id_afiliado,$fecha)
 	{
 		$usuario=new $this->afiliado;
-		$q=$this->db->query('select id,profundidad from tipo_red where id=1');
+		$q=$this->db->query('select id,profundidad from tipo_red');
 		$redes= $q->result();
 		
 		$afiliadosEnLaRed=array();
@@ -58,7 +69,7 @@ class modelo_compras extends CI_Model
 	function reporte_afiliados_inactivos($id_afiliado,$fecha)
 	{
 		$usuario=new $this->afiliado;
-		$q=$this->db->query('select id,profundidad from tipo_red where id=1');
+		$q=$this->db->query('select id,profundidad from tipo_red');
 		$redes= $q->result();
 		 
 		$afiliadosEnLaRed=array();
@@ -914,8 +925,8 @@ where a.id_paquete = e.id_paquete and d.sku= a.id_paquete and d.estatus="ACT" an
 	
 	function getCostosImpuestos($id_pais_usuario,$id_mercancia){
 		$costos = $this->db->query("SELECT m.id,m.costo,m.costo_publico,m.iva,ci.descripcion as tipoImpuesto,
-									round(m.costo*(ci.porcentaje/100),0) as costoImpuesto,
-									m.pais,CONCAT(ci.descripcion) as nombreImpuesto FROM mercancia m ,cat_impuesto ci ,cross_merc_impuesto cmi
+									m.costo*(ci.porcentaje/100)as costoImpuesto,
+									m.pais,CONCAT(ci.porcentaje,'% de ',ci.descripcion) as nombreImpuesto FROM mercancia m ,cat_impuesto ci ,cross_merc_impuesto cmi
 									where(m.id=cmi.id_mercancia)
 									and (ci.id_impuesto=cmi.id_impuesto)
 									and(m.id=".$id_mercancia.")
@@ -1556,7 +1567,7 @@ where a.id_paquete = e.id_paquete and d.sku= a.id_paquete and d.estatus="ACT" an
 
 	}
 	
-/*	function get_nivel_actual($id){
+	function get_nivel_actual($id){
 		$q = $this->db->query("SELECT n.nombre,n.idnivel,u.user_id  FROM user_profiles u 
 				              ,niveles_afiliado n where u.nivel_en_red=n.idnivel and u.user_id=".$id);
 		return $q->result();
@@ -1565,7 +1576,7 @@ where a.id_paquete = e.id_paquete and d.sku= a.id_paquete and d.estatus="ACT" an
 		$q = $this->db->query("SELECT n.porcentage_venta FROM user_profiles u
 				              ,niveles_afiliado n where u.nivel_en_red=n.idnivel and u.user_id=".$id);
 		return $q->result();
-	}*/
+	}
 	function  tipo_mercancia($id){
 		$q = $this->db->query("SELECT id FROM mercancia where id_tipo_mercancia='4' and sku=".$id);
 		return $q->result();

@@ -31,7 +31,7 @@ $(document).ready(function() {
 						"Por favor ingresa tu nombre",
 					 	"Por favor ingresa tu apellido",
 					 	"Por favor ingresa tu fecha de nacimiento",
-					 	"Por favor ingresa tu Numero de Identificacion",
+					 	"Por favor ingresa tu DNI",
 					 	"Por favor ingresa un nombre de usuario",
 					 	"Por favor ingresa un correo",
 					 	"Por favor ingresa una contraseña",
@@ -580,7 +580,7 @@ function codpos_red()
 																</section>
 																<section class="col col-3" id="key">
 																	<label id="key_" class="input"> <i class="icon-prepend fa fa-barcode"></i>
-																		<input id="keyword" onkeyup="check_keyword()" placeholder="Numero de Identificacion" type="text" name="keyword">
+																		<input id="keyword" onkeyup="check_keyword()" placeholder="Número de identificación" type="text" name="keyword">
 																	</label>
 																</section>
 																<section class="col col-2">
@@ -619,21 +619,6 @@ function codpos_red()
 																	&nbsp;Agregar <i class="fa fa-phone"></i>&nbsp;
 																</button>
 															</section>
-															<section class="col col-2">SIMCARD
-																	<label class="select">
-																		<select id="cp" name="cp">
-																			<option value="Normal">Normal</option>
-																			<option value="Micro">Micro</option>
-																			<option value="Nano">Nano</option>
-																		</select>
-																	</label>
-																</section>
-															<section id="colonia" class="col col-4">
-																<label class="input">
-																	Datos de SIM Card (ID - PUK) Ejemplo (8957123200902510827 - 94041551)
-																	<input name="colonia" value="" type="text">
-																</label>
-															</section>
 															</div>
 														</fieldset>
 														
@@ -652,7 +637,7 @@ function codpos_red()
 																</section>
 																<section class="col col-4" id="key_co">
 																	<label id="key_1" class="input"> <i class=" icon-prepend fa fa-barcode"></i>
-																		<input onkeyup="check_keyword_co()" placeholder="Numero de Identificacion" type="text" name="keyword_co" id="keyword_co">
+																		<input onkeyup="check_keyword_co()" placeholder="CURP o RFC" type="text" name="keyword_co" id="keyword_co">
 																	</label>
 																</section>
 															</div>
@@ -675,7 +660,7 @@ function codpos_red()
 																</section>
 																<section id="municipio" class="col col-2">
 																	<label class="input">
-																		Departamento
+																		Estado
 																		<input type="text" name="estado" >
 																	</label>
 																</section>
@@ -687,12 +672,27 @@ function codpos_red()
 																	</label>
 																</section>
 
+																<section id="colonia" class="col col-2">
+																	<label class="input">
+																		Colonia
+																		<input type="text" name="colonia" >
+																	</label>
+																</section>
+
 																<section class="col col-2">
 																	<label class="input">
 																		Dirección de domicilio
 																		<input required type="text" name="calle">
 																	</label>
 																</section>
+																
+																<section class="col col-2">
+																	<label class="input">
+																		Código postal
+																		<input required type="text" id="cp" name="cp">
+																	</label>
+																</section>
+																
 															</div>
 														</fieldset>
 														<fieldset>

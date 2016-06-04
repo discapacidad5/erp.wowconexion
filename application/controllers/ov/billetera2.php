@@ -292,7 +292,7 @@ class billetera2 extends CI_Controller
 */
 		
  
-		if((($comisiones-($retenciones+$cobrosPagos+$_POST['cobro']+$cobroPendientes))+($total_transact)+$total_bonos)>0){
+		if((($comisiones-($retenciones+$cobrosPagos+$_POST['cobro']+$cobroPendientes))+($total_transact)+$total_bonos)>=0){
 			$this->modelo_billetera->cobrar($id,$_POST['ncuenta'],$_POST['ctitular'],$_POST['cbanco'],$_POST['cclabe']);
 			echo "Felicitaciones<br> Tu cobro se esta procesando.";
 		}else {

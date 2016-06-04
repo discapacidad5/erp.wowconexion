@@ -94,14 +94,14 @@
 		        	echo '<li class="dropdown megamenu-fullwidth"> <a data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(1)"> Productos </a></li>
 						  <li class="dropdown megamenu-80width "> <a data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(2)"> Servicios </a></li>
 						  <li class="dropdown megamenu-fullwidth"> <a data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(3)"> Combinados </a></li>';
-		        } 
+		        }
       	} else {?>
- <!--<li class="active"> <a onclick="show_todos()"> Todos </a> </li>
+        <li class="active"> <a onclick="show_todos()"> Todos </a> </li>
         <li class="dropdown megamenu-fullwidth"> <a data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(1)"> Productos </a></li>
         <li class="dropdown megamenu-80width "> <a data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(2)"> Servicios </a></li>
         <li class="dropdown megamenu-fullwidth"> <a data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(3)"> Combinados </a></li>
         <li class="dropdown megamenu-fullwidth"> <a data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(5)"> Membresia </a></li>
-        <li class="dropdown megamenu-fullwidth"> <a data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(4)"> Paquetes de Inscripción </a></li>-->
+        <li class="dropdown megamenu-fullwidth"> <a data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(4)"> Paquetes de Inscripción </a></li>
      	<?php }?>
       </ul>
       <!--- this part will be hidden for mobile version -->
@@ -162,7 +162,7 @@
     <!--/.nav-collapse --> 
 </div>
 </div>
-<div class="container main-container" style="background-color: #fff;min-height: auto ! important;padding-top: 10rem;padding-bottom: 20rem;"> 
+<div class="container main-container" style="background-color: #fff;min-height: auto ! important;padding-top: 10rem;padding-bottom: 10rem;"> 
 <div class="row">
 	<div class="breadcrumbDiv col-lg-12">
       <ul class="breadcrumb">
@@ -195,21 +195,21 @@
 						
 						<!-- widget content -->
 						<div class="widget-body">
-							<? //if(isset($redes)){?>
-							<?// foreach ($redes as $red) {?>
-								<h3><?php // $red->nombre;?></h3>
+							<? if(isset($redes)){?>
+							<? foreach ($redes as $red) {?>
+								<h3><?= $red->nombre;?></h3>
 								<div class="dropdown">
 										<?php foreach ($grupos as $grupo) {
-												//if ($red->nombre == $grupo->red ){
+												if ($red->nombre == $grupo->red ){
 										?>
 											<a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary btn-block" data-target="#" onclick="show_todos_categoria('<?= $grupo->id_grupo;?>');" class="btn btn-block"><?php echo $grupo->descripcion; ?></a>
-										<?php } //}?>
+										<?php } }?>
 
 								</div>
 								<br>
 								
-							<? //} ?>
-							<? //} ?>
+							<? } ?>
+							<? } ?>
 
 						</div>
 						<!-- end widget content -->
@@ -218,24 +218,54 @@
 					<!-- end widget div -->
 					
 				</div>
-
-				<div class="jarviswidget jarviswidget-color-darken" id="wid-id-3" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false" data-widget-fullscreenbutton="false">
+				<div class="jarviswidget jarviswidget-color-darken" id="wid-id-2" data-widget-editbutton="false" data-widget-colorbutton="false" data-widget-deletebutton="false" data-widget-fullscreenbutton="false">
 					<header>
 						<span class="widget-icon"> <i class="fa fa-arrows-v"></i> </span>
 						<h2 class="font-md"><i>Tipos de Mercancia</i></h2>				
 					</header>
 
+					<!-- widget div-->
 					<div>
 						
+						<!-- widget edit box -->
 						<div class="jarviswidget-editbox">
+							<!-- This area used as dropdown edit box -->
 
 						</div>
+						<!-- end widget edit box -->
+						
+						<!-- widget content -->
+						<div class="widget-body">
+								<h3>Tipos Mercancia</h3>
+								<div class="dropdown">
+								<?php if(isset($mostrarMercancia)){
+		      					if($mostrarMercancia==1)
+		      						echo ' <a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary btn-block" data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(5)"> Membresia </a>';
+		      					if($mostrarMercancia==2)
+		      						echo '<a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary btn-block" data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(4)"> Paquetes de Inscripción </a>';
+		        				if($mostrarMercancia==3){
+		        					echo '<a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary btn-block" data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(1)"> Productos </a>
+						  				  <a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary btn-block" data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(2)"> Servicios </a>
+						  				  <a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary btn-block" data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(3)"> Combinados </a>';
+		        				}
+      							} else {?>
+									<a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary btn-block" onclick="show_todos()"> Todos </a> </li>
+       								<a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary btn-block" data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(1)"> Productos </a>
+        							<a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary btn-block" data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(2)"> Servicios </a>
+        							<a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary btn-block" data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(3)"> Combinados </a>
+        							<a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary btn-block" data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(5)"> Membresia </a>
+        							<a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary btn-block" data-toggle="dropdown" class="dropdown-toggle" onclick="show_todos_tipo_mercancia(4)"> Paquetes de Inscripción </a>
+								<?php }?>
+								</div>
+								<br>
+						</div>
+						<!-- end widget content -->
 						
 					</div>
-
+					<!-- end widget div -->
 					
 				</div>
-
+				<!-- end widget -->
 				<div class="paymentMethodImg"> 
 				<h3>Métodos de pago</h3>
 					<img src="/template/img/payment/payu.jpg" alt="img" height="50"> 
@@ -351,10 +381,6 @@
 <!--<script src="/template/js/plugin/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>  -->
 <script src="/template/js/plugin/fuelux/wizard/wizard.min.js"></script>
 <script type="text/javascript">
-
-			$(".paymentMethodImg").hide();
-			$("#wid-id-3").hide();
-
 			function detalles(id,tipo)
 			{
 				var datos={'id':id,'tipo':tipo};

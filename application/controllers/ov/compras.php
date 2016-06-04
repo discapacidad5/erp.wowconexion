@@ -141,7 +141,7 @@ function index()
 				 * Productos
 				*/
 			}else {
-				$grupos = $this->model_mercancia->CategoriasMercanciaMembresias();
+				$grupos = $this->model_mercancia->CategoriasMercanciaIdRed(1);//+Membresias
 				/*
 				 * Mostrar
 				 * Membresias

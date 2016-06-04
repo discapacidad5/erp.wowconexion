@@ -30,7 +30,7 @@ $(document).ready(function() {
 						"Por favor ingresa tu nombre",
 					 	"Por favor ingresa tu apellido",
 					 	"Por favor ingresa tu fecha de nacimiento",
-					 	"Por favor ingresa el Numero de Identificacion",
+					 	"Por favor ingresa el DNI",
 					 	"Por favor ingresa un nombre de usuario",
 					 	"Por favor ingresa un correo",
 					 	"Por favor ingresa una contraseña",
@@ -319,7 +319,7 @@ function botbox(nombre, id, lado)
 								+'</section>'
 								+'<section class="col col-6" id="key_red">'
 									+'<label id="key_2" class="input"> <i class="icon-prepend fa fa-barcode"></i>'
-										+'<input id="keyword_red" onkeyup="check_keyword_red()" placeholder="Numero de Identificacion" type="text" name="keyword">'
+										+'<input id="keyword_red" onkeyup="check_keyword_red()" placeholder="Número de identificación" type="text" name="keyword">'
 									+'</label>'
 								+'</section>'
 							+'</div>'
@@ -341,21 +341,6 @@ function botbox(nombre, id, lado)
 									+'<button type="button" onclick="agregar_red(1)" class="btn btn-primary">&nbsp;Agregar <i class="fa fa-mobile"></i>&nbsp;</button>&nbsp;'
 									+'<button type="button" onclick="agregar_red(2)" class="btn btn-primary">&nbsp;Agregar <i class="fa fa-phone"></i>&nbsp;</button>'
 								+'</section>'
-								+'<section class="col col-2">SIMCARD'
-									+'<label class="select">'
-										+'<select id="cp_red" name="cp">'
-											+'<option value="Normal">Normal</option>'
-											+'<option value="Micro">Micro</option>'
-											+'<option value="Nano">Nano</option>'
-										+'</select>'
-									+'</label>'
-								+'</section>'
-								+'<section id="colonia" class="col col-4">'
-								+'<label class="input">'
-									+'Datos de SIM Card (ID - PUK)'
-									+'<input name="colonia" value="" type="text">'
-								+'</label>'
-							+'</section>'
 							+'</div>'
 						+'</fieldset>'
 						+'<fieldset>'
@@ -373,7 +358,7 @@ function botbox(nombre, id, lado)
 								+'</section>'
 								+'<section class="col col-4" id="key_red_co">'
 									+'<label id="key_3" class="input"> <i class=" icon-prepend fa fa-barcode"></i>'
-										+'<input onkeyup="check_keyword_red_co()" placeholder="Numero de Identificacion" type="text" name="keyword_co" id="keyword_red_co">'
+										+'<input onkeyup="check_keyword_red_co()" placeholder="DNI" type="text" name="keyword_co" id="keyword_red_co">'
 									+'</label>'
 								+'</section>'
 							+'</div>'
@@ -399,7 +384,7 @@ function botbox(nombre, id, lado)
 								+'</section>'
 								+'<section id="municipio" class="col col-6">'
 									+'<label class="input">'
-									+'Departamento'
+									+'Estado'
 										+'<input type="text" name="estado" >'
 									+'</label>'
 								+'</section>'
@@ -408,11 +393,25 @@ function botbox(nombre, id, lado)
 									+'<input type="text" name="municipio" >'
 									+'</label>'
 								+'</section>'
+
+								+'<section id="colonia_red" class="col col-6">'
+									+'<label class="input">Colonia'
+									+'<input type="text" name="colonia" >'
+									+'</label>'
+								+'</section>'
+
 								+'<section class="col col-6">'
 									+'<label class="input">Dirección de domicilio'
 									+'<input required type="text" name="calle">'
 									+'</label>'
 								+'</section>'
+								
+								+'<section class="col col-6">'
+									+'<label class="input">Código postal'
+										+'<input required type="text" id="cp_red" name="cp">'
+									+'</label>'
+								+'</section>'
+								
 							+'</div>'
 						+'</fieldset>'
 						+'<fieldset>'
@@ -622,7 +621,7 @@ function botbox(nombre, id, lado)
 						"Por favor ingresa tu nombre",
 					 	"Por favor ingresa tu apellido",
 					 	"Por favor ingresa tu fecha de nacimiento",
-					 	"Por favor ingresa el Numero de Identificacion",
+					 	"Por favor ingresa el DNI",
 					 	"Por favor ingresa un nombre de usuario",
 					 	"Por favor ingresa un correo",
 					 	"Por favor ingresa una contraseña",
