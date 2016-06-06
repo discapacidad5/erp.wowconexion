@@ -161,7 +161,6 @@ class dashboard extends CI_Controller
 		$puntos_semana=$this->modelo_dashboard->get_puntos_personales_semana($id);
 		$puntos_mes=$this->modelo_dashboard->get_puntos_personales_mes($id);
 		$puntos_total=$this->modelo_dashboard->get_puntos_personales_total($id);
-		
 		$puntos_red_semana=$this->modelo_dashboard->get_puntos_red_semana($id);
 		$puntos_red_mes=$this->modelo_dashboard->get_puntos_red_mes($id);
 		$puntos_red_total=$this->modelo_dashboard->get_puntos_red_total($id);
@@ -169,7 +168,7 @@ class dashboard extends CI_Controller
 		$ultimos_auspiciados=$this->modelo_dashboard->get_ultimos_auspiciados($id);
 		
 		$titulo=$this->titulo->getNombreTituloAlcanzadoAfiliado($id,date('Y-m-d'));
-		
+		//echo $titulo ? $titulo : 'No define';exit();
 		$this->template->set("id",$id);
 		$this->template->set("usuario",$usuario);
 	    $this->template->set("telefono",$telefono);

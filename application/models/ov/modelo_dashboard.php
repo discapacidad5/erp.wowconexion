@@ -90,7 +90,7 @@ class modelo_dashboard extends CI_Model
   	$puntos=0;
   	
   	foreach ($redes as $red){
-  		$puntos=$usuario->getPuntosTotalesPersonalesIntervalosDeTiempo($id,$red->id,$cualquiera,$cualquiera,$fechaInicio,$fechaFin)[0]->total;
+  		$puntos+=$usuario->getPuntosTotalesPersonalesIntervalosDeTiempo($id,$red->id,$cualquiera,$cualquiera,$fechaInicio,$fechaFin)[0]->total;
   		if($puntos==null)
   			$puntos=0;
   	}
@@ -113,7 +113,7 @@ class modelo_dashboard extends CI_Model
   	$puntos=0;
   	
   	foreach ($redes as $red){
-  		$puntos=$usuario->getPuntosTotalesPersonalesIntervalosDeTiempo($id,$red->id,$cualquiera,$cualquiera,$fechaInicio,$fechaFin)[0]->total;
+  		$puntos+=$usuario->getPuntosTotalesPersonalesIntervalosDeTiempo($id,$red->id,$cualquiera,$cualquiera,$fechaInicio,$fechaFin)[0]->total;
   		if($puntos==null)
   			$puntos=0;
   	}
@@ -123,7 +123,6 @@ class modelo_dashboard extends CI_Model
   }
   function get_puntos_personales_total($id){
 	$usuario=new $this->afiliado;
-  	
   	$cualquiera="0";
   	$fechaInicio="2016-01-01";
   	$fechaFin="2026-01-01";
@@ -134,11 +133,11 @@ class modelo_dashboard extends CI_Model
   	$puntos=0;
   	
   	foreach ($redes as $red){
-  		$puntos=$usuario->getPuntosTotalesPersonalesIntervalosDeTiempo($id,$red->id,$cualquiera,$cualquiera,$fechaInicio,$fechaFin)[0]->total;
-  		if($puntos==null)
-  			$puntos=0;
+  		$puntos +=  intval($usuario->getPuntosTotalesPersonalesIntervalosDeTiempo($id,$red->id,$cualquiera,$cualquiera,$fechaInicio,$fechaFin)[0]->total);
+                if(!$puntos){
+                    $puntos=0;                
+                }
   	}
-  	
   	
 	return $puntos;
   }
@@ -158,7 +157,7 @@ class modelo_dashboard extends CI_Model
   	$puntos=0;
   	 
   	foreach ($redes as $red){
-  		$puntos=$usuario->getVentasTodaLaRed($id,$red->id,"RED","EQU",$red->profundidad,$fechaInicio,$fechaFin,$cualquiera,$cualquiera,"PUNTOS");
+  		$puntos+=$usuario->getVentasTodaLaRed($id,$red->id,"RED","EQU",$red->profundidad,$fechaInicio,$fechaFin,$cualquiera,$cualquiera,"PUNTOS");
   		if($puntos==null)
   			$puntos=0;
   	}
@@ -182,7 +181,7 @@ class modelo_dashboard extends CI_Model
   	$puntos=0;
   	 
   	foreach ($redes as $red){
-  		$puntos=$usuario->getVentasTodaLaRed($id,$red->id,"RED","EQU",$red->profundidad,$fechaInicio,$fechaFin,$cualquiera,$cualquiera,"PUNTOS");
+  		$puntos+=$usuario->getVentasTodaLaRed($id,$red->id,"RED","EQU",$red->profundidad,$fechaInicio,$fechaFin,$cualquiera,$cualquiera,"PUNTOS");
   		if($puntos==null)
   			$puntos=0;
   	}
@@ -204,7 +203,7 @@ class modelo_dashboard extends CI_Model
   	$puntos=0;
   	 
   	foreach ($redes as $red){
-  		$puntos=$usuario->getVentasTodaLaRed($id,$red->id,"RED","EQU",$red->profundidad,$fechaInicio,$fechaFin,$cualquiera,$cualquiera,"PUNTOS");
+  		$puntos+=$usuario->getVentasTodaLaRed($id,$red->id,"RED","EQU",$red->profundidad,$fechaInicio,$fechaFin,$cualquiera,$cualquiera,"PUNTOS");
   		if($puntos==null)
   			$puntos=0;
   	}
@@ -239,4 +238,43 @@ class modelo_dashboard extends CI_Model
   	
   	return $ultimos_auspiciados;
   }
+  
+    function get_puntos_red_meses_intervalo($id,$fecha,$intervalo){
+        
+  	$usuario=new $this->afiliado;
+  	$calculador=new $this->calculador_bono;
+  	 
+        $cualquiera="0";
+  	$fechaActual=$fecha;
+        
+        $q=$this->db->query("select id , profundidad from tipo_red where estatus = 'ACT' group by id");
+  	$redes= $q->result();
+        
+        $puntos_meses = array();
+        
+        for ($i=0;$i<$intervalo;$i++){
+            
+            
+            $fechaInicio=$calculador->getInicioMes($fechaActual);
+            $fechaFin=$calculador->getFinMes($fechaActual);
+           
+            $puntos=0;
+  	 
+            foreach ($redes as $red){
+                    $puntos+=$usuario->getVentasTodaLaRed($id,$red->id,"RED","EQU",$red->profundidad,$fechaInicio,$fechaFin,$cualquiera,$cualquiera,"PUNTOS");
+                    if($puntos==null)
+                            $puntos=0;
+            }
+           
+            array_push($puntos_meses, $puntos);             
+            
+            $q=  $this->db->query("select date_sub(".$fechaInicio.",interval 1 month) fecha");
+            $q=$q->result();
+            $fechaActual=$q[0]->fecha;
+            
+        }
+        
+  	return $puntos_meses;
+  }
+  
 }

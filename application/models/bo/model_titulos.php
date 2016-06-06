@@ -14,7 +14,9 @@ function ingresar_titulo(){
 				'condicion_red_afilacion' => $_POST['condicion_red_afilacion'],
 				'porcentaje' => $_POST['porcentaje'],
 				'valor' => $_POST['valor'],
-				'ganancia' => $_POST['ganancia']
+				'ganancia' => $_POST['ganancia'],
+				'inicial' => $_POST['inicial'],
+				'consecutivo' => $_POST['consecutivo']
 		);
 
 	$this->db->insert("cat_titulo",$titulo);
@@ -39,7 +41,9 @@ function actualizar_titulos(){
 				'condicion_red_afilacion' => $_POST['condicion_red_afilacion'],
 				'porcentaje' => $_POST['porcentaje'],
 				'valor' => $_POST['valor'],
-				'ganancia' => $_POST['ganancia']
+				'ganancia' => $_POST['ganancia'],
+                                'inicial' => $_POST['inicial'],
+				'consecutivo' => $_POST['consecutivo']
 		);
 		$this->db->where('id', $_POST['id']);
 		$this->db->update('cat_titulo', $titulo);
