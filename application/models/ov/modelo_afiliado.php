@@ -221,7 +221,7 @@ class modelo_afiliado extends CI_Model{
 	private function dato_rango($id) { #insert_dato_rango
 		$dato_rango=array(
 			/*"id_user"	=> */$id,
-			/*"id_rango"		=> */1,
+			/*"id_rango"		=> */0,
 			/*"entregado"		=> */1,
 			/*"estatus"		=> */"ACT"
 			);
