@@ -178,7 +178,7 @@
 															<table id="dt_basic" class="table table-striped table-bordered table-hover">
 																
 																	<?php 
-																	$retenciones_total=0;
+																	$retenciones_total=0; $retefuente=0;
 																	foreach ($retenciones as $retencion) {?>
 																	<tr class="danger">
 																		<td><b>Retencion por <?php echo $retencion['descripcion']; ?></b></b></td>
@@ -189,7 +189,7 @@
 																	</tr>
 																	<?php $total;
 																	} ?>
-																
+                                                                                                                                        
 																	<tr class="danger">
 																		<td><b>Cobros Pendientes</b></td>
 																		<td></td>
@@ -198,9 +198,7 @@
 																			echo "0";
 																		else
 																			echo number_format($cobroPendientes,2);
-																		?></td> 
-																	</tr>
-																
+																		?></td>                                                                                                                                            																
 																	<?php foreach ($cobro as $cobros){
 																	?>
 																	<tr class="danger">
@@ -213,11 +211,23 @@
 																		  $cobro=0;
 																		}
 																		else {
-																		  echo number_format($cobros->monto,2);
+                                                                                                                                                  $retefuente=$cobros->monto*0.1;
+																		  echo number_format(($cobros->monto-$retefuente),2);
 																		  $cobro=$cobros->monto;
 																		}
-																		?></td>
-																	</tr>
+                                                                                                                                                ?></td></tr>
+                                                                                                                                            <?php 
+                                                                                                                                                    if ($cobro>0) {?>
+                                                                                                                                                    <tr class="danger">
+                                                                                                                                                            <td><b>Retencion en la Fuente (10%)</b></td>
+                                                                                                                                                            <td></td>
+                                                                                                                                                            <td>$ <?php 
+                                                                                                                                                            
+                                                                                                                                                            echo number_format(($retefuente),2); ?></td>
+                                                                                                                                                    </tr>
+                                                                                                                                                    <?php $total;
+                                                                                                                                                    } ?>
+                                                                                                                                                 
 																	<?php 
 																	}?>
 																	<tr class="info">

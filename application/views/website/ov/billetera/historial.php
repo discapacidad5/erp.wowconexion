@@ -97,7 +97,7 @@
 																		<th data-hide="phone,tablet"><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> Titular Cuenta</th>
 																		<th data-hide="phone,tablet"><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> # Cuenta</th>
 																		<th><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> Banco</th>
-																		<th data-hide="phone,tablet"><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> CLABE</th>
+																		<th data-hide="phone,tablet"><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> Tipo de Cuenta</th>
 																		<th>Estado</th>
 																	</tr>
 																</thead>
@@ -110,7 +110,7 @@
 																		<td><?=$key->cuenta ?></td>
 																		<td><?=$key->titular ?></td>
 																		<td><?=$key->banco ?></td>
-																		<td><?=$key->clabe ?></td>
+																		<td><?=$key->otro ?></td>
 																		<td><?=$key->estado ?></td>
 																	</tr>
 																	<?}?>

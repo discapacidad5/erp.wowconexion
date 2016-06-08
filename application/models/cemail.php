@@ -133,7 +133,7 @@ class Cemail extends CI_Model
 				'banco'		=>isset($data['banco']) ? "Banco: ".$data['banco'] : "",
 				'cuenta'	=>isset($data['cuenta']) ? "Numero de Cuenta: ".$data['cuenta'] : "",
 				'titular'	=>isset($data['titular']) ? "Titular de cuenta: ".$data['titular'] : "",
-				'clave'		=>isset($data['clave']) ? "CLABE: ".$data['clave'] : "",
+				'clave'		=>isset($data['clave']) ? "Retencion: ".$data['clave'] : "",
 				'monto'		=>isset($data['monto']) ? "Valor de Cobro: $ ".$data['monto'] : "",
 				'monto_t'		=>isset($data['monto_t']) ? "Valor de la transacción: $ ".$data['monto_t'] : "",
 				'descripcion_t'		=>isset($data['descripcion_t']) ? "Motivo la transacción: <br/><em class='callout'> ".$data['descripcion_t']."<em/>" : "",

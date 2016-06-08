@@ -120,7 +120,7 @@ class CuentasPagar extends CI_Controller
 		$fecha_fin = $_POST['fecha_fin'];
 		
 		$cobros = $this->modelo_cobros->ConsultarCobrosFecha($fecha_inicio, $fecha_fin);
-		
+		//var_dump($cobros);exit();
 		$this->template->set("cobros",$cobros);
 		$this->template->set_theme('desktop');
 		$this->template->build('website/bo/comercial/Cuentas/CobrosSinPagar');
@@ -154,13 +154,13 @@ class CuentasPagar extends CI_Controller
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(2, ($i+8), $cobros[$i]->usuario);
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(3, ($i+8), $cobros[$i]->banco);
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(4, ($i+8), $cobros[$i]->cuenta);
-			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(5, ($i+8), $cobros[$i]->titular);
-			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(6, ($i+8), $cobros[$i]->clabe);
-			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(7, ($i+8), $cobros[$i]->pais);
-			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(8, ($i+8), $cobros[$i]->swift);
-			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(9, ($i+8), $cobros[$i]->otro);
-			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(10, ($i+8), $cobros[$i]->postal);
-			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(11, ($i+8), $cobros[$i]->metodo_pago);
+			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(5, ($i+8), $cobros[$i]->titular);			
+			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(6, ($i+8), $cobros[$i]->pais);
+			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(7, ($i+8), $cobros[$i]->swift);
+			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(8, ($i+8), $cobros[$i]->otro);
+			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(9, ($i+8), $cobros[$i]->postal);
+			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(10, ($i+8), $cobros[$i]->metodo_pago);
+                        $this->excel->getActiveSheet()->setCellValueByColumnAndRow(11, ($i+8), $cobros[$i]->retencion);
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(12, ($i+8), $cobros[$i]->monto);
 			$total = $total + $cobros[$i]->monto;
 			$ultima_fila = $i+8;
@@ -168,7 +168,7 @@ class CuentasPagar extends CI_Controller
 			$this->enviar_email($usuario[0]->email, $usuario);
 		}
 		
-		$subtitulos	=array("ID Solicitud","Fecha","Usuario","Banco","Cuenta","Titular","CLABE","Pais","Swift","ABA_IBAN_OTRO","Direccion_Postal","Metodo","Valor","Estado");
+		$subtitulos	=array("ID Solicitud","Fecha","Usuario","Banco","Cuenta","Titular","Pais","Swift","Tipo de Cuenta","Direccion_Postal","Metodo","Retencion","Valor Neto");
 		
 		$this->model_excel->setTemplateExcelReport ("Cuentas Por Pagar",$subtitulos,$contador_filas,$this->excel);
 		
@@ -178,8 +178,8 @@ class CuentasPagar extends CI_Controller
 		
 		$date = new \Datetime('now');
 
-		$filename='CuentasPorPagar_de_'.$fecha_inicio.'_al_'.$fecha_fin.'_'.$date->format('Y-m-d H:i:s').'.xls'; //save our workbook as this file name
-	/*	header('Content-Type: application/vnd.ms-excel'); //mime type
+		$filename='CuentasPorPagar_de_'.$fecha_inicio.'_al_'.$fecha_fin.'_'.$date->format('Y-m-d').'.xls'; //save our workbook as this file name
+	/*	header('Content-Type: application/vnd.ms-excel'); //mime type H:i:s
 		header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
 		header('Cache-Control: max-age=0'); //no cache
 		 */
@@ -213,6 +213,7 @@ class CuentasPagar extends CI_Controller
 	
 	function enviar_email($email, $usuario)
 	{
+            //var_dump($usuario);exit();
 		$cobro['username'] = $usuario[0]->username;
 		$cobro['nombre'] = $usuario[0]->nombre;
 		$cobro['apellido'] = $usuario[0]->apellido;
@@ -220,8 +221,8 @@ class CuentasPagar extends CI_Controller
 		$cobro['banco'] = $usuario[0]->banco;
 		$cobro['cuenta'] = $usuario[0]->cuenta;
 		$cobro['titular'] = $usuario[0]->titular;
-		$cobro['clave'] = $usuario[0]->clabe;
-		$cobro['monto'] = $usuario[0]->monto;
+		$cobro['clave'] = $usuario[0]->monto*0.1;
+		$cobro['monto'] = $usuario[0]->monto*0.9;
 		$cobro['email'] = $usuario[0]->email;
 		$cobro['fecha'] = $usuario[0]->fecha;
 		

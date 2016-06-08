@@ -214,7 +214,7 @@ FROM users a, user_profiles b WHERE a.created>=NOW() - INTERVAL 1 MONTH and a.id
 										            (case
 										                    when (m.iva = 'MAS') then m.costo
 										                    else round(m.costo * (1 - (select 
-										                                    concat('0.', i.porcentaje)
+										                                    concat('0.', sum(i.porcentaje))
 										                                from
 										                                    cat_impuesto i
 										                                where
