@@ -97,10 +97,12 @@ class general extends CI_Model
 	$numeroAfiliadosDirectos=$this->getAfiliadosDirectos($id_afiliado);
 	$afiliadosParaEstarActivo=$this->getAfiliadosParaEstarActivo();
 	
-	if($afiliadosParaEstarActivo>$numeroAfiliadosDirectos)
-		return false;
-	
-	$fechaInicio=$this->calculador_bono->getInicioMes($fecha);
+	if ($afiliadosParaEstarActivo > $numeroAfiliadosDirectos) {
+            $this->Activacion($id_afiliado,'DES'); 
+            return false;
+        }
+
+        $fechaInicio=$this->calculador_bono->getInicioMes($fecha);
 	$fechaFin=$this->calculador_bono->getFinMes($fecha);
 	
 	$puntosParaEstarActivo=$this->getPuntosParaEstarActivo();
@@ -115,10 +117,13 @@ class general extends CI_Model
 		
 	}
 	
-	if($puntosParaEstarActivo>$puntosComisionablesMes)
-		return false;
+	if ($puntosParaEstarActivo > $puntosComisionablesMes) {
+            $this->Activacion($id_afiliado,'DES'); 
+            return false;
+        }
 
-	return true;
+
+            return true;
 	}
 	
 	private function getAfiliadosDirectos($id_afiliado){
@@ -163,6 +168,7 @@ class general extends CI_Model
 			}
 			else{
 				//Mostrar Membresias
+                                $this->Activacion($id,'DES'); 
 				return 1;
 			}
 		}else {
@@ -183,6 +189,7 @@ class general extends CI_Model
 			}
 			else{
 				//Mostrar Paquetes
+                                $this->Activacion($id,'DES'); 
 				return 2;
 			}
 		}else {
@@ -197,10 +204,12 @@ class general extends CI_Model
 		if($this->compraObligatoria ($item)&&$this->hayTipoDeMercancia ($item)){
 			if($this->compraDeUsuarioEstaActiva($item,$id)){
 				// Acceso
+                                $this->Activacion($id,'ACT');    
 				return 0;
 			}
 			else{
 				//Mostrar Item
+                                $this->Activacion($id,'DES'); 
 				return 3;
 			}
 		}else {
@@ -341,5 +350,108 @@ class general extends CI_Model
 		}
 		return implode(',',$ArrayVarchar);
 	}
+
+    public function Activacion($id, $estatus) {
+        
+        $this->db->query("UPDATE user_profiles SET activacion = '".$estatus."' WHERE user_id  = ".$id);
+        
+        return true;
+    }
+    
+    public function getActivacion($id) {
+        
+        $q=$this->db->query("SELECT activacion FROM user_profiles WHERE user_id  = ".$id);
+        $q=$q->result();
+        return $q[0]->activacion;
+        
+    }
+    
+    function viewTable($datos){
+        
+        //var_dump($datos);
+        if(!$datos){
+            return "";
+        }
+                
+        $table = "<div style='overflow-y: scroll; height: 100px;'><table id='datatable_fixed_column1' class='table table-striped table-bordered table-hover' width='80%'>
+				<thead id='tablacabeza'>";
+        $i=0;
+        foreach ($datos[0] as $key => $value){
+            $class= ($i==0) ? "data-class='expand'" : "data-hide='phone,tablet'";
+            $table.="<th ".$class." >".strtoupper($key)."</th>";
+            //echo strtoupper($key)."|";
+            $i++;
+        }        
+       
+        $table .= " </thead>
+		<tbody>";
 	
+	
+		foreach($datos as $dato)
+		{
+                    $table .= "<tr>";
+                    $i=0;
+                    foreach ($dato as $key => $value){
+                        $class= ($i==0) ? "class='sorting_1'" : "";
+                        $table .= "<td ".$class." >".$value."</td>";
+                        //echo strtoupper($key).":".$value."|";
+                        $i++;
+                        //$total += ($bono->valor);
+                    }
+                    $table .= "</tr>";
+		}
+			
+		/*$bonos_table .= "<tr>
+			<td class='sorting_1'></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			</tr>";
+	
+		$bonos_table .= "<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td class='sorting_1'><b>TOTAL:</b></td>
+			<td><b> $	".number_format($total, 2)."</b></td>
+			</tr>";*/
+	
+		$table .= "</tbody>
+		</table><tr class='odd' role='row'></div>";
+		
+                //escribir funcion js
+                /*$table.=  "<script>"
+                                .   "function profundizar(id){"
+                                .   "   $.ajax({
+                                            type: 'POST',
+                                            url: '/ov/billetera2/profundizar_bono',
+                                            data: {id: id}
+                                        }).done(function( msg ){					
+                                                bootbox.dialog({
+                                                    message: msg,
+                                                    title: 'Detalles del Bono',
+                                                    buttons: {
+                                                        danger: {
+                                                            label: 'Cerrar',
+                                                            className: 'btn-danger',
+                                                            callback: function() {
+
+                                                            }
+                                                        }
+                                                    }
+                                                })//fin done ajax
+                                            });//Fin callback bootbox
+                                        }"
+                               ."</script>";*/
+                
+		return $table;
+    }
+
 }

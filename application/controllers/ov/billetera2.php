@@ -18,6 +18,7 @@ class billetera2 extends CI_Controller
 		$this->load->model('bo/model_bonos');
 		$this->load->model('model_tipo_red');
 		$this->load->model('ov/model_perfil_red');
+                $this->load->model('/bo/bonos/bono');
 		
 		if (!$this->tank_auth->is_logged_in())
 		{																		// logged in
@@ -568,8 +569,7 @@ class billetera2 extends CI_Controller
 	}
 	
 	function bonos_comisiones(){
-	
-	
+            
 		$id=$_POST['id'];
 		$fecha =isset($_POST['fecha']) ? $_POST['fecha'] : null;
 	
@@ -605,7 +605,7 @@ class billetera2 extends CI_Controller
 		{
 			
 			$bonos_table .= "<tr>
-			<td class='sorting_1'>".$bono->id."</td>
+			<td class='sorting_1'>".$bono->id."&nbsp;<a style='cursor: pointer' title='Ver Detalles' onclick='profundizar(".$bono->id_bono.",`".$bono->fecha."`)'><i class='fa fa-eye'></i><a></td>
 			<td>".$bono->bono."</td>
 			<td>".$bono->descripcion."</td>
 			<td>".$bono->dia."</td>
@@ -644,8 +644,96 @@ class billetera2 extends CI_Controller
 		$bonos_table .= "</tbody>
 		</table><tr class='odd' role='row'></div>";
 		
+                //escribir funcion js
+                $bonos_table.=  "<script>"
+                                .   "function profundizar(id,fecha){"
+                                .   "   $.ajax({
+                                            type: 'POST',
+                                            url: '/ov/billetera2/profundizar_bono',
+                                            data: {id: id,fecha: fecha}
+                                        }).done(function( msg ){					
+                                                bootbox.dialog({
+                                                    message: msg,
+                                                    title: 'Detalles del Bono',
+                                                    buttons: {
+                                                        danger: {
+                                                            label: 'Cerrar',
+                                                            className: 'btn-danger',
+                                                            callback: function() {
+
+                                                            }
+                                                        }
+                                                    }
+                                                })//fin done ajax
+                                            });//Fin callback bootbox
+                                        }"
+                               ."</script>";
+                
 		return $bonos_table;
 	
 	}
+        
+        function profundizar_bono(){
+            
+            $id_bono=$_POST['id'];
+            $fecha =isset($_POST['fecha']) ? "'".$_POST['fecha']."'" : "now()";
+            //echo $fecha;exit();
+            $id=$this->tank_auth->get_user_id();
+            
+            $bono = new $this->bono;
+            
+            $bono->setUpBono($id_bono);       
+            
+            $condiciones = array(
+                'ambos' => $bono->getCondiciones(),
+                'dar' => $bono->getCondicionesBonoDar(),
+                'recibir' => $bono->getCondicionesBonoRecibir()
+            );
+            
+            foreach ($condiciones as $tipo =>$condicion){
+               if($condicion){
+                   foreach($condicion as $rangos){
+                       $array =  (array) $rangos;
+                       $rango = array();
+                       foreach ($array as $key =>$value){
+                           //echo $key.":".$value."<br/>";
+                           array_push($rango, $value);
+                       }  
+                       //var_dump($rango);
+                       switch($rango[2]){
+                           case 1:
+                               echo "<h1>Afiliados: ".ucwords($tipo)." (".$rango[7].")</h1><br/>";
+                               $q=$this->model_bonos->condicion_afiliados($id,$fecha);
+                               echo $this->general->viewTable($q);
+                               break;
+                           case 2:
+                               echo "<h1>Ventas: ".ucwords($tipo)." (".$rango[7].")</h1>";
+                               $q=$this->model_bonos->condicion_compras($id,$fecha);
+                               echo $this->general->viewTable($q);
+                               break;
+                           case 3:
+                               echo "<h1>Compras: ".ucwords($tipo)." (".$rango[7].")</h1>";
+                               $q=$this->model_bonos->condicion_compras($id,$fecha);
+                               echo $this->general->viewTable($q);
+                               break;
+                           case 4:
+                               echo "<h1>Puntos Personales: ".ucwords($tipo)." (".$rango[7].")</h1>";
+                               $q=$this->model_bonos->condicion_puntos($id,$tipo,$fecha);
+                               echo $this->general->viewTable($q);
+                               break;
+                           case 5:
+                               echo "<h1>Puntos Red: ".ucwords($tipo)." (".$rango[7].")</h1>";
+                               $q=$this->model_bonos->condicion_puntos($id,$tipo,$fecha);
+                               echo $this->general->viewTable($q);
+                               break;
+                       }                       
+                       echo "<br/>";       
+                   }    
+               }             
+            }
+            
+            //var_dump($condiciones);
+            
+        }
 	
 }

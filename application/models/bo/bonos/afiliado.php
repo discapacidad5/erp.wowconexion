@@ -361,14 +361,14 @@ class afiliado extends CI_Model
 				
 			$q=$this->db->query("select A.debajo_de as id_afiliado
 								from afiliar A
-								where A.id_afiliado = ".$id_afiliado." and A.id_red = ".$red);
+								where A.id_afiliado = ".$id_afiliado." and A.id_afiliado > 2 and A.id_red = ".$red);
 	
 			$datos= $q->result();
 
 		}else if($tipo=="DIRECTOS"){
 			$q=$this->db->query("select A.directo as id_afiliado
 								from afiliar A
-								where A.id_afiliado = ".$id_afiliado." and A.id_red = ".$red);
+								where A.id_afiliado = ".$id_afiliado." and A.id_afiliado > 2 and A.id_red = ".$red);
 	
 			$datos= $q->result();
 	

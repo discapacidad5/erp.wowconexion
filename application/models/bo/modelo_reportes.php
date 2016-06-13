@@ -42,8 +42,7 @@ FROM users a, user_profiles b WHERE a.id=b.user_id and b.id_tipo_usuario=2 and a
 		
 		foreach ($afiliados as $afiliado){
 
-			if(($this->general->isActived($afiliado->id)==0)&& 
-					(($this->general->isActivedAfiliacionesPuntosPersonales($afiliado->id,$fecha))==true)){
+			if(($this->general->isActived($afiliado->id)==0)&& (($this->general->isActivedAfiliacionesPuntosPersonales($afiliado->id,$fecha))==true)){
 
 				array_push($afiliadosActivos,$afiliado);
 			}

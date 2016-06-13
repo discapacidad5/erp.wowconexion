@@ -11,6 +11,8 @@ class titulo extends CI_Model {
         $this->load->model('/bo/bonos/calculador_bono');
         $this->load->model('/ov/modelo_dashboard');
         $this->load->model('/ov/model_titulos');
+        $this->load->model('ov/modelo_compras');
+        $this->load->model('ov/general');
     }
 
     private $id;
@@ -190,7 +192,7 @@ class titulo extends CI_Model {
         
         $valorTituloAfiliado = $this->getTipoDeValorTitulo($id_afiliado, $titulo[0]->frecuencia, $titulo[0]->condicion_red_afilacion, $fechaActual, $titulo[0]->tipo);
 
-        $valorTituloAfiliado = (($valorTituloAfiliado * $titulo[0]->porcentaje) / 100);
+        //$valorTituloAfiliado = (($valorTituloAfiliado * $titulo[0]->porcentaje) / 100);
 
         /* Fecha: 2016-06-05 
          * Autor: Marcel Quintero
@@ -200,7 +202,7 @@ class titulo extends CI_Model {
          *<inicio>
          */
         $isPatasVal = ($titulo[0]->tipo=="PUNTOSR") 
-                ? $this->validarPatas($valorTitulo, $valorTituloAfiliado, $id_afiliado) : 0 ;
+                ? $this->validarPatas($valorTitulo, $valorTituloAfiliado, $id_afiliado, $titulo[0]->porcentaje) : 0 ;
         $isConsecutivoVal = ($titulo[0]->consecutivo>1) 
                 ? $this->validarConsecutivo($valorTitulo,$titulo[0]->porcentaje,$id_afiliado,$fechaActual,$titulo[0]->consecutivo) : 0;
         /*<fin>*/
@@ -350,30 +352,50 @@ class titulo extends CI_Model {
         return $this;
     }
 
-    public function validarPatas($rango, $valor, $afiliado) {
+    public function validarPatas($rango, $valor, $afiliado,$porcentaje) {
 
         $q = $this->db->query("SELECT id_afiliado FROM afiliar where debajo_de = " . $afiliado . " and id_red = 1");
         $hijos = $q->result();
         $hijosc= count($hijos);
         
         if($hijosc==0){return 0;}
-        
+        //var_dump($hijos);exit();
         $isValue = 0;
-        $value2 = $rango / $hijosc ;
+        $value2 = $rango * ($porcentaje/100) ;
         $value = 0;
-
+        $value3 = 0;
+        $i=0;
+        $Winner=0;
+            //echo $value2;exit();
         foreach ($hijos as $hijo) {
 
             $id = $hijo->id_afiliado;
-
+            
             $puntos_mes = $this->modelo_dashboard->get_puntos_personales_mes($id);
             $puntos_red_mes = $this->modelo_dashboard->get_puntos_red_mes($id);
+            
+            $Winner = $this->Winner($id,0);
 
-            $value = ($puntos_mes + $puntos_red_mes);
-            $isValue += ($value >= $value2) ? 0 : 1;
+            //echo $id.":".$puntos_red_mes."|".$puntos_mes."|".$Winner."|";
+            
+            $value = ($puntos_mes + $puntos_red_mes + $Winner);
+            $residuo = $rango-$value3;
+            $Maximo = array(
+                'si' => ($value3+$value2),
+                'no' => ($value3+$value)
+            );
+            if($value >= $value2){
+                 $value3 += ($Maximo['si']>=$rango) ? $residuo : $value2/($hijosc-$i);
+            }else{
+                 $value3 += ($Maximo['no']>=$rango) ? $residuo : $value;
+            }
+            $isValue += ($value==0) ? 1 : 0;
+            //echo "=".$value."|+".$value3."|";
+            $i++; 
+            
         }
-
-        return $isValue;
+        //exit();
+        return ($value3==$rango) ? 0 : $isValue;
     }
 
     public function validarConsecutivo($rango, $porcentaje, $afiliado, $fecha, $consecutivo) {
@@ -401,6 +423,32 @@ class titulo extends CI_Model {
         }
         
         return 0;
+    }
+
+    public function Winner($id,$Winner) {
+            
+            $actividad= $this->general->getActivacion($id);
+            
+            $esWinner = $this->db->query ( "SELECT * FROM venta v , cross_venta_mercancia cvm 
+						where (v.id_venta=cvm.id_venta) 
+						and (cvm.id_mercancia=1) and (v.id_estatus='ACT')
+						and v.id_user=".$id);
+            
+            $Winner = ($esWinner->result()&&($actividad=='ACT')) ? 260 : 0;
+                
+            $q = $this->db->query("SELECT id_afiliado FROM afiliar where debajo_de = " . $id . " and id_red = 1");
+            $hijos = $q->result();
+        
+            if(count($hijos)==0){
+                return $Winner;
+            }
+            
+            foreach ($hijos as $hijo) {
+                $hijo = $hijo->id_afiliado;
+                $Winner += $this->Winner($hijo,0);
+            }        
+            
+            return $Winner;
     }
 
 }

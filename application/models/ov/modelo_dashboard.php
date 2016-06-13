@@ -277,4 +277,10 @@ class modelo_dashboard extends CI_Model
   	return $puntos_meses;
   }
   
+        public function actualizarPuntosEmpresa($valor) {
+        
+            $this->db->query("UPDATE empresa_multinivel SET global = ".$valor);
+            return true;
+        }
+  
 }

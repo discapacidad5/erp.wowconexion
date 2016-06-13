@@ -449,7 +449,7 @@ function get__condicioneses_bonos_id_bono($id_bono){
 	function ver_total_bonos_id_red_fecha($id,$red,$fecha){
 		$query = $this->db->query('select 
 										h.id, h.dia, h.mes, h.ano, c.id_red, t.nombre red, b.id_bono, o.nombre,  
-										sum(b.valor) valor
+										(select sum(valor) from comision_bono where id_bono_historial = h.id and id_bono = b.id_bono and id_usuario = b.id_usuario) valor
 									from 
 										comision_bono b, cat_bono_condicion c , tipo_red t, bono o, comision_bono_historial h
 									where 
@@ -529,7 +529,7 @@ function get__condicioneses_bonos_id_bono($id_bono){
 		$q=$this->db->query("SELECT 
 									h.id ,  h.fecha, h.id_bono,
 									b.nombre bono ,
-									(select count(distinct id_usuario) from comision_bono where id_bono_historial = h.id) afiliados,
+									(select count(distinct id_usuario) from comision_bono where id_bono_historial = h.id and valor > 0) afiliados,
 									(select sum(valor) from comision_bono where id_bono_historial = h.id) total
 								FROM comision_bono_historial h , bono b 
 								WHERE 
@@ -704,5 +704,90 @@ function get__condicioneses_bonos_id_bono($id_bono){
 		$this->db->query("delete from comisionPuntosRemanentes where id_bono_historial = ".$id);
 		return true ;
 	}
+        
+        
+        function condicion_afiliados($id,$fecha){
+            
+            
+            
+            $q=$this->db->query("select 
+                                                        a.id_afiliado, concat(p.nombre, ' ', p.apellido), u.created
+                                                    from
+                                                        afiliar a,
+                                                        users u,
+                                                        user_profiles p
+                                                    where
+                                                        p.user_id = u.id
+                                                            and month(u.created) = month(".$fecha.")
+                                                            and a.id_afiliado = u.id
+                                                            and a.directo =".$id);
+            return $q->result();
+                               
+        }
 	
+        function condicion_compras($id,$fecha){
+            $q=$this->db->query("select distinct
+                                                        v.id_venta,
+                                                        v.fecha,
+                                                        (select 
+                                                                concat(nombre,' ',apellido,' (',user_id,')')
+                                                            from
+                                                                user_profiles
+                                                            where
+                                                                user_id = v.id_user) usuario,
+                                                        i.item,
+                                                        (cvm.costo_total) valor
+                                                    from
+                                                        items i,
+                                                        venta v,
+                                                        comision c,
+                                                        cross_venta_mercancia cvm
+                                                    where
+                                                        i.id = cvm.id_mercancia and
+                                                        cvm.id_venta = v.id_venta
+                                                            and month(v.fecha) = month(".$fecha.")
+                                                            and v.id_venta = c.id_venta
+                                                            and c.id_afiliado = ".$id."
+                                                            and cvm.id_mercancia = 4");
+                               return $q->result();
+        }
+        
+        function condicion_puntos($id,$sentido,$fecha){
+            
+            $validar = array(
+                'from' => ($sentido=="recibir") ? "comision c," : "",
+                'where' => ($sentido=="recibir") ? "v.id_venta = c.id_venta and " : "",
+                'and' => ($sentido=="recibir") ? "c.id_afiliado = " : "v.id_user = "
+            );
+            
+            $query = "select 
+                                                        distinct v.id_venta,v.fecha,
+                                                        (select 
+                                                                concat(nombre,' ',apellido,' (',user_id,')')
+                                                            from
+                                                                user_profiles
+                                                            where
+                                                                user_id = v.id_user) usuario,
+                                                        i.item, m.puntos_comisionables puntos
+                                                    from
+                                                        items i,".
+                                                        $validar['from'].
+                                                        "mercancia m,
+                                                        cross_venta_mercancia cvm,
+                                                        venta v
+                                                    where
+                                                            i.id = m.id and
+                                                            m.id = cvm.id_mercancia and
+                                                            cvm.id_venta = v.id_venta and ".
+                                                            $validar['where'].
+                                                            "month(v.fecha) = month(".$fecha.") and ".
+                                                            $validar['and'].$id;
+            
+           $q=$this->db->query($query);
+            
+           return $q->result();
+                               
+                               
+        }
+        
 }

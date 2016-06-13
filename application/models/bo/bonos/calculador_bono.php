@@ -9,7 +9,13 @@ class calculador_bono extends CI_Model
         private $titulo;
 
 	private $fechaCalculoBono; 
-	/*
+        
+        private $globales = array(
+                    4 => array(),
+                    5 => array(),
+                    6 => array()
+                );
+        /*
 	 * Estado
 	 * El Afiliado Es Cobrando El bono Para Repartir :DAR
 	 * El Afilido Esta Recibiendo La comision Bono   : REC
@@ -111,13 +117,15 @@ class calculador_bono extends CI_Model
 		
 		foreach ($usuarios as $usuario){
 			$id_afiliado=$usuario->id_afiliado;
-                        //($id_afiliado == 1004) ?
+                        //($id_afiliado == 1000) ?
 			$this->darComisionRedDeAfiliado(
                                 $bono,$id_historial_pago_bono,
                                 $id_afiliado,$fechaActual
                         );//: '';
 		}
 		
+                ($id_bono > 3 ) ? $this->BonoGlobal($id_historial_pago_bono,$id_bono,$fechaActual): '';
+                
 		return true;
 	}
 	
@@ -208,7 +216,7 @@ class calculador_bono extends CI_Model
 	public function darComisionRedDeAfiliado($bono,$id_bono_historial,$id_usuario,$fecha){
 		
                 $id_bono=$bono->getId();
-                $PuedeCobrar = $this->usuarioPuedeCobrarBono($id_bono,$id_usuario,$fecha);
+                $PuedeCobrar = 1;//$this->usuarioPuedeCobrarBono($id_bono,$id_usuario,$fecha);
                 $titulo = $this->model_titulos->getTitulo($id_usuario);
                 
                 if($PuedeCobrar){
@@ -229,26 +237,24 @@ class calculador_bono extends CI_Model
                                         $valor->getCondicionRed(),$valor->getVerticalidad()
                                         ) : '';
                             }else if($id_bono>3){
-                                ($titulo>3) ? 
-                                $this->repartirComisionSegunTipoDeReparticion( 
-                                        $id_bono,$id_bono_historial,$id_usuario,
-                                        $red,$valor->getNivel(),$valor->getValor(),
-                                        $valor->getCondicionRed(),$valor->getVerticalidad()
-                                        ) : '';
-                            }else{
+                                ($titulo>3) ? array_push($this->globales[$titulo], $id_usuario) : '';
+                                
+                            }else{ 
+                                //echo "aqui";exit();
                                 $this->repartirComisionSegunTipoDeReparticion( 
                                         $id_bono,$id_bono_historial,$id_usuario,
                                         $red,$valor->getNivel(),$valor->getValor(),
                                         $valor->getCondicionRed(),$valor->getVerticalidad()
                                         );
-                            }                                
+                            }                            
 				
-			}//exit();
+			}
+                        
 		}
 	}
 	
 	private function repartirComisionSegunTipoDeReparticion($id_bono,$id_bono_historial,$id_usuario,$red,$nivel,$valor,$condicion_red,$verticalidad) {
-            //echo $nivel."<br/>";
+            //echo $verticalidad."<br/>";exit();
             $fecha=$this->getFechaCalculoBono();
 		
 		/* Repartir valor en $ hacia arriba o hacia abajo de la red */
@@ -673,5 +679,78 @@ class calculador_bono extends CI_Model
 		return $this;
 	}
 
-	
+    public function get_puntos_empresa() {
+        
+        $q=$this->db->query('select global from empresa_multinivel');
+        $q=$q->result();
+        return $q[0]->global;
+        
+    }
+
+    public function BonoGlobal($historial,$bono,$fecha) {
+        
+        //var_dump($this->globales);exit();
+        $puntos_empresa = $this->get_puntos_empresa();
+        $this->BonoGlobalPasado($fecha);
+        $i=1;
+        foreach ($this->globales as $global){    
+            if($global){
+               $porcentaje = $i/100;
+               $valor = ($puntos_empresa*$porcentaje)/count($global);
+               //echo count($global)."<br/>";
+               foreach ($global as $id){
+                        //echo $id."<br/>";
+                        $id_transaccion= $this->repartidor_comision_bono->getIdTransaccionPagoBono();
+                        //echo $id_transaccion."<br/>";
+                        $datos = array(
+				'id' => $id_transaccion,
+				'id_usuario'   => $id,
+				'id_bono'    => $bono,
+				'id_bono_historial'    => $historial,
+				'valor' => $valor
+                        );
+                        $this->db->insert('comision_bono',$datos);
+               } 
+            }
+            $i++;
+        }
+        
+    }
+
+    public function BonoGlobalPasado($fecha) {
+        
+        for ($i=4;$i<7;$i++){
+            
+            $q=$this->db->query("select 
+                                h.fecha ,c.*
+                            from
+                                comision_bono c, comision_bono_historial h
+                            where
+                                    h.id = c.id_bono_historial and
+                                c.id_bono = ".($i-3)." and
+                                    c.id_usuario > 2 and
+                                    h.fecha < '".$fecha."'
+                            group by c.id_bono,c.id_usuario
+                            order by c.id_bono,c.id_usuario");
+            $q=$q->result();
+            
+            if($q){
+                $val=0;
+                foreach ($q as $global){  
+                    $id= $global->id_usuario;
+                    foreach ($this->globales[$i] as $existente){
+                        if($id==$existente){
+                            $val = 1;
+                        }
+                    }
+                    if($val==0){
+                        array_push($this->globales[$i], $id);
+                    }
+                }
+            } 
+            
+        }             
+        
+    }
+
 }
