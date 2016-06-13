@@ -711,7 +711,7 @@ function get__condicioneses_bonos_id_bono($id_bono){
             
             
             $q=$this->db->query("select 
-                                                        a.id_afiliado, concat(p.nombre, ' ', p.apellido), u.created
+                                                        a.id_afiliado, concat(p.nombre, ' ', p.apellido) nombre, u.created
                                                     from
                                                         afiliar a,
                                                         users u,
