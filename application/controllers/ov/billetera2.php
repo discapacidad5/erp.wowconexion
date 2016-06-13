@@ -700,7 +700,7 @@ class billetera2 extends CI_Controller
                            array_push($rango, $value);
                        }  
                        //var_dump($rango);
-                       switch($rango[2]){
+                       switch($rango[3]){
                            case 1:
                                echo "<h1>Afiliados: ".ucwords($tipo)." (".$rango[7].")</h1><br/>";
                                $q=$this->model_bonos->condicion_afiliados($id,$fecha);

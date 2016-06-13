@@ -724,7 +724,7 @@ function get__condicioneses_bonos_id_bono($id_bono){
         function condicion_afiliados($id,$fecha){
             
             $afiliados = $this->afiliados_Red($id,array());
-            
+            //echo implode(",", $afiliados);exit();
             $q=$this->db->query("select 
                                                         a.id_afiliado, concat(p.nombre, ' ', p.apellido) nombre, u.created
                                                     from
