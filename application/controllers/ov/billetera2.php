@@ -678,7 +678,7 @@ class billetera2 extends CI_Controller
             $id_bono=$_POST['id'];
             $fecha =isset($_POST['fecha']) ? "'".$_POST['fecha']."'" : "now()";
             //echo $fecha;exit();
-            $id=$this->tank_auth->get_user_id();
+            $id= isset($_POST['usuario']) ? $_POST['usuario'] : $this->tank_auth->get_user_id();
             
             $bono = new $this->bono;
             

@@ -658,7 +658,7 @@ class bonos extends CI_Controller
 		{
 				
 			echo "<tr>
-			<td class='sorting_1'>".$hist->id_usuario."</td>
+			<td class='sorting_1'>".$hist->id_usuario."&nbsp;<a style='cursor: pointer' title='Ver Detalles' onclick='profundizar(".$hist->id_usuario.",".$hist->id_bono.",`".$hist->fecha."`)'><i class='fa fa-eye'></i><a></td>
 			<td>".$hist->nombres."</td>
 			<td>".$hist->bono."</td>
 			<td>".$hist->dia."</td>
@@ -696,6 +696,31 @@ class bonos extends CI_Controller
 	
 		echo "</tbody>
 		</table><tr class='odd' role='row'></div>";
+                
+                //escribir funcion js
+                echo  "<script>"
+                                .   "function profundizar(usuario,id,fecha){"
+                                .   "   $.ajax({
+                                            type: 'POST',
+                                            url: '/ov/billetera2/profundizar_bono',
+                                            data: {id: id,usuario: usuario,fecha: fecha}
+                                        }).done(function( msg ){					
+                                                bootbox.dialog({
+                                                    message: msg,
+                                                    title: 'Detalles del Bono',
+                                                    buttons: {
+                                                        danger: {
+                                                            label: 'Cerrar',
+                                                            className: 'btn-danger',
+                                                            callback: function() {
+
+                                                            }
+                                                        }
+                                                    }
+                                                })//fin done ajax
+                                            });//Fin callback bootbox
+                                        }"
+                               ."</script>";
 	
 	}
 	

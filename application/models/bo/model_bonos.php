@@ -705,10 +705,25 @@ function get__condicioneses_bonos_id_bono($id_bono){
 		return true ;
 	}
         
+        function afiliados_Red($id,$array){
+            
+            $q=$this->db->query('select id_afiliado from afiliar where debajo_de = '.$id);
+            $q=$q->result();
+            
+            if($q){
+                foreach ($q as $value){
+                    $id = $value->id_afiliado;
+                    array_push($array, $id);
+                    $array = $this->afiliados_Red($id,$array);
+                }
+            }
+            
+            return $array;
+        }
         
         function condicion_afiliados($id,$fecha){
             
-            
+            $afiliados = $this->afiliados_Red($id,array());
             
             $q=$this->db->query("select 
                                                         a.id_afiliado, concat(p.nombre, ' ', p.apellido) nombre, u.created
@@ -720,7 +735,7 @@ function get__condicioneses_bonos_id_bono($id_bono){
                                                         p.user_id = u.id
                                                             and month(u.created) = month(".$fecha.")
                                                             and a.id_afiliado = u.id
-                                                            and a.directo =".$id);
+                                                            and a.id_afiliado in (".implode(",", $afiliados).")");
             return $q->result();
                                
         }
