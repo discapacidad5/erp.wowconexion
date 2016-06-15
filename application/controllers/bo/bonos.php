@@ -658,7 +658,7 @@ class bonos extends CI_Controller
 		{
 				
 			echo "<tr>
-			<td class='sorting_1'>".$hist->id_usuario."&nbsp;<a style='cursor: pointer' title='Ver Detalles' onclick='profundizar(".$hist->id_usuario.",".$hist->id_bono.",`".$hist->fecha."`)'><i class='fa fa-eye'></i><a></td>
+			<td class='sorting_1'>".$hist->id_usuario."&nbsp;<a style='cursor: pointer' title='Ver Detalles' onclick='profundizar(".$hist->id_usuario.",".$hist->id_bono.",`".$hist->fecha."`,".$hist->valor.")'><i class='fa fa-eye'></i><a></td>
 			<td>".$hist->nombres."</td>
 			<td>".$hist->bono."</td>
 			<td>".$hist->dia."</td>
@@ -699,11 +699,11 @@ class bonos extends CI_Controller
                 
                 //escribir funcion js
                 echo  "<script>"
-                                .   "function profundizar(usuario,id,fecha){"
+                                .   "function profundizar(usuario,id,fecha,valor){"
                                 .   "   $.ajax({
                                             type: 'POST',
                                             url: '/ov/billetera2/profundizar_bono',
-                                            data: {id: id,usuario: usuario,fecha: fecha}
+                                            data: {id: id,usuario: usuario,fecha: fecha,valor: valor}
                                         }).done(function( msg ){					
                                                 bootbox.dialog({
                                                     message: msg,

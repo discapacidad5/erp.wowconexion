@@ -54,7 +54,7 @@ class calculador_bono extends CI_Model
 		$bono=new $this->bono();
 		$bono->setUpBono($id_bono);
 			
-		if($this->isActivo($bono)&&$this->isVigentePorFecha($bono,$fechaCalculo)&&($this->isPagado($bono, $fechaCalculo)==false)){
+		if($this->isActivo($bono)&&$this->isVigentePorFecha($bono,$fechaCalculo)/*&&($this->isPagado($bono, $fechaCalculo)==false)*/){
 			$this->pagarComisionesBonoPorFecha($bono,$fechaCalculo);
 			return true;
 		}
@@ -94,7 +94,7 @@ class calculador_bono extends CI_Model
 		$id_bono=$bono->getId();
 		$red=$bono->getIdRed(); 
 		$usuarios=$this->getUsuariosRed($red);
-	
+                //var_dump($red);
 		$repartidorComisionBono=new $this->repartidor_comision_bono();
 	
 		$frecuencia=$bono->getActivacionBono()->getFrecuencia();
@@ -117,14 +117,14 @@ class calculador_bono extends CI_Model
 		
 		foreach ($usuarios as $usuario){
 			$id_afiliado=$usuario->id_afiliado;
-                        //($id_afiliado == 1000) ?
+                        //($id_afiliado == 1111) ?
 			$this->darComisionRedDeAfiliado(
                                 $bono,$id_historial_pago_bono,
                                 $id_afiliado,$fechaActual
                         );//: '';
 		}
 		
-                ($id_bono > 3 ) ? $this->BonoGlobal($id_historial_pago_bono,$id_bono,$fechaActual): '';
+                ($id_bono > 3 && $id_bono<7) ? $this->BonoGlobal($id_historial_pago_bono,$id_bono,$fechaActual): '';
                 
 		return true;
 	}
@@ -216,7 +216,7 @@ class calculador_bono extends CI_Model
 	public function darComisionRedDeAfiliado($bono,$id_bono_historial,$id_usuario,$fecha){
 		
                 $id_bono=$bono->getId();
-                $PuedeCobrar = 1;//$this->usuarioPuedeCobrarBono($id_bono,$id_usuario,$fecha);
+                $PuedeCobrar = $this->usuarioPuedeCobrarBono($id_bono,$id_usuario,$fecha);
                 $titulo = $this->model_titulos->getTitulo($id_usuario);
                 
                 if($PuedeCobrar){
@@ -236,11 +236,11 @@ class calculador_bono extends CI_Model
                                         $red,$valor->getNivel(),$valor->getValor(),
                                         $valor->getCondicionRed(),$valor->getVerticalidad()
                                         ) : '';
-                            }else if($id_bono>3){
+                            }else if($id_bono>3&&$id_bono<7){
                                 ($titulo>3) ? array_push($this->globales[$titulo], $id_usuario) : '';
                                 
                             }else{ 
-                                //echo "aqui";exit();
+                                //echo $id_usuario."//<br/>";//exit();
                                 $this->repartirComisionSegunTipoDeReparticion( 
                                         $id_bono,$id_bono_historial,$id_usuario,
                                         $red,$valor->getNivel(),$valor->getValor(),
@@ -254,7 +254,7 @@ class calculador_bono extends CI_Model
 	}
 	
 	private function repartirComisionSegunTipoDeReparticion($id_bono,$id_bono_historial,$id_usuario,$red,$nivel,$valor,$condicion_red,$verticalidad) {
-            //echo $verticalidad."<br/>";exit();
+            //echo $verticalidad."<br/>";//exit();
             $fecha=$this->getFechaCalculoBono();
 		
 		/* Repartir valor en $ hacia arriba o hacia abajo de la red */
@@ -311,12 +311,17 @@ class calculador_bono extends CI_Model
 		
 		$usuario->getAfiliadosPorNivel($id_usuario,$red,$nivel,$condicionRed,1,$verticalidad);
 		$afiliados=$usuario->getIdAfiliadosRed();
-
+                //echo "af:";
+                //var_dump($afiliados);
+                //echo "<br/>";
 		foreach ($afiliados as $idAfiliado){
-
-			if($this->usuarioPuedeRecibirBono($id_bono, $idAfiliado, $this->getFechaCalculoBono())){
+                $PuedeRecibir=$this->usuarioPuedeRecibirBono($id_bono, $idAfiliado, $this->getFechaCalculoBono());
+			if($PuedeRecibir){
 				$valorTotal=(($this->valorCondicion*$valor)/100);
-				$repartidorComisionBono->repartirComisionBono($repartidorComisionBono->getIdTransaccionPagoBono(),$idAfiliado,$id_bono,$id_bono_historial,$valorTotal);
+                                //echo ">".$idAfiliado."|".$valorTotal."<br/>";
+                                ($this->BonoWinner($id_bono,$idAfiliado))?
+				$repartidorComisionBono->repartirComisionBono($repartidorComisionBono->getIdTransaccionPagoBono(),$idAfiliado,$id_bono,$id_bono_historial,$valorTotal)
+                                    : '';
 	
 			}
 		}
@@ -330,7 +335,10 @@ class calculador_bono extends CI_Model
 		
 		foreach ($afiliados as $idAfiliado){
 			if($this->usuarioPuedeRecibirBono($id_bono, $idAfiliado, $this->getFechaCalculoBono())){
-				$repartidorComisionBono->repartirComisionBono($repartidorComisionBono->getIdTransaccionPagoBono(),$idAfiliado,$id_bono,$id_bono_historial,$valor);
+                            //echo ">".$idAfiliado."<br/>";
+                            ($this->BonoWinner($id_bono,$idAfiliado))?
+                            $repartidorComisionBono->repartirComisionBono($repartidorComisionBono->getIdTransaccionPagoBono(),$idAfiliado,$id_bono,$id_bono_historial,$valor)
+                                    : '';
 	
 			}
 		}
@@ -363,6 +371,9 @@ class calculador_bono extends CI_Model
 	}
 	
 	public function usuarioPuedeRecibirBono($id_bono,$id_usuario,$fechaActual){
+            
+            
+            
 		$bono=$this->bono;
 		$bono->setUpBono($id_bono);
 		$this->setEstado("REC");
@@ -395,15 +406,16 @@ class calculador_bono extends CI_Model
 			$condicion2=$condicionBono->getCondicionBono2();
 
 			$valor = $this->getValorCondicionUsuario ($id_bono,$esUnPlanBinario, $tipoDeCondicion,$id_usuario,$red,$tipoDeAfiliados,$tipoDeBusquedaEnLaRed,$profundidadRed,$fechaInicio,$fechaFin ,$condicion1,$condicion2);
-
+                        
 			if($esUnPlanBinario=="SI"){
 				if($valor<$valorCondicion&&$resultadoBinario==true)
 					$resultadoBinario=false;
 			}else {
-				if($valor<$valorCondicion)
-					
-					return false;
-			}
+                            if ($valor < $valorCondicion) {
+                                
+                                    return false;
+                                }
+                        }
 
 		}
 
@@ -752,5 +764,49 @@ class calculador_bono extends CI_Model
         }             
         
     }
+    
+    function isWinner($id){
+        //echo "<winner>";
+		$esWinner = $this->db->query ( "SELECT * FROM venta v , cross_venta_mercancia cvm 
+												where (v.id_venta=cvm.id_venta) 
+												and (cvm.id_mercancia=1) and (v.id_estatus='ACT')
+												and v.id_user=".$id);
+		if ($esWinner->result()) {
+                    return true;
+                }
+                
+                return false;
+    }
+	
+    function isBasic($id){
+        //echo "<basic>";
+		$esWinner = $this->db->query ( "SELECT * FROM venta v , cross_venta_mercancia cvm 
+												where (v.id_venta=cvm.id_venta) 
+												and (cvm.id_mercancia=6) and (v.id_estatus='ACT')
+												and v.id_user=".$id);
+		if ($esWinner->result()) {
+                    return true;
+                }
+                
+                return false;
+    }
+        
+    function BonoWinner($bono,$id){
+            
+        if($bono==3||$bono==7||$bono==1||$bono==8){
+                
+                    $pasa = ($bono==3||$bono==1) ? $this->isBasic($id) : $this->isWinner($id);
+                    //echo ($pasa) ? $bono."->".$id.":".($pasa ? 1 : 0)."<br/>" : '';
+                    if ($pasa){
+                        return true;
+                    }  else {
+                        return false;
+                    }
+
+        }
+                
+        return true;
+        
+    }    
 
 }

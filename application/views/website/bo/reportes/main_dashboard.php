@@ -33,6 +33,7 @@
 										<option value="9" onclick="tipo_reporte()">Ventas Por Cobrar Bancos</option>
 										<option value="12">Ventas Pagadas Bancos</option>
 										<option value="14">Ventas Pagos Enlinea</option>
+                                                                                <option value="19" >Bonos Pagados Detallado</option>
 										<option value="13" >Comisiones Por Pagar</option>
 										<option value="10" >Comisiones Pagadas</option>
 										<option value="17" >Bonos Pagados</option>
@@ -318,7 +319,7 @@
 			}
 		
 			function validarsifecha(tipo,inicio,fin){
-				var tiposfecha = [1,7,10,11,12,13,14,17,18];
+				var tiposfecha = [1,7,10,11,12,13,14,17,18,19];
 				for (i = 0; i < tiposfecha.length; i++)  {
 					if(tipo == tiposfecha[i]){
 						return (inicio == '' || fin == '') ? true : false;						

@@ -671,7 +671,7 @@ function get__condicioneses_bonos_id_bono($id_bono){
 	
 	function getBonosPagadosTodos($inicio,$fin){
 		$q=$this->db->query("SELECT -- c.id,
-									h.id, -- c.id_usuario,
+									h.id,  c.id_usuario,
 									concat(p.nombre,' ',p.apellido) as afiliado,
 									u.username as usuario,
 									c.id_bono,
@@ -705,6 +705,38 @@ function get__condicioneses_bonos_id_bono($id_bono){
 		return true ;
 	}
         
+        function afiliado_hallar($id,$sentido,$hallar,$nivel){
+            
+            if($id==$hallar){
+                return $nivel;
+            }
+            
+            $query = ($sentido == 1) 
+                    ? 'select id_afiliado from afiliar where debajo_de = '.$id 
+                    : 'select debajo_de from afiliar where id_afiliado = '.$id.' and id_red = 1' ;
+                    
+            //echo $query; exit();
+            $q=$this->db->query($query);
+            $q=$q->result();
+            
+            if($q){
+                foreach ($q as $value){
+                    $id = $value->id_afiliado;
+                                      
+                    if($id==$hallar){
+                        return $nivel+1;
+                    }else{
+                        $i=$this->afiliado_hallar($id,$sentido, $hallar, $nivel+1);
+                        if($i){
+                            return $i;
+                        }
+                    }  
+                    
+                }
+                
+            }
+        }
+        
         function afiliados_Red($id,$array){
             
             $q=$this->db->query('select id_afiliado from afiliar where debajo_de = '.$id);
@@ -725,7 +757,7 @@ function get__condicioneses_bonos_id_bono($id_bono){
             
             $afiliados = $this->afiliados_Red($id,array());
             //echo implode(",", $afiliados);exit();
-            $q=$this->db->query("select 
+            $q = $this->db->query("select 
                                                         a.id_afiliado, concat(p.nombre, ' ', p.apellido) nombre, u.created
                                                     from
                                                         afiliar a,
@@ -740,18 +772,20 @@ function get__condicioneses_bonos_id_bono($id_bono){
                                
         }
 	
-        function condicion_compras($id,$fecha){
-            $q=$this->db->query("select distinct
+        function condicion_compras($id,$fecha,$valor,$bono){
+            
+            $q = $this->db->query("select distinct
                                                         v.id_venta,
                                                         v.fecha,
+                                                        v.id_user id,
                                                         (select 
-                                                                concat(nombre,' ',apellido,' (',user_id,')')
+                                                                concat(nombre,' ',apellido)
                                                             from
                                                                 user_profiles
                                                             where
                                                                 user_id = v.id_user) usuario,
                                                         i.item,
-                                                        (cvm.costo_total) valor
+                                                        (cvm.costo_total) valor, 'bono'
                                                     from
                                                         items i,
                                                         venta v,
@@ -764,10 +798,12 @@ function get__condicioneses_bonos_id_bono($id_bono){
                                                             and v.id_venta = c.id_venta
                                                             and c.id_afiliado = ".$id."
                                                             and cvm.id_mercancia = 4");
-                               return $q->result();
+            var_dump($q->result());
+            return $this->configurarDetalle($id,$bono,$valor,$q->result(),1,1);
+            
         }
         
-        function condicion_puntos($id,$sentido,$fecha){
+        function condicion_puntos($id,$sentido,$fecha,$valor,$bono){
             
             $validar = array(
                 'from' => ($sentido=="recibir") ? "comision c," : "",
@@ -776,14 +812,14 @@ function get__condicioneses_bonos_id_bono($id_bono){
             );
             
             $query = "select 
-                                                        distinct v.id_venta,v.fecha,
+                                                        distinct v.id_venta,v.fecha,v.id_user id,
                                                         (select 
-                                                                concat(nombre,' ',apellido,' (',user_id,')')
+                                                                concat(nombre,' ',apellido)
                                                             from
                                                                 user_profiles
                                                             where
                                                                 user_id = v.id_user) usuario,
-                                                        i.item, m.puntos_comisionables puntos
+                                                        i.item, m.puntos_comisionables puntos, 'bono'
                                                     from
                                                         items i,".
                                                         $validar['from'].
@@ -799,10 +835,29 @@ function get__condicioneses_bonos_id_bono($id_bono){
                                                             $validar['and'].$id;
             
            $q=$this->db->query($query);
-            
-           return $q->result();
-                               
+           
+           return $this->configurarDetalle($id,$bono,$valor,$q->result(),2,1);                               
                                
         }
+
+    public function configurarDetalle($id,$bono,$valor,$q, $tipo,$sentido) {
         
+            $p = $this->db->query("select * from cat_bono_valor_nivel where id_bono = ".$bono." order by nivel asc");
+            $p = $p->result();
+            
+            $valores = array();
+            
+            foreach ($p as $dato){
+                array_push($valores, $dato->valor);
+            }
+            
+            foreach ($q as $dato){
+                $nivel= $this->afiliado_hallar($id,$sentido,$dato->id, 0);
+                $dato->bono = ($tipo==1) ? $valores[$nivel] : (($dato->puntos*10)*$valores[$nivel]);                
+            }
+            
+            return $q;
+            
+    }
+
 }

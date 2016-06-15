@@ -534,7 +534,9 @@ class afiliado extends CI_Model
 			$datos=$this->getAfiliadosPorVerticalidad ( $id_afiliado, $red ,$tipo,$verticalidad );
 
 			foreach ($datos as $dato){
-
+                                //echo $nivel."<br/>";
+                                //var_dump($dato);
+                                //echo "<br/>";
 				if($nivel==$limite){
 					array_push($this->idAfiliadosRed,$dato->id_afiliado);
 				}

@@ -382,7 +382,6 @@ class general extends CI_Model
             //echo strtoupper($key)."|";
             $i++;
         }        
-       
         $table .= " </thead>
 		<tbody>";
 	

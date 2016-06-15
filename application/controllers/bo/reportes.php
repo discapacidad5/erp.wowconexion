@@ -23,6 +23,8 @@ class reportes extends CI_Controller {
 		$this->load->model ( 'modelo_cobros' );
 		$this->load->model ( 'bo/modelo_historial_consignacion' );
 		$this->load->model ( 'model_excel' );
+                $this->load->model ('/bo/bonos/bono');
+                
 	}
 	function index() {
 		if (! $this->tank_auth->is_logged_in ()) { // logged in
@@ -179,6 +181,9 @@ class reportes extends CI_Controller {
 			case 18 :
 					$this->reporte_todo_comisiones ();
 					break;
+                        case 19 :
+					$this->reporte_todo_bonos ();
+					break;
 		}
 	}
 	
@@ -203,7 +208,7 @@ class reportes extends CI_Controller {
 				<tbody>";
 		
 		$bonos = $this->model_bonos->getBonosPagadosTodos( $inicio, $fin );
-		
+                
 		foreach ( $bonos as $bono ) {
 			
 				$total += $bono->valor;
@@ -242,7 +247,7 @@ class reportes extends CI_Controller {
 	}
 	
 	function reporte_todo_comisiones() {
-	
+                
 		$inicio = $_POST ['startdate'];
 		$fin = $_POST ['finishdate'];
 	
@@ -1817,4 +1822,21 @@ class reportes extends CI_Controller {
 		// force user to download the Excel file without writing it to server's HD
 		$objWriter->save ( 'php://output' );
 	}
+
+    public function reporte_todo_bonos() {
+        
+        $inicio = $_POST ['startdate'];
+        $fin = $_POST ['finishdate'];
+                
+        $bonos = $this->model_bonos->getBonosPagadosTodos( $inicio, $fin );
+        
+        foreach ($bonos as $bono){
+            
+            echo $bono ->id;
+            
+        }
+    }
+    
+    
+
 }

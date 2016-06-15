@@ -605,7 +605,7 @@ class billetera2 extends CI_Controller
 		{
 			
 			$bonos_table .= "<tr>
-			<td class='sorting_1'>".$bono->id."&nbsp;<a style='cursor: pointer' title='Ver Detalles' onclick='profundizar(".$bono->id_bono.",`".$bono->fecha."`)'><i class='fa fa-eye'></i><a></td>
+			<td class='sorting_1'>".$bono->id."&nbsp;<a style='cursor: pointer' title='Ver Detalles' onclick='profundizar(".$bono->id_bono.",`".$bono->fecha."`,".$bono->valor.")'><i class='fa fa-eye'></i><a></td>
 			<td>".$bono->bono."</td>
 			<td>".$bono->descripcion."</td>
 			<td>".$bono->dia."</td>
@@ -646,11 +646,11 @@ class billetera2 extends CI_Controller
 		
                 //escribir funcion js
                 $bonos_table.=  "<script>"
-                                .   "function profundizar(id,fecha){"
+                                .   "function profundizar(id,fecha,valor){"
                                 .   "   $.ajax({
                                             type: 'POST',
                                             url: '/ov/billetera2/profundizar_bono',
-                                            data: {id: id,fecha: fecha}
+                                            data: {id: id,fecha: fecha,valor: valor}
                                         }).done(function( msg ){					
                                                 bootbox.dialog({
                                                     message: msg,
@@ -677,6 +677,7 @@ class billetera2 extends CI_Controller
             
             $id_bono=$_POST['id'];
             $fecha =isset($_POST['fecha']) ? "'".$_POST['fecha']."'" : "now()";
+            $valor=$_POST['valor'];
             //echo $fecha;exit();
             $id= isset($_POST['usuario']) ? $_POST['usuario'] : $this->tank_auth->get_user_id();
             
@@ -708,22 +709,22 @@ class billetera2 extends CI_Controller
                                break;
                            case 2:
                                echo "<h1>Ventas: ".ucwords($tipo)." (".$rango[7].")</h1>";
-                               $q=$this->model_bonos->condicion_compras($id,$fecha);
+                               $q=$this->model_bonos->condicion_compras($id,$fecha,$valor,$id_bono);
                                echo $this->general->viewTable($q);
                                break;
                            case 3:
                                echo "<h1>Compras: ".ucwords($tipo)." (".$rango[7].")</h1>";
-                               $q=$this->model_bonos->condicion_compras($id,$fecha);
+                               $q=$this->model_bonos->condicion_compras($id,$fecha,$valor,$id_bono);
                                echo $this->general->viewTable($q);
                                break;
                            case 4:
                                echo "<h1>Puntos Personales: ".ucwords($tipo)." (".$rango[7].")</h1>";
-                               $q=$this->model_bonos->condicion_puntos($id,$tipo,$fecha);
+                               $q=$this->model_bonos->condicion_puntos($id,$tipo,$fecha,$valor,$id_bono);
                                echo $this->general->viewTable($q);
                                break;
                            case 5:
                                echo "<h1>Puntos Red: ".ucwords($tipo)." (".$rango[7].")</h1>";
-                               $q=$this->model_bonos->condicion_puntos($id,$tipo,$fecha);
+                               $q=$this->model_bonos->condicion_puntos($id,$tipo,$fecha,$valor,$id_bono);
                                echo $this->general->viewTable($q);
                                break;
                        }                       

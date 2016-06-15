@@ -187,8 +187,14 @@ class titulo extends CI_Model {
         if (!isset($titulo_siguiente[0])) {
             return $titulo[0]->id;
         }
-
-        $valorTituloSiguiente = $titulo_siguiente[0]->valor;
+        
+        $valorTituloSiguiente = $this->getTipoDeValorTitulo($id_afiliado, $titulo_siguiente[0]->frecuencia, $titulo_siguiente[0]->condicion_red_afilacion, $fechaActual, $titulo_siguiente[0]->tipo);
+        
+        $Siguiente = ($titulo_siguiente[0]->tipo=="PUNTOSR") 
+                ? $this->validarPatas($titulo_siguiente[0]->valor, $valorTituloSiguiente, $id_afiliado, $titulo_siguiente[0]->porcentaje) : 0 ;
+        $Siguiente += ($titulo_siguiente[0]->consecutivo>1) 
+                ? $this->validarConsecutivo($titulo_siguiente[0]->valor,$titulo_siguiente[0]->porcentaje,$id_afiliado,$fechaActual,$titulo_siguiente[0]->consecutivo) : 0;
+        
         
         $valorTituloAfiliado = $this->getTipoDeValorTitulo($id_afiliado, $titulo[0]->frecuencia, $titulo[0]->condicion_red_afilacion, $fechaActual, $titulo[0]->tipo);
 
@@ -212,7 +218,7 @@ class titulo extends CI_Model {
         }
 
         /*<inicio 2>*/
-        if (($isPatasVal == 0) && ($isConsecutivoVal == 0) && ($valorTitulo <= $valorTituloAfiliado) && ($valorTituloAfiliado < $valorTituloSiguiente))
+        if (($isPatasVal == 0) && ($isConsecutivoVal == 0) && ($valorTitulo <= $valorTituloAfiliado) && ($Siguiente!==0))
         /*<fin 2> */ {
             return $idValorTitulo;
         }
@@ -385,17 +391,18 @@ class titulo extends CI_Model {
                 'no' => ($value3+$value)
             );
             if($value >= $value2){
-                 $value3 += ($Maximo['si']>=$rango) ? $residuo : $value2/($hijosc-$i);
+                 $value3 += ($Maximo['si']>=$rango) ? $residuo : $value2;
             }else{
                  $value3 += ($Maximo['no']>=$rango) ? $residuo : $value;
             }
-            $isValue += ($value==0) ? 1 : 0;
-            //echo "=".$value."|+".$value3."|";
+            $isValue += ($value==01||$value3<$rango) ? 1 : 0;
+           // echo "|(".$id.")=".$value."|+".$value3."|";
             $i++; 
             
         }
+        //echo "<br/>";
         //exit();
-        return ($value3==$rango) ? 0 : $isValue;
+        return ($value3>=$rango) ? 0 : $isValue;
     }
 
     public function validarConsecutivo($rango, $porcentaje, $afiliado, $fecha, $consecutivo) {

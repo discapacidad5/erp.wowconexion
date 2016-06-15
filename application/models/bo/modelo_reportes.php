@@ -165,7 +165,7 @@ FROM users a, user_profiles b WHERE a.created>=NOW() - INTERVAL 1 MONTH and a.id
 		$ventas = $this->getVentas ($inicio, $fin);
 		
 		//echo $this->inicio."|".$this->fin;exit();
-		
+                
 		$impuestos = $this->getImpuestos ($inicio, $fin);		
 		
 		$billeteras = $this->setComisiones();
@@ -250,7 +250,7 @@ FROM users a, user_profiles b WHERE a.created>=NOW() - INTERVAL 1 MONTH and a.id
 									                then
 									                    round((select 
 									                                    m.costo * (select 
-									                                                concat('0.', i.porcentaje)
+									                                                concat('0.', sum(i.porcentaje))
 									                                            from
 									                                                cat_impuesto i
 									                                            where
