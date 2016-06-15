@@ -798,7 +798,7 @@ function get__condicioneses_bonos_id_bono($id_bono){
                                                             and v.id_venta = c.id_venta
                                                             and c.id_afiliado = ".$id."
                                                             and cvm.id_mercancia = 4");
-            var_dump($q->result());
+            //var_dump($q->result());
             return $this->configurarDetalle($id,$bono,$valor,$q->result(),1,1);
             
         }

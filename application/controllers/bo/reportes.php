@@ -3,7 +3,10 @@
 if (! defined ( 'BASEPATH' ))
 	exit ( 'No direct script access allowed' );
 class reportes extends CI_Controller {
-	function __construct() {
+
+    private $table;
+
+    function __construct() {
 		parent::__construct ();
 		
 		$this->load->helper ( array (
@@ -1830,13 +1833,112 @@ class reportes extends CI_Controller {
                 
         $bonos = $this->model_bonos->getBonosPagadosTodos( $inicio, $fin );
         
-        foreach ($bonos as $bono){
+        echo "<divstyle='overflow-y: scroll; height: 100px;'><table id='datatable_fixed_column1'  class='table table-striped table-bordered table-hover' width='100%'>
+				<thead id='tablacabeza'>";
+        
+        $cabeza = array(
+            "ID HISTORIAL",
+            "USUARIO",
+            "FECHA",
+            "BONO",
+            "ID_VENTA",
+            "FECHA",
+            "ID",	
+            "AFILIADO",
+            "ITEM",
+            "PRECIO",
+            "BONO"
+        );
+        
+        $i=0;
+        foreach ($cabeza as $value){
+            $class= ($i==0) ? "data-class='expand'" : "data-hide='phone,tablet'";
+            echo "<th ".$class." >".strtoupper($value)."</th>";
+            $i++;
+        }        
+        
+        echo " </thead>
+		<tbody>";
+        
+        foreach ($bonos as $ibono){
             
-            echo $bono ->id;
-            
+            $this->table = "<tr>
+            <td class='sorting_1' >".$ibono->id."</td>"
+                    . "<td >".$ibono->afiliado."(".$ibono->id_usuario.")</td>"
+                    . "<td >".$ibono->fecha."</td>"
+                    . "<td >".$ibono->bono."</td>";            
+            $this->profundizar_bono($ibono->id_usuario, $ibono->id_bono, "'".$ibono->fecha."'", $ibono->valor);
+            echo "</tr>";
         }
+        
+        echo "</tbody>
+		</table></div>";
     }
     
+    function profundizar_bono($id,$id_bono,$fecha,$valor){
+            
+            $bono = new $this->bono;
+            
+            $bono->setUpBono($id_bono);       
+            
+            $condiciones = array(
+                'ambos' => $bono->getCondiciones(),
+                'dar' => $bono->getCondicionesBonoDar(),
+                'recibir' => $bono->getCondicionesBonoRecibir()
+            );
+            
+            foreach ($condiciones as $tipo =>$condicion){
+               if($condicion){
+                   foreach($condicion as $rangos){
+                       $array =  (array) $rangos;
+                       $rango = array();
+                       foreach ($array as $key =>$value){
+                           //echo $key.":".$value."<br/>";
+                           array_push($rango, $value);
+                       }  
+                       //var_dump($rango);
+                       switch($rango[3]){
+                           case 3:
+                               //echo "<h1>Compras: ".ucwords($tipo)." (".$rango[7].")</h1>";
+                               $q=$this->model_bonos->condicion_compras($id,$fecha,$valor,$id_bono);
+                               echo $this->BonoTable($q);
+                               break;
+                           case 4:
+                               //echo "<h1>Puntos Personales: ".ucwords($tipo)." (".$rango[7].")</h1>";
+                               $q=$this->model_bonos->condicion_puntos($id,$tipo,$fecha,$valor,$id_bono);
+                               echo $this->BonoTable($q);
+                               break;
+                           case 5:
+                               //echo "<h1>Puntos Red: ".ucwords($tipo)." (".$rango[7].")</h1>";
+                               $q=$this->model_bonos->condicion_puntos($id,$tipo,$fecha,$valor,$id_bono);
+                               echo $this->BonoTable($q);
+                               break;
+                       }                       
+                       //echo "<br/>";       
+                   }    
+               }             
+            }
+            
+            //var_dump($condiciones);
+            
+        }
     
+        function BonoTable($datos){
+        
+        //var_dump($datos);
+        if(!$datos){
+            return "";
+        }
+        $table = "";
+        foreach($datos as $dato)
+		{
+                $table .= $this->table;
+                    foreach ($dato as $key => $value){
+                        $table .= "<td >".$value."</td>";
+                    }
+	}
+                
+        return $table;
+    }
 
 }
