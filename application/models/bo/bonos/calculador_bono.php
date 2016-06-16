@@ -54,7 +54,7 @@ class calculador_bono extends CI_Model
 		$bono=new $this->bono();
 		$bono->setUpBono($id_bono);
 			
-		if($this->isActivo($bono)&&$this->isVigentePorFecha($bono,$fechaCalculo)/*&&($this->isPagado($bono, $fechaCalculo)==false)*/){
+		if($this->isActivo($bono)&&$this->isVigentePorFecha($bono,$fechaCalculo)&&($this->isPagado($bono, $fechaCalculo)==false)){
 			$this->pagarComisionesBonoPorFecha($bono,$fechaCalculo);
 			return true;
 		}
