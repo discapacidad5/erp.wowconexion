@@ -653,6 +653,14 @@
 				window.location="/bo/reportes/afiliados_inactivos_excel?inicio="+startdate+"&&fin="+finishdate;
 			}
 			break;
+                        
+                        case "19" :{
+				// Comisiones por pagar y pagadas
+				var startdate = $('#startdate').val();
+				var finishdate = $('#finishdate').val();
+				window.location="/bo/reportes/reporte_todo_bonos_excel?inicio="+startdate+"&&fin="+finishdate;
+			}
+			break;
 		}
 
 		}
