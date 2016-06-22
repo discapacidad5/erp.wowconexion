@@ -229,7 +229,7 @@ class calculador_bono extends CI_Model
                             
                             //echo $id_usuario.":".$valor->getNivel()."|".$valor->getValor()."|".$valor->getCondicionRed()."|".$valor->getVerticalidad()."<br/>";//exit();
                             
-                            if($id_bono==1){
+                            if($id_bono==1||$id_bono==8){
                                 ($valor->getNivel()<(8+$titulo)) ? 
                                 $this->repartirComisionSegunTipoDeReparticion( 
                                         $id_bono,$id_bono_historial,$id_usuario,
@@ -317,7 +317,7 @@ class calculador_bono extends CI_Model
 		foreach ($afiliados as $idAfiliado){
                 $PuedeRecibir=$this->usuarioPuedeRecibirBono($id_bono, $idAfiliado, $this->getFechaCalculoBono());
 			if($PuedeRecibir){
-				$valorTotal=(($this->valorCondicion*$valor)/100);
+				$valorTotal=(($this->valorCondicion*$valor)*10);
                                 //echo ">".$idAfiliado."|".$valorTotal."<br/>";
                                 ($this->BonoWinner($id_bono,$idAfiliado))?
 				$repartidorComisionBono->repartirComisionBono($repartidorComisionBono->getIdTransaccionPagoBono(),$idAfiliado,$id_bono,$id_bono_historial,$valorTotal)

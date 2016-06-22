@@ -297,7 +297,8 @@
 			function tipo_reporte(){
 			
 				var tipo=$("#tipo-reporte").val();
-				
+				var inicio=$("#startdate").val();
+                                var fin=$("#finishdate").val();
 				$("#nuevos-afiliados").show();
 				iniciarSpinner();
 				$.ajax({
@@ -305,8 +306,8 @@
 			         url: "/bo/reportes/reportes_tipo",
 			         data: {
 				         	tipo : tipo,
-				         	startdate :'2016-01-01',
-				         	finishdate :'2026-01-01'
+				         	startdate : inicio,
+				         	finishdate : fin
 				         }
 				}).done(function( msg )
 					{

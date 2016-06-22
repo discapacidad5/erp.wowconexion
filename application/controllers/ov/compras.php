@@ -263,7 +263,7 @@ function index()
 			$detalles=$this->modelo_compras->detalles_membresia($items['id']);
 		
 		$costosImpuestos=$this->modelo_compras->getCostosImpuestos($pais[0]->pais,$items['id']);
-		
+		//var_dump($costosImpuestos);exit();
 		$info_compras[$contador]=Array(
 				"imagen" => $imagenes[0]->url,
 				"nombre" => $detalles[0]->nombre,

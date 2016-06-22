@@ -126,6 +126,41 @@ class general extends CI_Model
             return true;
 	}
 	
+        function isActivedAfiliacionesPuntosPersonalesRange($id_afiliado,$inicio,$fin){
+	$cualquiera="0";
+		
+	$numeroAfiliadosDirectos=$this->getAfiliadosDirectos($id_afiliado);
+	$afiliadosParaEstarActivo=$this->getAfiliadosParaEstarActivo();
+	
+	if ($afiliadosParaEstarActivo > $numeroAfiliadosDirectos) {
+            $this->Activacion($id_afiliado,'DES'); 
+            return false;
+        }
+
+        $fechaInicio=$inicio;
+	$fechaFin=$fin;
+	
+	$puntosParaEstarActivo=$this->getPuntosParaEstarActivo();
+	$puntosComisionablesMes=0;
+	
+	$q=$this->db->query('select id from tipo_red');
+	$redes= $q->result();
+	
+	foreach ($redes as $red){
+		$puntos=$this->afiliado->getPuntosTotalesPersonalesIntervalosDeTiempo($id_afiliado,$red->id,$cualquiera,$cualquiera,$fechaInicio,$fechaFin)[0]->total;
+		$puntosComisionablesMes=$puntosComisionablesMes+$puntos;
+		
+	}
+	
+	if ($puntosParaEstarActivo > $puntosComisionablesMes) {
+            $this->Activacion($id_afiliado,'DES'); 
+            return false;
+        }
+
+
+            return true;
+	}
+        
 	private function getAfiliadosDirectos($id_afiliado){
 		$q=$this->db->query('SELECT count(*) as directos FROM users u,afiliar a
 		where u.id=a.id_afiliado and a.directo = '.$id_afiliado); 

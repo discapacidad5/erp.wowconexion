@@ -202,14 +202,31 @@ class dashboard extends CI_Controller
 		$this->template->set("numeroAfiliadosRed",$numeroAfiliadosRed);
 		
 		$this->template->set_theme('desktop');
-        $this->template->set_layout('website/main');
-        $this->template->set_partial('header', 'website/ov/header');
+        $this->template->set_layout('website/main');        
+        
+        $no = $this->esConsumidor ($id) ;
+        
+        if($no){
+        	$this->template->set_partial('header', 'website/ov/header');
+        	
+        }
+        
         $this->template->set_partial('footer', 'website/ov/footer');
-		$this->template->build('website/ov/view_dashboard');
+        
+        $view = ($no) ? 'website/ov/view_dashboard' : 'website/ov/view_dashboard2';
+        
+		$this->template->build($view);
 	}
-	/**
-	 * 
-	 */private function getAfiliadosRed($id) {
+	
+	private function esConsumidor($id) {
+		$q= $this->db->query("select * from afiliar where id_afiliado = ".$id." and id_red = 1");
+        $q=$q->result();
+        
+        return $q;
+	}
+
+	
+	private function getAfiliadosRed($id) {
 		$redesUsuario=$this->model_tipo_red->cantidadRedesUsuario($id);
 			
 		foreach ($redesUsuario as $redUsuario){

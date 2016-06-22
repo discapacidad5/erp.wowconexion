@@ -32,7 +32,7 @@ class modelo_reportes extends CI_Model
 		return $q->result();
 	}
 	
-	function reporte_afiliados_activos($fecha)
+	function reporte_afiliados_activos($inicio,$fin)
 	{
 		$q=$this->db->query('SELECT a.id, a.username usuario, b.nombre nombre, b.apellido apellido,a.email 
 FROM users a, user_profiles b WHERE a.id=b.user_id and b.id_tipo_usuario=2 and a.id>2');
@@ -42,7 +42,7 @@ FROM users a, user_profiles b WHERE a.id=b.user_id and b.id_tipo_usuario=2 and a
 		
 		foreach ($afiliados as $afiliado){
 
-			if(($this->general->isActived($afiliado->id)==0)&& (($this->general->isActivedAfiliacionesPuntosPersonales($afiliado->id,$fecha))==true)){
+			if(($this->general->isActived($afiliado->id)==0)&& (($this->general->isActivedAfiliacionesPuntosPersonalesRange($afiliado->id,$inicio,$fin))==true)){
 
 				array_push($afiliadosActivos,$afiliado);
 			}
@@ -52,7 +52,7 @@ FROM users a, user_profiles b WHERE a.id=b.user_id and b.id_tipo_usuario=2 and a
 		return $afiliadosActivos;
 	}
 	
-	function reporte_afiliados_inactivos($fecha)
+	function reporte_afiliados_inactivos($inicio,$fin)
 	{
 		$q=$this->db->query('SELECT a.id, a.username usuario, b.nombre nombre, b.apellido apellido,a.email
 FROM users a, user_profiles b WHERE a.id=b.user_id and b.id_tipo_usuario=2 and a.id>2');
@@ -63,7 +63,7 @@ FROM users a, user_profiles b WHERE a.id=b.user_id and b.id_tipo_usuario=2 and a
 		foreach ($afiliados as $afiliado){
 	
 			if(($this->general->isActived($afiliado->id)==0)&& 
-					(($this->general->isActivedAfiliacionesPuntosPersonales($afiliado->id,$fecha))==true)){
+					(($this->general->isActivedAfiliacionesPuntosPersonalesRange($afiliado->id,$inicio,$fin))==true)){
 
 				
 			}else {
@@ -76,10 +76,10 @@ FROM users a, user_profiles b WHERE a.id=b.user_id and b.id_tipo_usuario=2 and a
 	}
 	
 	
-	function reporte_afiliados_mes()
+	function reporte_afiliados_mes($fecha)
 	{
 		$q=$this->db->query('SELECT a.id, a.username usuario, b.nombre nombre, b.apellido apellido,a.email 
-FROM users a, user_profiles b WHERE a.created>=NOW() - INTERVAL 1 MONTH and a.id=b.user_id and b.id_tipo_usuario=2');
+FROM users a, user_profiles b WHERE month(a.created) = month("'.$fecha.'") and a.id=b.user_id and b.id_tipo_usuario=2');
 		return $q->result();
 	}
 	function proveedores_prod()

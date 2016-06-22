@@ -705,15 +705,17 @@ function get__condicioneses_bonos_id_bono($id_bono){
 		return true ;
 	}
         
-        function afiliado_hallar($id,$sentido,$hallar,$nivel){
+        function afiliado_hallar($id,$sentido,$hallar,$nivel,$condicion){
             
             if($id==$hallar){
                 return $nivel;
             }
             
+            $condicion_red = ($condicion = 'DIRECTOS') ? 'directo' : 'debajo_de';
+            
             $query = ($sentido == 1) 
-                    ? 'select id_afiliado from afiliar where debajo_de = '.$id 
-                    : 'select debajo_de from afiliar where id_afiliado = '.$id.' and id_red = 1' ;
+                    ? 'select id_afiliado from afiliar where '.$condicion_red.' = '.$id 
+                    : 'select '.$condicion_red.' from afiliar where id_afiliado = '.$id.' and id_red = 1' ;
                     
             //echo $query; exit();
             $q=$this->db->query($query);
@@ -726,7 +728,7 @@ function get__condicioneses_bonos_id_bono($id_bono){
                     if($id==$hallar){
                         return $nivel+1;
                     }else{
-                        $i=$this->afiliado_hallar($id,$sentido, $hallar, $nivel+1);
+                        $i=$this->afiliado_hallar($id,$sentido, $hallar, $nivel+1, $condicion);
                         if($i){
                             return $i;
                         }
@@ -808,7 +810,8 @@ function get__condicioneses_bonos_id_bono($id_bono){
             $validar = array(
                 'from' => ($sentido=="recibir") ? "comision c," : "",
                 'where' => ($sentido=="recibir") ? "v.id_venta = c.id_venta and " : "",
-                'and' => ($sentido=="recibir") ? "c.id_afiliado = " : "v.id_user = "
+                'and' => ($sentido=="recibir") ? "c.id_afiliado = " : "v.id_user = ",
+            	'patrocinio' => ($bono==2) ? " m.id = 8 and " : ""
             );
             
             $query = "select 
@@ -832,8 +835,8 @@ function get__condicioneses_bonos_id_bono($id_bono){
                                                             cvm.id_venta = v.id_venta and ".
                                                             $validar['where'].
                                                             "month(v.fecha) = month(".$fecha.") and ".
-                                                            $validar['and'].$id;
-            
+                                                            $validar['patrocinio'].$validar['and'].$id;
+           //echo $query;exit();
            $q=$this->db->query($query);
            
            return $this->configurarDetalle($id,$bono,$valor,$q->result(),2,1);                               
@@ -851,9 +854,10 @@ function get__condicioneses_bonos_id_bono($id_bono){
                 array_push($valores, $dato->valor);
             }
             
-            foreach ($q as $dato){
-                $nivel= $this->afiliado_hallar($id,$sentido,$dato->id, 0);
-                $dato->bono = ($tipo==1) ? $valores[$nivel] : (($dato->puntos*10)*$valores[$nivel]);                
+            foreach ($q as $dato){//echo $p[0]->condicion_red."<br/>";
+                $nivel= $this->afiliado_hallar($id,$sentido,$dato->id, 0,$p[0]->condicion_red);//echo $nivel;
+                $valor_nivel = ($nivel < count($valores)) ? $valores[$nivel] : 0;
+				$dato->bono = ($tipo==1) ? $valor_nivel : (($dato->puntos*10)*$valor_nivel);                
             }
             
             return $q;

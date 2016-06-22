@@ -402,9 +402,10 @@ class reportes extends CI_Controller {
 		// $objWriter->save(getcwd()."/media/reportes/".$filename);
 		$objWriter->save ( 'php://output' );
 	}
-	function reporte_afiliados_mes() {
+	function reporte_afiliados_mes() {// echo "aqui";exit();
 		$id = $this->tank_auth->get_user_id ();
-		$afiliados = $this->modelo_reportes->reporte_afiliados_mes ();
+                $fecha = isset($_POST["startdate"]) ? $_POST["startdate"] : date ( 'Y-m-d' );
+		$afiliados = $this->modelo_reportes->reporte_afiliados_mes ($fecha);
 		echo "<table id='datatable_fixed_column1' class='table table-striped table-bordered table-hover' width='100%'>
 				<thead id='tablacabeza'>
 					<th>ID</th>
@@ -483,8 +484,9 @@ class reportes extends CI_Controller {
 		if (! $this->tank_auth->is_logged_in ()) {
 			redirect ( '/auth' );
 		}
-		
-		$afiliados = $this->modelo_reportes->reporte_afiliados_activos ( date ( 'Y-m-d' ) );
+		$inicio = isset($_POST["startdate"]) ? $_POST["startdate"] : date ( 'Y-m-d' );
+                $fin = isset($_POST["finishdate"]) ? $_POST["finishdate"] : date ( 'Y-m-d' );
+		$afiliados = $this->modelo_reportes->reporte_afiliados_activos ($inicio,$fin );
 		echo "<table id='datatable_fixed_column1' class='table table-striped table-bordered table-hover' width='100%'>
 				<thead id='tablacabeza'>
 					<th>ID</th>
@@ -515,8 +517,9 @@ class reportes extends CI_Controller {
 		if (! $this->tank_auth->is_logged_in ()) {
 			redirect ( '/auth' );
 		}
-		
-		$afiliados = $this->modelo_reportes->reporte_afiliados_activos ( date ( 'Y-m-d' ) );
+		$inicio = isset($_POST["startdate"]) ? $_POST["startdate"] : date ( 'Y-m-d' );
+                $fin = isset($_POST["finishdate"]) ? $_POST["finishdate"] : date ( 'Y-m-d' );
+		$afiliados = $this->modelo_reportes->reporte_afiliados_activos ($inicio,$fin );
 		
 		$this->load->library ( 'excel' );
 		$this->excel = PHPExcel_IOFactory::load ( FCPATH . "/application/third_party/templates/reporte_generico.xls" );
@@ -556,8 +559,9 @@ class reportes extends CI_Controller {
 		if (! $this->tank_auth->is_logged_in ()) {
 			redirect ( '/auth' );
 		}
-		
-		$afiliados = $this->modelo_reportes->reporte_afiliados_inactivos ( date ( 'Y-m-d' ) );
+		$inicio = isset($_POST["startdate"]) ? $_POST["startdate"] : date ( 'Y-m-d' );
+                $fin = isset($_POST["finishdate"]) ? $_POST["finishdate"] : date ( 'Y-m-d' );
+		$afiliados = $this->modelo_reportes->reporte_afiliados_inactivos ($inicio,$fin );
 		echo "<table id='datatable_fixed_column1' class='table table-striped table-bordered table-hover' width='100%'>
 				<thead id='tablacabeza'>
 					<th>ID</th>
@@ -588,8 +592,9 @@ class reportes extends CI_Controller {
 		if (! $this->tank_auth->is_logged_in ()) {
 			redirect ( '/auth' );
 		}
-		
-		$afiliados = $this->modelo_reportes->reporte_afiliados_inactivos ( date ( 'Y-m-d' ) );
+		$inicio = isset($_POST["startdate"]) ? $_POST["startdate"] : date ( 'Y-m-d' );
+                $fin = isset($_POST["finishdate"]) ? $_POST["finishdate"] : date ( 'Y-m-d' );
+		$afiliados = $this->modelo_reportes->reporte_afiliados_inactivos ($inicio,$fin );
 		
 		$this->load->library ( 'excel' );
 		$this->excel = PHPExcel_IOFactory::load ( FCPATH . "/application/third_party/templates/reporte_generico.xls" );
