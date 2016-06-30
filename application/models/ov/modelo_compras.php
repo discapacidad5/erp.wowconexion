@@ -930,7 +930,7 @@ where a.id_paquete = e.id_paquete and d.sku= a.id_paquete and d.estatus="ACT" an
 									    m.costo_publico,
 									    m.iva,
 									    ci.descripcion as tipoImpuesto,
-									    round(m.costo * (ci.porcentaje / 100), 2) as costoImpuesto,
+									    round((m.costo * ci.porcentaje)/(case when (m.iva = 'CON') then (100 + ci.porcentaje) else 100 end) , 2) as costoImpuesto,
 									    m.pais,
 										(case when (ci.id_impuesto = 23 || ci.id_impuesto = 22) then 'IVA 16% (Solo Plan Educativo)' else CONCAT(ci.porcentaje, '% de ', ci.descripcion) end)
 									     as nombreImpuesto

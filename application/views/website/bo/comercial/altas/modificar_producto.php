@@ -488,7 +488,6 @@ $porcentajeContador=0;
 									Actualizar
 								</button>
 							</section>
-							</div>
 						</form>	
 					</div>
 				</div>
